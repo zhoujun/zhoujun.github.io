@@ -501,11 +501,125 @@
 </tbody>
 </table>
 <p>位运算应用口诀：<strong>清零取反要用与，某位置一可用或 ；若要取反和交换，轻轻松松用异或</strong> </p>
-<p>eg:<br>功能 | 示例 | 位运算<br>—|—|—<br>去掉最后一位 | (101101-&gt;10110) | x &gt;&gt; 1<br>在最后加一个0 | (101101-&gt;1011010) | x &lt;&lt; 1<br>在最后加一个1 | (101101-&gt;1011011) | x &lt;&lt; 1+1<br>把最后一位变成1 | (101100-&gt;101101) | x 异或 1<br>把最后一位变成0 | (101101-&gt;101100) | x  异或 1-1<br>最后一位取反 | (101101-&gt;101100) | x ^ 1<br>把右数第k位变成1 | (101001-&gt;101101, k=3) | x 异或 (1 &lt;&lt; (k-1))<br>把右数第k位变成0 | (101101-&gt;101001, k=3) | x &amp; ~ (1 &lt;&lt; (k-1))<br>右数第k位取反 | (101001-&gt;101101,k=3) | x ^ (1 &lt;&lt; (k-1))<br>取末三位 | (1101101-&gt;101) | x &amp; 7<br>取末k位 | 1101101-&gt;1101,k=5) | x &amp; ((1 &lt;&lt; k)-1)<br>取右数第k位 | (1101101-&gt;1, k=4) | x &gt;&gt; (k-1) &amp; 1<br>把末k位变成1 | (101001-&gt;101111, k=4) | x | (1 &lt;&lt; k-1)<br>末k位取反 | (101001-&gt;100110,k=4）| x ^ (1 &lt;&lt; k-1)<br>把右边连续的1变成0 | (100101111-&gt;100100000) | x &amp; (x+1)<br>把右起第一个0变成1 | (100101111-&gt;100111111) | x | (x+1)<br>把右边连续的0变成1 | (11011000-&gt;11011111) | x | (x-1)<br>取右边连续的1 | (100101111-&gt;1111) | (x ^ (x+1)) &gt;&gt; 1<br>去掉右起第一个1的左边 | (100101000-&gt;1000) | x &amp; (x ^ (x-1))<br>判断奇数 | (x&amp;1) == 1<br>判断偶数 | (x&amp;1) == 0</p>
+<p>eg:</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>示例</th>
+<th>位运算</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>去掉最后一位</td>
+<td>(101101-&gt;10110)</td>
+<td>x &gt;&gt; 1</td>
+</tr>
+<tr>
+<td>在最后加一个0</td>
+<td>(101101-&gt;1011010)</td>
+<td>x &lt;&lt; 1</td>
+</tr>
+<tr>
+<td>在最后加一个1</td>
+<td>(101101-&gt;1011011)</td>
+<td>x &lt;&lt; 1+1 </td>
+</tr>
+<tr>
+<td>把最后一位变成1</td>
+<td>(101100-&gt;101101)</td>
+<td>x 异或 1</td>
+</tr>
+<tr>
+<td>把最后一位变成0</td>
+<td>(101101-&gt;101100)</td>
+<td>x  异或 1-1</td>
+</tr>
+<tr>
+<td>最后一位取反</td>
+<td>(101101-&gt;101100)</td>
+<td>x ^ 1 </td>
+</tr>
+<tr>
+<td>把右数第k位变成1</td>
+<td>(101001-&gt;101101, k=3)</td>
+<td>x 异或 (1 &lt;&lt; (k-1)) </td>
+</tr>
+<tr>
+<td>把右数第k位变成0</td>
+<td>(101101-&gt;101001, k=3)</td>
+<td>x &amp; ~ (1 &lt;&lt; (k-1)) </td>
+</tr>
+<tr>
+<td>右数第k位取反</td>
+<td>(101001-&gt;101101,k=3)</td>
+<td>x ^ (1 &lt;&lt; (k-1)) </td>
+</tr>
+<tr>
+<td>取末三位</td>
+<td>(1101101-&gt;101)</td>
+<td>x &amp; 7 </td>
+</tr>
+<tr>
+<td>取末k位</td>
+<td>1101101-&gt;1101,k=5)</td>
+<td>x &amp; ((1 &lt;&lt; k)-1) </td>
+</tr>
+<tr>
+<td>取右数第k位</td>
+<td>(1101101-&gt;1, k=4)</td>
+<td>x &gt;&gt; (k-1) &amp; 1 </td>
+</tr>
+<tr>
+<td>把末k位变成1</td>
+<td>(101001-&gt;101111, k=4)</td>
+<td>x 异或 (1 &lt;&lt; k-1) </td>
+</tr>
+<tr>
+<td>末k位取反</td>
+<td>(101001-&gt;100110,k=4）</td>
+<td>x ^ (1 &lt;&lt; k-1) </td>
+</tr>
+<tr>
+<td>把右边连续的1变成0</td>
+<td>(100101111-&gt;100100000)</td>
+<td>x &amp; (x+1) </td>
+</tr>
+<tr>
+<td>把右起第一个0变成1</td>
+<td>(100101111-&gt;100111111)</td>
+<td>x 异或 (x+1) </td>
+</tr>
+<tr>
+<td>把右边连续的0变成1</td>
+<td>(11011000-&gt;11011111)</td>
+<td>x 异或 (x-1) </td>
+</tr>
+<tr>
+<td>取右边连续的1</td>
+<td>(100101111-&gt;1111)</td>
+<td>(x ^ (x+1)) &gt;&gt; 1 </td>
+</tr>
+<tr>
+<td>去掉右起第一个1的左边</td>
+<td>(100101000-&gt;1000)</td>
+<td>x &amp; (x ^ (x-1)) </td>
+</tr>
+<tr>
+<td>判断奇数</td>
+<td>(x&amp;1) == 1</td>
+</tr>
+<tr>
+<td>判断偶数</td>
+<td>(x&amp;1) == 0</td>
+</tr>
+</tbody>
+</table>
 <p>1、按位与<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1 &amp; 1 = 1 </div><div class="line">1 &amp; 0 = 0</div><div class="line">0 &amp; 0 = 0</div><div class="line">0 &amp; 1 = 0</div></pre></td></tr></table></figure></p>
-<p>++利用按位与可以将任意二进制数的最后一位变为0， 即 n &amp; 0++</p>
+<p><strong> 利用按位与可以将任意二进制数的最后一位变为0， 即 n &amp; 0 </strong></p>
 <p>2、按位并<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1 | 1 = 1</div><div class="line">1 | 0 = 1</div><div class="line">0 | 0 = 0</div><div class="line">0 | 1 = 1</div></pre></td></tr></table></figure></p>
-<p>++利用按位并可以将任意二进制数的最后一位变为1， 即 n | 1++</p>
+<p><strong> 利用按位并可以将任意二进制数的最后一位变为1， 即 n | 1 </strong></p>
 <p>3、异或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">0 ^ 0 = 0</div><div class="line">0 ^ 1 = 1</div><div class="line">1 ^ 0 = 1</div><div class="line">1 ^ 1 = 0</div></pre></td></tr></table></figure></p>
 <h3 id="二、原码-反码-补码"><a href="#二、原码-反码-补码" class="headerlink" title="二、原码 反码 补码"></a>二、原码 反码 补码</h3><table>
 <thead>
