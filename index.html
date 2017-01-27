@@ -84,15 +84,15 @@
 
 
 
-<meta name="description" content="If we dream, everything is possible.">
+<meta name="description" content="�������ı������磬��һֻ������ֽ�һ���">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Finger's Blog">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Finger's Blog">
-<meta property="og:description" content="If we dream, everything is possible.">
+<meta property="og:description" content="�������ı������磬��һֻ������ֽ�һ���">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Finger's Blog">
-<meta name="twitter:description" content="If we dream, everything is possible.">
+<meta name="twitter:description" content="�������ı������磬��һֻ������ֽ�һ���">
 
 
 
@@ -152,7 +152,7 @@
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
-  <p class="site-subtitle">�������ı������磬��һֻ������ֽ�һ���</p>
+  <p class="site-subtitle">If we dream, everything is possible.</p>
 </div>
 
 <div class="site-nav-toggle">
@@ -258,8 +258,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/18/Test3/" itemprop="url">
-                  位运算总结
+                <a class="post-title-link" href="/2017/01/27/untu安装svn服务/" itemprop="url">
+                  ubuntu安装svn服务
                 </a>
               
             
@@ -272,8 +272,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-18T15:23:00+08:00" content="2016-08-18">
-              2016-08-18
+            <time itemprop="dateCreated" datetime="2017-01-27T20:56:00+08:00" content="2017-01-27">
+              2017-01-27
             </time>
           </span>
 
@@ -286,8 +286,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">笔记</span>
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
                   </a>
                 </span>
 
@@ -302,8 +302,139 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/18/Test3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/18/Test3/" itemprop="commentsCount"></span>
+                <a href="/2017/01/27/untu安装svn服务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/untu安装svn服务/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、安装Subversion-Server"><a href="#一、安装Subversion-Server" class="headerlink" title="一、安装Subversion Server"></a>一、安装Subversion Server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install subversion</div></pre></td></tr></table></figure>
+<h3 id="二、创建SVN版本库"><a href="#二、创建SVN版本库" class="headerlink" title="二、创建SVN版本库"></a>二、创建SVN版本库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /srv/svn          # 创建SVN根目录</div><div class="line">svnadmin create test    # 创建测试项目库</div></pre></td></tr></table></figure>
+<h3 id="三、SVN配置"><a href="#三、SVN配置" class="headerlink" title="三、SVN配置"></a>三、SVN配置</h3><p>主要包含以下三个配置文件：</p>
+<h5 id="1-svnserve-conf"><a href="#1-svnserve-conf" class="headerlink" title="1. svnserve.conf"></a>1. svnserve.conf</h5><p>服务配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[general]</div><div class="line">anon-access = none      # 匿名用户不可读</div><div class="line">auth-access = write     # 权限用户可写</div><div class="line">password-db = passwd    # 启用密码文件</div><div class="line">authz-db = authz        # 启用权限文件</div><div class="line">realm = repos           # 认证域名称</div></pre></td></tr></table></figure></p>
+<h5 id="2-passwd"><a href="#2-passwd" class="headerlink" title="2. passwd"></a>2. passwd</h5><p>账号配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[user]</div><div class="line">finger = 123456</div></pre></td></tr></table></figure></p>
+<h5 id="3-authz"><a href="#3-authz" class="headerlink" title="3. authz"></a>3. authz</h5><p>权限配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[groups]</div><div class="line">admin = finger</div><div class="line"></div><div class="line">[/]</div><div class="line">@admin = rw         # admin组拥有所有读写权限</div><div class="line">* = r               # 其他只有读权限</div></pre></td></tr></table></figure></p>
+<h3 id="四、启动和停止"><a href="#四、启动和停止" class="headerlink" title="四、启动和停止"></a>四、启动和停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">启动：</div><div class="line">svnserve -d -r /srv/svn   # -d 表示后台运行 -r 表示根目录</div><div class="line"></div><div class="line">停止：</div><div class="line">ps -ef | grep svn   # 查看svn进程ID</div><div class="line"></div><div class="line">kill -9 进程ID</div></pre></td></tr></table></figure>
+<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">svn co svn://127.0.0.1/test</div></pre></td></tr></table></figure>
+<h3 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h3><p><strong>1、svn: E220003: Invalid authz configuration</strong></p>
+<p>原因是authz文件配置错误，仔细检查authz文件。</p>
+<h3 id="七、参考文献"><a href="#七、参考文献" class="headerlink" title="七、参考文献"></a>七、参考文献</h3><p><a href="https://my.oschina.net/jast90/blog/382688" target="_blank" rel="external">https://my.oschina.net/jast90/blog/382688</a></p>
+<p><a href="http://www.linuxidc.com/Linux/2015-01/111956.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2015-01/111956.htm</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/27/算总结/" itemprop="url">
+                  位运算总结
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-27T20:53:00+08:00" content="2017-01-27">
+              2017-01-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/27/算总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/算总结/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -370,125 +501,11 @@
 </tbody>
 </table>
 <p>位运算应用口诀：<strong>清零取反要用与，某位置一可用或 ；若要取反和交换，轻轻松松用异或</strong> </p>
-<p>eg:</p>
-<table>
-<thead>
-<tr>
-<th>功能</th>
-<th>示例</th>
-<th>位运算</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>去掉最后一位</td>
-<td>(101101-&gt;10110)</td>
-<td>x &gt;&gt; 1</td>
-</tr>
-<tr>
-<td>在最后加一个0</td>
-<td>(101101-&gt;1011010)</td>
-<td>x &lt;&lt; 1</td>
-</tr>
-<tr>
-<td>在最后加一个1</td>
-<td>(101101-&gt;1011011)</td>
-<td>x &lt;&lt; 1+1 </td>
-</tr>
-<tr>
-<td>把最后一位变成1</td>
-<td>(101100-&gt;101101)</td>
-<td>x 或 1</td>
-</tr>
-<tr>
-<td>把最后一位变成0</td>
-<td>(101101-&gt;101100)</td>
-<td>x 或 1-1</td>
-</tr>
-<tr>
-<td>最后一位取反</td>
-<td>(101101-&gt;101100)</td>
-<td>x ^ 1 </td>
-</tr>
-<tr>
-<td>把右数第k位变成1</td>
-<td>(101001-&gt;101101, k=3)</td>
-<td>x 或 (1 &lt;&lt; (k-1)) </td>
-</tr>
-<tr>
-<td>把右数第k位变成0</td>
-<td>(101101-&gt;101001, k=3)</td>
-<td>x &amp; ~ (1 &lt;&lt; (k-1)) </td>
-</tr>
-<tr>
-<td>右数第k位取反</td>
-<td>(101001-&gt;101101,k=3)</td>
-<td>x ^ (1 &lt;&lt; (k-1)) </td>
-</tr>
-<tr>
-<td>取末三位</td>
-<td>(1101101-&gt;101)</td>
-<td>x &amp; 7 </td>
-</tr>
-<tr>
-<td>取末k位</td>
-<td>1101101-&gt;1101,k=5)</td>
-<td>x &amp; ((1 &lt;&lt; k)-1) </td>
-</tr>
-<tr>
-<td>取右数第k位</td>
-<td>(1101101-&gt;1, k=4)</td>
-<td>x &gt;&gt; (k-1) &amp; 1 </td>
-</tr>
-<tr>
-<td>把末k位变成1</td>
-<td>(101001-&gt;101111, k=4)</td>
-<td>x 或 (1 &lt;&lt; k-1) </td>
-</tr>
-<tr>
-<td>末k位取反</td>
-<td>(101001-&gt;100110,k=4）</td>
-<td>x ^ (1 &lt;&lt; k-1) </td>
-</tr>
-<tr>
-<td>把右边连续的1变成0</td>
-<td>(100101111-&gt;100100000)</td>
-<td>x &amp; (x+1) </td>
-</tr>
-<tr>
-<td>把右起第一个0变成1</td>
-<td>(100101111-&gt;100111111)</td>
-<td>x 或 (x+1) </td>
-</tr>
-<tr>
-<td>把右边连续的0变成1</td>
-<td>(11011000-&gt;11011111)</td>
-<td>x 或 (x-1) </td>
-</tr>
-<tr>
-<td>取右边连续的1</td>
-<td>(100101111-&gt;1111)</td>
-<td>(x ^ (x+1)) &gt;&gt; 1 </td>
-</tr>
-<tr>
-<td>去掉右起第一个1的左边</td>
-<td>(100101000-&gt;1000)</td>
-<td>x &amp; (x ^ (x-1)) </td>
-</tr>
-<tr>
-<td>判断奇数</td>
-<td>(x&amp;1) == 1</td>
-</tr>
-<tr>
-<td>判断偶数</td>
-<td>(x&amp;1) == 0</td>
-</tr>
-</tbody>
-</table>
+<p>eg:<br>功能 | 示例 | 位运算<br>—|—|—<br>去掉最后一位 | (101101-&gt;10110) | x &gt;&gt; 1<br>在最后加一个0 | (101101-&gt;1011010) | x &lt;&lt; 1<br>在最后加一个1 | (101101-&gt;1011011) | x &lt;&lt; 1+1<br>把最后一位变成1 | (101100-&gt;101101) | x 异或 1<br>把最后一位变成0 | (101101-&gt;101100) | x  异或 1-1<br>最后一位取反 | (101101-&gt;101100) | x ^ 1<br>把右数第k位变成1 | (101001-&gt;101101, k=3) | x 异或 (1 &lt;&lt; (k-1))<br>把右数第k位变成0 | (101101-&gt;101001, k=3) | x &amp; ~ (1 &lt;&lt; (k-1))<br>右数第k位取反 | (101001-&gt;101101,k=3) | x ^ (1 &lt;&lt; (k-1))<br>取末三位 | (1101101-&gt;101) | x &amp; 7<br>取末k位 | 1101101-&gt;1101,k=5) | x &amp; ((1 &lt;&lt; k)-1)<br>取右数第k位 | (1101101-&gt;1, k=4) | x &gt;&gt; (k-1) &amp; 1<br>把末k位变成1 | (101001-&gt;101111, k=4) | x | (1 &lt;&lt; k-1)<br>末k位取反 | (101001-&gt;100110,k=4）| x ^ (1 &lt;&lt; k-1)<br>把右边连续的1变成0 | (100101111-&gt;100100000) | x &amp; (x+1)<br>把右起第一个0变成1 | (100101111-&gt;100111111) | x | (x+1)<br>把右边连续的0变成1 | (11011000-&gt;11011111) | x | (x-1)<br>取右边连续的1 | (100101111-&gt;1111) | (x ^ (x+1)) &gt;&gt; 1<br>去掉右起第一个1的左边 | (100101000-&gt;1000) | x &amp; (x ^ (x-1))<br>判断奇数 | (x&amp;1) == 1<br>判断偶数 | (x&amp;1) == 0</p>
 <p>1、按位与<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1 &amp; 1 = 1 </div><div class="line">1 &amp; 0 = 0</div><div class="line">0 &amp; 0 = 0</div><div class="line">0 &amp; 1 = 0</div></pre></td></tr></table></figure></p>
-<p><strong> 利用按位与可以将任意二进制数的最后一位变为0， 即 n &amp; 0 </strong></p>
+<p>++利用按位与可以将任意二进制数的最后一位变为0， 即 n &amp; 0++</p>
 <p>2、按位并<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1 | 1 = 1</div><div class="line">1 | 0 = 1</div><div class="line">0 | 0 = 0</div><div class="line">0 | 1 = 1</div></pre></td></tr></table></figure></p>
-<p><strong> 利用按位并可以将任意二进制数的最后一位变为1， 即 n | 1 </strong></p>
+<p>++利用按位并可以将任意二进制数的最后一位变为1， 即 n | 1++</p>
 <p>3、异或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">0 ^ 0 = 0</div><div class="line">0 ^ 1 = 1</div><div class="line">1 ^ 0 = 1</div><div class="line">1 ^ 1 = 0</div></pre></td></tr></table></figure></p>
 <h3 id="二、原码-反码-补码"><a href="#二、原码-反码-补码" class="headerlink" title="二、原码 反码 补码"></a>二、原码 反码 补码</h3><table>
 <thead>
@@ -579,8 +596,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/08/18/Test2/" itemprop="url">
-                  ubuntu安装svn服务
+                <a class="post-title-link" href="/2017/01/27/xo使用笔记/" itemprop="url">
+                  Hexo使用笔记
                 </a>
               
             
@@ -593,8 +610,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-18T13:52:00+08:00" content="2016-08-18">
-              2016-08-18
+            <time itemprop="dateCreated" datetime="2017-01-27T20:40:00+08:00" content="2017-01-27">
+              2017-01-27
             </time>
           </span>
 
@@ -607,8 +624,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">笔记</span>
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
                   </a>
                 </span>
 
@@ -623,8 +640,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/18/Test2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/18/Test2/" itemprop="commentsCount"></span>
+                <a href="/2017/01/27/xo使用笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/xo使用笔记/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -649,18 +666,23 @@
       
         
           
-            <h3 id="一、安装Subversion-Server"><a href="#一、安装Subversion-Server" class="headerlink" title="一、安装Subversion Server"></a>一、安装Subversion Server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install subversion</div></pre></td></tr></table></figure>
-<h3 id="二、创建SVN版本库"><a href="#二、创建SVN版本库" class="headerlink" title="二、创建SVN版本库"></a>二、创建SVN版本库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /srv/svn          # 创建SVN根目录</div><div class="line">svnadmin create test    # 创建测试项目库</div></pre></td></tr></table></figure>
-<h3 id="三、SVN配置"><a href="#三、SVN配置" class="headerlink" title="三、SVN配置"></a>三、SVN配置</h3><p>主要包含以下三个配置文件：</p>
-<h5 id="1-svnserve-conf"><a href="#1-svnserve-conf" class="headerlink" title="1. svnserve.conf"></a>1. svnserve.conf</h5><p>服务配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[general]</div><div class="line">anon-access = none      # 匿名用户不可读</div><div class="line">auth-access = write     # 权限用户可写</div><div class="line">password-db = passwd    # 启用密码文件</div><div class="line">authz-db = authz        # 启用权限文件</div><div class="line">realm = repos           # 认证域名称</div></pre></td></tr></table></figure></p>
-<h5 id="2-passwd"><a href="#2-passwd" class="headerlink" title="2. passwd"></a>2. passwd</h5><p>账号配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[user]</div><div class="line">finger = 123456</div></pre></td></tr></table></figure></p>
-<h5 id="3-authz"><a href="#3-authz" class="headerlink" title="3. authz"></a>3. authz</h5><p>权限配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[groups]</div><div class="line">admin = finger</div><div class="line"></div><div class="line">[/]</div><div class="line">@admin = rw         # admin组拥有所有读写权限</div><div class="line">* = r               # 其他只有读权限</div></pre></td></tr></table></figure></p>
-<h3 id="四、启动和停止"><a href="#四、启动和停止" class="headerlink" title="四、启动和停止"></a>四、启动和停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">启动：</div><div class="line">svnserve -d -r /srv/svn   # -d 表示后台运行 -r 表示根目录</div><div class="line"></div><div class="line">停止：</div><div class="line">ps -ef | grep svn   # 查看svn进程ID</div><div class="line"></div><div class="line">kill -9 进程ID</div></pre></td></tr></table></figure>
-<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">svn co svn://127.0.0.1/test</div></pre></td></tr></table></figure>
-<h3 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h3><p><em>* 1、svn: E220003: Invalid authz configuration </em></p>
-<p>原因是authz文件配置错误，仔细检查authz文件。</p>
-<h3 id="七、参考文献"><a href="#七、参考文献" class="headerlink" title="七、参考文献"></a>七、参考文献</h3><p><a href="https://my.oschina.net/jast90/blog/382688" target="_blank" rel="external">https://my.oschina.net/jast90/blog/382688</a></p>
-<p><a href="http://www.linuxidc.com/Linux/2015-01/111956.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2015-01/111956.htm</a></p>
+            <p>中文文档：<br><a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">https://hexo.io/zh-cn/docs/index.html</a></p>
+<p>参考博客：</p>
+<p><a href="http://blog.csdn.net/poem_of_sunshine/article/details/29369785/" target="_blank" rel="external">http://blog.csdn.net/poem_of_sunshine/article/details/29369785/</a><br><a href="http://www.jianshu.com/p/465830080ea9#" target="_blank" rel="external">http://www.jianshu.com/p/465830080ea9#</a><br><a href="http://www.jianshu.com/p/a2023a601ceb" target="_blank" rel="external">http://www.jianshu.com/p/a2023a601ceb</a></p>
+<p>Github配置：</p>
+<p><a href="https://help.github.com/articles/generating-an-ssh-key/" target="_blank" rel="external">https://help.github.com/articles/generating-an-ssh-key/</a><br><a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/" target="_blank" rel="external">https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/</a></p>
+<p>常用命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo server | s --debug</div><div class="line">hexo clean</div><div class="line">hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure></p>
+<p>绑定阿里云域名：<br><a href="http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html" target="_blank" rel="external">http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html</a></p>
+<p>hexo主题：<br><a href="https://hexo.io/themes/" target="_blank" rel="external">https://hexo.io/themes/</a></p>
+<ul>
+<li><a href="https://github.com/henryhuang/oishi" target="_blank" rel="external">https://github.com/henryhuang/oishi</a></li>
+<li><a href="https://github.com/haojen/hexo-theme-Anisina" target="_blank" rel="external">https://github.com/haojen/hexo-theme-Anisina</a></li>
+<li><a href="https://github.com/stiekel/hexo-theme-random" target="_blank" rel="external">https://github.com/stiekel/hexo-theme-random</a></li>
+<li><a href="https://github.com/SuperKieran/TKL" target="_blank" rel="external">https://github.com/SuperKieran/TKL</a></li>
+<li><a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="external">https://github.com/jaredly/hexo-admin</a></li>
+<li><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next</a></li>
+</ul>
+<p>// Next 皮肤设置<br><a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="external">http://theme-next.iissnan.com/theme-settings.html</a></p>
 
           
         
@@ -725,12 +747,12 @@
                src="/images/avatar.gif"
                alt="Finger Chou" />
           <p class="site-author-name" itemprop="name">Finger Chou</p>
-          <p class="site-description motion-element" itemprop="description">If we dream, everything is possible.</p>
+          <p class="site-description motion-element" itemprop="description">�������ı������磬��һֻ������ֽ�һ���</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -747,7 +769,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

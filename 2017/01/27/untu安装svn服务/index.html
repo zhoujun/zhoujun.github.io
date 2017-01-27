@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="SVN,Ubuntu," />
+  <meta name="keywords" content="svn,ubuntu," />
 
 
 
@@ -90,13 +90,13 @@
 1. svnserve.conf服务配置：123456[general]anon-access =">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu安装svn服务">
-<meta property="og:url" content="http://yoursite.com/2016/08/18/Test2/index.html">
+<meta property="og:url" content="http://yoursite.com/2017/01/27/untu安装svn服务/index.html">
 <meta property="og:site_name" content="Finger's Blog">
 <meta property="og:description" content="一、安装Subversion Server1apt-get install subversion
 二、创建SVN版本库12mkdir /srv/svn          # 创建SVN根目录svnadmin create test    # 创建测试项目库
 三、SVN配置主要包含以下三个配置文件：
 1. svnserve.conf服务配置：123456[general]anon-access =">
-<meta property="og:updated_time" content="2017-01-27T11:09:06.428Z">
+<meta property="og:updated_time" content="2017-01-27T15:12:43.872Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu安装svn服务">
 <meta name="twitter:description" content="一、安装Subversion Server1apt-get install subversion
@@ -123,7 +123,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/08/18/Test2/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/01/27/untu安装svn服务/"/>
 
   <title> ubuntu安装svn服务 | Finger's Blog </title>
 </head>
@@ -160,7 +160,7 @@
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
-  <p class="site-subtitle">�������ı������磬��һֻ������ֽ�һ���</p>
+  <p class="site-subtitle">If we dream, everything is possible.</p>
 </div>
 
 <div class="site-nav-toggle">
@@ -277,8 +277,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-18T13:52:00+08:00" content="2016-08-18">
-              2016-08-18
+            <time itemprop="dateCreated" datetime="2017-01-27T20:56:00+08:00" content="2017-01-27">
+              2017-01-27
             </time>
           </span>
 
@@ -291,8 +291,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">笔记</span>
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
                   </a>
                 </span>
 
@@ -307,8 +307,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/08/18/Test2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/18/Test2/" itemprop="commentsCount"></span>
+                <a href="/2017/01/27/untu安装svn服务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/untu安装svn服务/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -339,7 +339,7 @@
 <h5 id="3-authz"><a href="#3-authz" class="headerlink" title="3. authz"></a>3. authz</h5><p>权限配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[groups]</div><div class="line">admin = finger</div><div class="line"></div><div class="line">[/]</div><div class="line">@admin = rw         # admin组拥有所有读写权限</div><div class="line">* = r               # 其他只有读权限</div></pre></td></tr></table></figure></p>
 <h3 id="四、启动和停止"><a href="#四、启动和停止" class="headerlink" title="四、启动和停止"></a>四、启动和停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">启动：</div><div class="line">svnserve -d -r /srv/svn   # -d 表示后台运行 -r 表示根目录</div><div class="line"></div><div class="line">停止：</div><div class="line">ps -ef | grep svn   # 查看svn进程ID</div><div class="line"></div><div class="line">kill -9 进程ID</div></pre></td></tr></table></figure>
 <h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">svn co svn://127.0.0.1/test</div></pre></td></tr></table></figure>
-<h3 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h3><p><em>* 1、svn: E220003: Invalid authz configuration </em></p>
+<h3 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h3><p><strong>1、svn: E220003: Invalid authz configuration</strong></p>
 <p>原因是authz文件配置错误，仔细检查authz文件。</p>
 <h3 id="七、参考文献"><a href="#七、参考文献" class="headerlink" title="七、参考文献"></a>七、参考文献</h3><p><a href="https://my.oschina.net/jast90/blog/382688" target="_blank" rel="external">https://my.oschina.net/jast90/blog/382688</a></p>
 <p><a href="http://www.linuxidc.com/Linux/2015-01/111956.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2015-01/111956.htm</a></p>
@@ -365,9 +365,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/SVN/" rel="tag">#SVN</a>
+            <a href="/tags/svn/" rel="tag">#svn</a>
           
-            <a href="/tags/Ubuntu/" rel="tag">#Ubuntu</a>
+            <a href="/tags/ubuntu/" rel="tag">#ubuntu</a>
           
         </div>
       
@@ -376,13 +376,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/01/27/算总结/" rel="next" title="位运算总结">
+                <i class="fa fa-chevron-left"></i> 位运算总结
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/18/Test3/" rel="prev" title="位运算总结">
-                位运算总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -408,8 +408,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/08/18/Test2/"
-           data-title="ubuntu安装svn服务" data-url="http://yoursite.com/2016/08/18/Test2/">
+      <div class="ds-thread" data-thread-key="2017/01/27/untu安装svn服务/"
+           data-title="ubuntu安装svn服务" data-url="http://yoursite.com/2017/01/27/untu安装svn服务/">
       </div>
     
   </div>
@@ -449,12 +449,12 @@
                src="/images/avatar.gif"
                alt="Finger Chou" />
           <p class="site-author-name" itemprop="name">Finger Chou</p>
-          <p class="site-description motion-element" itemprop="description">If we dream, everything is possible.</p>
+          <p class="site-description motion-element" itemprop="description">�������ı������磬��һֻ������ֽ�һ���</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -471,7 +471,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
