@@ -45,17 +45,35 @@
   
 
   
+    
+      
+    
 
-  
-
+    
   
 
   
 
   
     
+      
     
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
@@ -258,6 +276,145 @@
             
               
                 
+                <a class="post-title-link" href="/2017/07/02/scrapy-deploy-usage/" itemprop="url">
+                  Scrapy 部署笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-02T10:41:00+08:00" content="2017-07-02">
+              2017-07-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/scrapy/" itemprop="url" rel="index">
+                    <span itemprop="name">scrapy</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/scrapy/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/02/scrapy-deploy-usage/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/02/scrapy-deploy-usage/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<p>关键字：</p>
+<p><strong>*scrapy</strong>， <strong>scrapyd</strong>， <strong>scrapy-client</strong>， <strong>spiderkeeper*</strong></p>
+<h4 id="一、新建一个scrapy项目"><a href="#一、新建一个scrapy项目" class="headerlink" title="一、新建一个scrapy项目"></a>一、新建一个scrapy项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ scrapy startproject scrapy_example</div><div class="line">$ cd scrapy_example</div><div class="line"></div><div class="line"># 修改配置文件scrapy.cfg</div><div class="line">[settings]</div><div class="line">default = scrapy_example.settings</div><div class="line"></div><div class="line">[deploy:scrapyd1]</div><div class="line">url = http://localhost:6800/</div><div class="line">project = scrapy_example</div></pre></td></tr></table></figure>
+<h4 id="二、安装并启动scrapyd"><a href="#二、安装并启动scrapyd" class="headerlink" title="二、安装并启动scrapyd"></a>二、安装并启动scrapyd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ pip install scrapyd</div><div class="line"></div><div class="line"># 启动, 默认的端口是6800。可以在浏览器中查看结果，比如：http://127.0.0.1:6800/。</div><div class="line">$ scrapyd</div></pre></td></tr></table></figure>
+<h4 id="三、发布工程到scrapyd"><a href="#三、发布工程到scrapyd" class="headerlink" title="三、发布工程到scrapyd"></a>三、发布工程到scrapyd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 发布scrapyd需要安装scrapy-client</div><div class="line">$ pip install scrapy-client</div><div class="line"># 发布命令：scrapyd-deploy &lt;target&gt; -p &lt;project&gt;</div><div class="line">$ scrapyd-deploy scrapyd1 -p scrapy_example</div><div class="line"></div><div class="line"># 检查发布是否成功</div><div class="line">$ scrapyd-deploy -l 或者 scrapyd-deploy -L scrapyd1</div><div class="line"></div><div class="line"># 启动爬虫</div><div class="line">$ curl http://127.0.0.1:6800/schedule.json -d project=scrapy_example -d spider=example</div></pre></td></tr></table></figure>
+<h4 id="四、使用spiderkeeper发布爬虫"><a href="#四、使用spiderkeeper发布爬虫" class="headerlink" title="四、使用spiderkeeper发布爬虫"></a>四、使用spiderkeeper发布爬虫</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 生成egg文件</div><div class="line">$ scrapyd-deploy --build-egg scrapy_example.egg</div><div class="line"></div><div class="line"># 安装spiderkeeper(https://github.com/DormyMo/SpiderKeeper)</div><div class="line"># pip install spiderkeeper</div><div class="line"># 启动spiderkeeper</div><div class="line">$ spiderkeeper --server=http://localhost:6800</div><div class="line"></div><div class="line"># 访问 http://localhost:5000</div><div class="line"># 这个时候可以在spiderkepper上传scrapy_example.egg文件，通过Web UI启动，监控爬虫</div></pre></td></tr></table></figure>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a href="http://www.cnblogs.com/jinhaolin/p/5033733.html" target="_blank" rel="external">http://www.cnblogs.com/jinhaolin/p/5033733.html</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/06/22/docker-build-and-run-your-first-app/" itemprop="url">
                   Docker 构建第一个App
                 </a>
@@ -332,13 +489,41 @@
 <p>测试环境：阿里云 ubuntu14.04 </p>
 <h4 id="一、新建Dockerfile文件"><a href="#一、新建Dockerfile文件" class="headerlink" title="一、新建Dockerfile文件"></a>一、新建Dockerfile文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># Use an official Python runtime as a base image</div><div class="line">FROM python:2.7-slim</div><div class="line"></div><div class="line"># Set the working directory to /app</div><div class="line">WORKDIR /app</div><div class="line"></div><div class="line"># Copy the current directory contents into the container at /app</div><div class="line">ADD . /app</div><div class="line"></div><div class="line"># Install any needed packages specified in requirements.txt</div><div class="line">RUN pip install -r requirements.txt</div><div class="line"></div><div class="line"># Make port 80 available to the world outside this container</div><div class="line">EXPOSE 80</div><div class="line"></div><div class="line"># Define environment variable</div><div class="line">ENV NAME World</div><div class="line"></div><div class="line"># Run app.py when the container launches</div><div class="line">CMD [&quot;python&quot;, &quot;app.py&quot;]</div></pre></td></tr></table></figure>
 <h4 id="二、新建requirements-txt"><a href="#二、新建requirements-txt" class="headerlink" title="二、新建requirements.txt"></a>二、新建requirements.txt</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Flask</div><div class="line">Redis</div></pre></td></tr></table></figure>
-<h4 id="三、新建app-py"><a href="#三、新建app-py" class="headerlink" title="三、新建app.py"></a>三、新建app.py</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">from redis import Redis, RedisError</div><div class="line">import os</div><div class="line">import socket</div><div class="line"></div><div class="line"># Connect to Redis</div><div class="line">redis = Redis(host=&quot;redis&quot;, db=0, socket_connect_timeout=2, socket_timeout=2)</div><div class="line"></div><div class="line">app = Flask(__name__)</div><div class="line"></div><div class="line">@app.route(&quot;/&quot;)</div><div class="line">def hello():</div><div class="line">    try:</div><div class="line">        visits = redis.incr(&quot;counter&quot;)</div><div class="line">    except RedisError:</div><div class="line">        visits = &quot;&lt;i&gt;cannot connect to Redis, counter disabled&lt;/i&gt;&quot;</div><div class="line"></div><div class="line">    html = &quot;&lt;h3&gt;Hello &#123;name&#125;!&lt;/h3&gt;&quot; \</div><div class="line">           &quot;&lt;b&gt;Hostname:&lt;/b&gt; &#123;hostname&#125;&lt;br/&gt;&quot; \</div><div class="line">           &quot;&lt;b&gt;Visits:&lt;/b&gt; &#123;visits&#125;&quot;</div><div class="line">    return html.format(name=os.getenv(&quot;NAME&quot;, &quot;world&quot;), hostname=socket.gethostname(), visits=visits)</div><div class="line"></div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">	app.run(host=&apos;0.0.0.0&apos;, port=80)</div><div class="line"></div><div class="line">```	</div><div class="line"></div><div class="line">#### 四、编译</div></pre></td></tr></table></figure>
-<p>$ ls<br>Dockerfile        app.py            requirements.txt</p>
-<p>$ docker build -t friendlyhello . (当前目录)</p>
-<p>$ docker images<br>REPOSITORY            TAG                 IMAGE ID<br>friendlyhello         latest              326387cea398</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#### 五、运行</div></pre></td></tr></table></figure>
-<p>docker run -p 4000:80 friendlyhello<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#### 六、测试</div></pre></td></tr></table></figure></p>
-<p>curl <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a><br>```</p>
+<h4 id="三、新建app-py"><a href="#三、新建app-py" class="headerlink" title="三、新建app.py"></a>三、新建app.py</h4><pre><code>from flask import Flask
+from redis import Redis, RedisError
+import os
+import socket
+
+# Connect to Redis
+redis = Redis(host=&quot;redis&quot;, db=0, socket_connect_timeout=2, socket_timeout=2)
+
+app = Flask(__name__)
+
+@app.route(&quot;/&quot;)
+def hello():
+    try:
+        visits = redis.incr(&quot;counter&quot;)
+    except RedisError:
+        visits = &quot;&lt;i&gt;cannot connect to Redis, counter disabled&lt;/i&gt;&quot;
+
+    html = &quot;&lt;h3&gt;Hello {name}!&lt;/h3&gt;&quot; \
+           &quot;&lt;b&gt;Hostname:&lt;/b&gt; {hostname}&lt;br/&gt;&quot; \
+           &quot;&lt;b&gt;Visits:&lt;/b&gt; {visits}&quot;
+    return html.format(name=os.getenv(&quot;NAME&quot;, &quot;world&quot;), hostname=socket.gethostname(), visits=visits)
+
+if __name__ == &quot;__main__&quot;:
+    app.run(host=&apos;0.0.0.0&apos;, port=80)
+</code></pre><h4 id="四、编译"><a href="#四、编译" class="headerlink" title="四、编译"></a>四、编译</h4><blockquote>
+<p>ls  </p>
+<p>docker build -t friendlyhello . (当前目录)</p>
+<p>docker images</p>
+</blockquote>
+<h4 id="五、运行"><a href="#五、运行" class="headerlink" title="五、运行"></a>五、运行</h4><blockquote>
+<p>docker run -p 4000:80 friendlyhello</p>
+</blockquote>
+<h4 id="六、测试"><a href="#六、测试" class="headerlink" title="六、测试"></a>六、测试</h4><blockquote>
+<p>curl <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a></p>
+</blockquote>
 <h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a href="https://docs.docker.com/get-started/part2/#run-the-app" target="_blank" rel="external">https://docs.docker.com/get-started/part2/#run-the-app</a></p>
 
           
@@ -834,15 +1019,19 @@
 <p>绑定阿里云域名：<br><a href="http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html" target="_blank" rel="external">http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html</a></p>
 <h4 id="后端管理插件hexo-admin"><a href="#后端管理插件hexo-admin" class="headerlink" title="后端管理插件hexo-admin"></a>后端管理插件hexo-admin</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install --save hexo-admin</div><div class="line">hexo server -d</div><div class="line">open http://localhost:4000/admin/</div></pre></td></tr></table></figure>
 <p><strong>设置后台密码</strong><br>修改站点配置文件，就是网站根目录下的 _config.yml文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">admin:</div><div class="line">  username: finger</div><div class="line">  password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa</div><div class="line">  secret: a secret something</div></pre></td></tr></table></figure></p>
-<p>username：后端登录用户名<br>password_hash：后端登录用户密码对应的md5 hash值<br>secret：用于保证cookie安全</p>
+<ul>
+<li>username：后端登录用户名</li>
+<li>password_hash：后端登录用户密码对应的md5 hash值</li>
+<li>secret：用于保证cookie安全</li>
+</ul>
 <p><strong>密码生成</strong><br>hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ node</div><div class="line">&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)</div><div class="line">&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)</div><div class="line">//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos;</div></pre></td></tr></table></figure></p>
+<p><strong>在线生成</strong><br><a href="https://www.bcrypt-generator.com/" target="_blank" rel="external">https://www.bcrypt-generator.com/</a></p>
 <h4 id="Hexo主题："><a href="#Hexo主题：" class="headerlink" title="Hexo主题："></a>Hexo主题：</h4><ul>
 <li><a href="https://hexo.io/themes/" target="_blank" rel="external">https://hexo.io/themes/</a></li>
 <li><a href="https://github.com/henryhuang/oishi" target="_blank" rel="external">https://github.com/henryhuang/oishi</a></li>
 <li><a href="https://github.com/haojen/hexo-theme-Anisina" target="_blank" rel="external">https://github.com/haojen/hexo-theme-Anisina</a></li>
 <li><a href="https://github.com/stiekel/hexo-theme-random" target="_blank" rel="external">https://github.com/stiekel/hexo-theme-random</a></li>
 <li><a href="https://github.com/SuperKieran/TKL" target="_blank" rel="external">https://github.com/SuperKieran/TKL</a></li>
-<li><a href="https://github.com/jaredly/hexo-admin" target="_blank" rel="external">https://github.com/jaredly/hexo-admin</a></li>
 <li><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next</a></li>
 </ul>
 <h4 id="Next-皮肤设置"><a href="#Next-皮肤设置" class="headerlink" title="Next 皮肤设置"></a>Next 皮肤设置</h4><p><a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="external">http://theme-next.iissnan.com/theme-settings.html</a></p>
@@ -915,7 +1104,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -923,7 +1112,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -932,7 +1121,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -997,7 +1186,7 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
+  &copy;  2015 - 
   <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
