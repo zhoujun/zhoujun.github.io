@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[基于 Python 的开源人脸识别库]]></title>
+    <url>%2F2017%2F07%2F29%2Fpython-face-recognition%2F</url>
+    <content type="text"><![CDATA[项目说明基于 Python 的开源人脸识别库：离线识别率高达 99.38% 该库使用 dlib 顶尖的深度学习人脸识别技术构建，在户外脸部检测数据库基准（Labeled Faces in the Wild benchmark）上的准确率高达 99.38%。该项目是要构建一款免费、开源、实时、离线的网络 app，支持组织者使用人脸识别技术或二维码识别所有受邀人员。有了世界上最简单的人脸识别库，使用 Python 或命令行，即可识别和控制人脸。 项目地址：https://github.com/ageitgey/face_recognition#face-recognition 使用说明1、从图片中识别出人脸 123import face_recognitionimage = face_recognition.load_image_file("your_file.jpg")face_locations = face_recognition.face_locations(image) 2、从图片中识别面部特征，比如：眼睛, 鼻子, 嘴和下巴。123import face_recognitionimage = face_recognition.load_image_file("your_file.jpg")face_landmarks_list = face_recognition.face_landmarks(image) 3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能 4、从图片中识别出某个具体的人12345678import face_recognitionknown_image = face_recognition.load_image_file("biden.jpg")unknown_image = face_recognition.load_image_file("unknown.jpg")biden_encoding = face_recognition.face_encodings(known_image)[0]unknown_encoding = face_recognition.face_encodings(unknown_image)[0]results = face_recognition.compare_faces([biden_encoding], unknown_encoding)]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[数据库分库分表]]></title>
+    <url>%2F2017%2F07%2F29%2Fdatabase-sharding%2F</url>
+    <content type="text"><![CDATA[一、背景 大量的并发读/写操作，导致单库出现难以承受的负载压力 单表存储数据量过大，导致索引效率低下 二、读写分离将数据库设置为读写分离状态，由Master（主）负责写数据，Salve（从）只负责读数据。主从之间保持数据同步。根据二八法则，80%的数据库操作是读，20%则为写。读写分离后，可以大大提升单库负载压力。 但是，当Master存在TPS（系统吞吐量）较高的情况，Master和Slave数据库之间数据同步是会存在一定延迟，因此在写入Master之前最好还是要将同一份数据放入缓存中，以避免高并发情况下，从Slave中获取不到指定数据的情况 三、分库分表随着用户规模的不断上升，仅仅只是依靠数据库的读写分离并不能解决系统瓶颈。因此需要考虑分库分表的解决方案。 分表 就是将原来冗余在单库中的单个业务表拆分为N个“逻辑相关”的业务子表（如tab_0000, tab_0001, tab_0002…），不同的业务字表各自负责存储不同区间数据，对外形成一个整体 分库 就是将分表后的业务子表按照特定的算法和规则分散到N个“逻辑相关”的业务子库中（如db_0000, db_0001, db_0002…） 分库分表策略主要原理：分区，取模，数据路由表 1、按时间区间一定时间区间内产生的数据放到一张表里面，多个时间区间的表放到一个库里面 比如， a、单库多表结构，按月分表可以这样：user_201701, user_201702…user_201712；按年分表可以这样，user_2016, user_2017… b、多库多表，比如按天分表，每天一张表，当单库超过100张表的时候，进行分库到下一张表。那么假如第一张表在库db0，表名是user_20160201。从db0.user_20160201 - db0.user_20160511就是100张表了，接下来就是分库，进入20160512，就是db1.user_20160512，这个算法就是上线的时候定一个上线日期，具体算法如下： 12库ID = （当前日期 - 上线日期）/ 100表ID = user_yyyyMMdd 注：好处是可以直接根据时间经过简单计算定位到哪个库和哪个表 还有一种算法：12表ID = (当前日期 - 上线日期) % 100表名如下： DB0.user_0001，user_0002 .... user_01000 注：表名和库名都要经过计算，比较麻烦 c、按月分表，每个月一张表。这种情况，一般就不用分库了，一年12张表说明量也不会特别大，如果量特别大，或者是热点数据，可以一年分一个库，具体算法和上面差不多。 d、按季度分表，按年度分表（基本不用分库） 2、按主键ID区间对于自增的主键ID，可以按照ID区间进行分表，以1000万数据量为分界线，对线性的ID进行切割分表，每涨到1000万数据，分到下一张表，超过一定数目的表，进行分库。 12库ID = 主键ID / 1000万 / 100表ID = 主键ID / 1000万 % 100 如： 12db0.user_0000 ... db0.user_0099 db1.user_0000 ... db1.user_0099 3、按照用户ID取模这里把按照用户ID取模单独拎出来，因为就使用而言，是使用场景最多的情况，很多时候都是用户相关数据量最大，需要分库分表，查询维度更多也是按照用户来查询，所以对用户取模，让同一个用户的数据落到一张表里面，再好不过了。 这里模式用户ID是整数型的。假设库数量要分4库，每个库表数量8表，一共32张表。 12345库ID = userId % 库数量4表ID = userId / 库数量4 % 表数量8或者库ID = userId / 表数量4 % 库数量4表ID = userId % 表数量8 4、按照指定字段hash后再取模如果要取模的字段不是整数型，要先hash后，再通过取模算法，算出在哪个库和那个表。具体算法，参照上面的按用户ID取模。 5、数据路由表如果分库分表的算法很复杂，可以通过路由表+程序算法，来存储和计算分库分表规则，不过一般不建议，分库分表搞得太复杂，不便于维护和查询问题 四、第三方中间件1、Cobar 开源地址：https://github.com/alibaba/cobar 2、Shark 开源地址：https://github.com/gaoxianglong/shark 五、需要考虑的问题一旦数据库实施分库分表后，便会对开发造成一定的影响。具体问题如下： 数据的原子性，一致性，隔离性，持久性如何保证 多表之间的关联查询如何进行 无法继续使用外键约束 无法继续使用Oracle提供的Sequence或MySQL提供的AUTO_INCREMENT生成全局唯一和连续性ID。 参考文献 https://baijiahao.baidu.com/s?id=1564548884823698&amp;wfr=spider&amp;for=pc http://blog.csdn.net/xlgen157387/article/details/53976153 http://blog.csdn.net/dinglang_2009/article/details/53195871]]></content>
+      <categories>
+        <category>Database</category>
+      </categories>
+      <tags>
+        <tag>Mysql</tag>
+        <tag>shard</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Scrapy 部署笔记]]></title>
+    <url>%2F2017%2F07%2F02%2Fscrapy-deploy-usage%2F</url>
+    <content type="text"><![CDATA[关键字： scrapy， scrapyd， scrapy-client， spiderkeeper 一、新建一个scrapy项目12345678910$ scrapy startproject scrapy_example$ cd scrapy_example# 修改配置文件scrapy.cfg[settings]default = scrapy_example.settings[deploy:scrapyd1]url = http://localhost:6800/project = scrapy_example 二、安装并启动scrapyd1234$ pip install scrapyd# 启动, 默认的端口是6800。可以在浏览器中查看结果，比如：http://127.0.0.1:6800/。$ scrapyd 三、发布工程到scrapyd12345678910# 发布scrapyd需要安装scrapy-client$ pip install scrapy-client# 发布命令：scrapyd-deploy &lt;target&gt; -p &lt;project&gt;$ scrapyd-deploy scrapyd1 -p scrapy_example# 检查发布是否成功$ scrapyd-deploy -l 或者 scrapyd-deploy -L scrapyd1# 启动爬虫$ curl http://127.0.0.1:6800/schedule.json -d project=scrapy_example -d spider=example 四、使用spiderkeeper发布爬虫12345678910# 生成egg文件$ scrapyd-deploy --build-egg scrapy_example.egg# 安装spiderkeeper(https://github.com/DormyMo/SpiderKeeper)# pip install spiderkeeper# 启动spiderkeeper$ spiderkeeper --server=http://localhost:6800# 访问 http://localhost:5000# 这个时候可以在spiderkepper上传scrapy_example.egg文件，通过Web UI启动，监控爬虫 参考文献http://www.cnblogs.com/jinhaolin/p/5033733.html]]></content>
+      <categories>
+        <category>scrapy</category>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>scrapy</tag>
+        <tag>scrapyd</tag>
+        <tag>scrapy-client</tag>
+        <tag>spiderkeeper</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Docker 构建第一个App]]></title>
+    <url>%2F2017%2F06%2F22%2Fdocker-build-and-run-your-first-app%2F</url>
+    <content type="text"><![CDATA[测试环境：阿里云 ubuntu14.04 一、新建Dockerfile文件1234567891011121314151617181920# Use an official Python runtime as a base imageFROM python:2.7-slim# Set the working directory to /appWORKDIR /app# Copy the current directory contents into the container at /appADD . /app# Install any needed packages specified in requirements.txtRUN pip install -r requirements.txt# Make port 80 available to the world outside this containerEXPOSE 80# Define environment variableENV NAME World# Run app.py when the container launchesCMD [&quot;python&quot;, &quot;app.py&quot;] 二、新建requirements.txt12FlaskRedis 三、新建app.pyfrom flask import Flask from redis import Redis, RedisError import os import socket # Connect to Redis redis = Redis(host=&quot;redis&quot;, db=0, socket_connect_timeout=2, socket_timeout=2) app = Flask(__name__) @app.route(&quot;/&quot;) def hello(): try: visits = redis.incr(&quot;counter&quot;) except RedisError: visits = &quot;&lt;i&gt;cannot connect to Redis, counter disabled&lt;/i&gt;&quot; html = &quot;&lt;h3&gt;Hello {name}!&lt;/h3&gt;&quot; \ &quot;&lt;b&gt;Hostname:&lt;/b&gt; {hostname}&lt;br/&gt;&quot; \ &quot;&lt;b&gt;Visits:&lt;/b&gt; {visits}&quot; return html.format(name=os.getenv(&quot;NAME&quot;, &quot;world&quot;), hostname=socket.gethostname(), visits=visits) if __name__ == &quot;__main__&quot;: app.run(host=&apos;0.0.0.0&apos;, port=80) 四、编译 ls docker build -t friendlyhello . (当前目录) docker images 五、运行 docker run -p 4000:80 friendlyhello 六、测试 curl http://localhost:4000 参考文献https://docs.docker.com/get-started/part2/#run-the-app]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
+        <tag>Docker</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Supervisord 使用笔记]]></title>
+    <url>%2F2017%2F06%2F22%2Fsupervisord-usage%2F</url>
+    <content type="text"><![CDATA[一、安装1234- pip install supervisor - echo_supervisord_conf #或者 - echo_supervisord_conf &gt; supervisord.conf - supervisord -c ./supervisord.conf 二、遇到错误123[root@localhost ~]# supervisord -c ./supervisord.conf Error: .ini file does not include supervisord section For help, use /usr/bin/supervisord -h 错误原因是因为配置文件少了 [supervisrod] 配置项12345678910[program:djangotest] user=lzz command=/usr/bin/python /var/www/djangotest/manage.py runserver 0.0.0.0:8000 autostart=true autorestart=true stderr_logfile=/var/logs/err.log stdout_logfile=/var/logs/out.log stopsignal=INT [supervisord] 三、常用命令12supervisord : supervisor的服务器端部分，用于supervisor启动supervisorctl：启动supervisor的命令行窗口，在该命令行中可执行start、stop、status、reload等操作。 参考文献http://www.jianshu.com/p/9abffc905645]]></content>
+      <tags>
+        <tag>Supervisord</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Ubuntu 安装svn服务]]></title>
+    <url>%2F2017%2F01%2F27%2Fubuntu-install-svn-simple-server%2F</url>
+    <content type="text"><![CDATA[一、安装Subversion Server1apt-get install subversion 二、创建SVN版本库12mkdir /srv/svn # 创建SVN根目录svnadmin create test # 创建测试项目库 三、SVN配置主要包含以下三个配置文件： 1. svnserve.conf服务配置：123456[general]anon-access = none # 匿名用户不可读auth-access = write # 权限用户可写password-db = passwd # 启用密码文件authz-db = authz # 启用权限文件realm = repos # 认证域名称 2. passwd账号配置：12[user]finger = 123456 3. authz权限配置：123456[groups]admin = finger[/]@admin = rw # admin组拥有所有读写权限* = r # 其他只有读权限 四、启动和停止1234567启动：svnserve -d -r /srv/svn # -d 表示后台运行 -r 表示根目录停止：ps -ef | grep svn # 查看svn进程IDkill -9 进程ID 五、测试1svn co svn://127.0.0.1/test 六、问题1、svn: E220003: Invalid authz configuration 原因是authz文件配置错误，仔细检查authz文件。 七、参考文献https://my.oschina.net/jast90/blog/382688 http://www.linuxidc.com/Linux/2015-01/111956.htm]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>SVN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hexo使用笔记]]></title>
+    <url>%2F2017%2F01%2F27%2Fhexo-usage%2F</url>
+    <content type="text"><![CDATA[中文文档：https://hexo.io/zh-cn/docs/index.html 参考博客：http://blog.csdn.net/poem_of_sunshine/article/details/29369785/http://www.jianshu.com/p/465830080ea9#http://www.jianshu.com/p/a2023a601ceb Github配置：https://help.github.com/articles/generating-an-ssh-key/https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/ 常用命令1234hexo server | s --debughexo cleanhexo generatehexo deploy 绑定阿里云域名：http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html 后端管理插件hexo-admin123npm install --save hexo-adminhexo server -dopen http://localhost:4000/admin/ 设置后台密码修改站点配置文件，就是网站根目录下的 _config.yml文件:1234admin: username: finger password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa secret: a secret something username：后端登录用户名 password_hash：后端登录用户密码对应的md5 hash值 secret：用于保证cookie安全 密码生成hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块1234$ node&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos; 在线生成https://www.bcrypt-generator.com/ Hexo主题： https://hexo.io/themes/ https://github.com/henryhuang/oishi https://github.com/haojen/hexo-theme-Anisina https://github.com/stiekel/hexo-theme-random https://github.com/SuperKieran/TKL https://github.com/iissnan/hexo-theme-next Next 皮肤设置http://theme-next.iissnan.com/theme-settings.html]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Cocos2dx－上传Google Play遇到的问题]]></title>
+    <url>%2F2017%2F01%2F27%2Fcocos2dx-upload-google-play%2F</url>
+    <content type="text"><![CDATA[一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL 因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下： 12345678910111213141516171819202122Vulnerability-----------------------------------------------------------**OpenSSL**The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;You can find more information and next steps in this Google Help Center article.-----------------------------------------------------------To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.If you feel we have made this determination in error, please reach out to our developer support team.Best,The Google Play Team 解决方案 邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9 具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。 https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin 二、Google Play支付(in-app Billing)注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致 1、错误提示 1231. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效 2、系统异常 123456789101112131415java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)// 解决方法// 1、mHelper.flagEndAsync() 修改成public// 2、在launchPurchaseFlow() 之前调用flagEndAsync()----------------------------------------------------if (mHelper != null) &#123; try &#123; mHelper.flagEndAsync(); mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;); &#125; catch(IllegalStateException ex)&#123; Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show(); &#125;&#125;]]></content>
+      <categories>
+        <category>Cocos2d-x</category>
+      </categories>
+      <tags>
+        <tag>Cocos2d-x</tag>
+      </tags>
+  </entry>
+</search>
