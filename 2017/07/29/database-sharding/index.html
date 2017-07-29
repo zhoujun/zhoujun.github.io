@@ -1,0 +1,756 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mysql,shard," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一、背景
+大量的并发读/写操作，导致单库出现难以承受的负载压力
+单表存储数据量过大，导致索引效率低下
+
+二、读写分离将数据库设置为读写分离状态，由Master（主）负责写数据，Salve（从）只负责读数据。主从之间保持数据同步。根据二八法则，80%的数据库操作是读，20%则为写。读写分离后，可以大大提升单库负载压力。
+但是，当Master存在TPS（系统吞吐量）较高的情况，Master和Slav">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库分库分表">
+<meta property="og:url" content="http://yoursite.com/2017/07/29/database-sharding/index.html">
+<meta property="og:site_name" content="Finger's Blog">
+<meta property="og:description" content="一、背景
+大量的并发读/写操作，导致单库出现难以承受的负载压力
+单表存储数据量过大，导致索引效率低下
+
+二、读写分离将数据库设置为读写分离状态，由Master（主）负责写数据，Salve（从）只负责读数据。主从之间保持数据同步。根据二八法则，80%的数据库操作是读，20%则为写。读写分离后，可以大大提升单库负载压力。
+但是，当Master存在TPS（系统吞吐量）较高的情况，Master和Slav">
+<meta property="og:updated_time" content="2017-07-29T05:47:28.023Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据库分库分表">
+<meta name="twitter:description" content="一、背景
+大量的并发读/写操作，导致单库出现难以承受的负载压力
+单表存储数据量过大，导致索引效率低下
+
+二、读写分离将数据库设置为读写分离状态，由Master（主）负责写数据，Salve（从）只负责读数据。主从之间保持数据同步。根据二八法则，80%的数据库操作是读，20%则为写。读写分离后，可以大大提升单库负载压力。
+但是，当Master存在TPS（系统吞吐量）较高的情况，Master和Slav">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/29/database-sharding/"/>
+
+  <title> 数据库分库分表 | Finger's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Finger's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                数据库分库分表
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-29T13:44:00+08:00" content="2017-07-29">
+              2017-07-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index">
+                    <span itemprop="name">Database</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/29/database-sharding/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/29/database-sharding/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h3 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h3><ul>
+<li>大量的并发读/写操作，导致单库出现难以承受的负载压力</li>
+<li>单表存储数据量过大，导致索引效率低下</li>
+</ul>
+<h3 id="二、读写分离"><a href="#二、读写分离" class="headerlink" title="二、读写分离"></a>二、读写分离</h3><p>将数据库设置为读写分离状态，由Master（主）负责写数据，Salve（从）只负责读数据。主从之间保持数据同步。根据二八法则，80%的数据库操作是读，20%则为写。读写分离后，可以大大提升单库负载压力。</p>
+<p><strong>但是，当Master存在TPS（系统吞吐量）较高的情况，Master和Slave数据库之间数据同步是会存在一定延迟，因此在写入Master之前最好还是要将同一份数据放入缓存中，以避免高并发情况下，从Slave中获取不到指定数据的情况</strong></p>
+<h3 id="三、分库分表"><a href="#三、分库分表" class="headerlink" title="三、分库分表"></a>三、分库分表</h3><p>随着用户规模的不断上升，仅仅只是依靠数据库的读写分离并不能解决系统瓶颈。因此需要考虑分库分表的解决方案。</p>
+<p><strong>分表</strong> 就是将原来冗余在单库中的单个业务表拆分为N个“逻辑相关”的业务子表（如tab_0000, tab_0001, tab_0002…），不同的业务字表各自负责存储不同区间数据，对外形成一个整体</p>
+<p><strong>分库</strong> 就是将分表后的业务子表按照特定的算法和规则分散到N个“逻辑相关”的业务子库中（如db_0000, db_0001, db_0002…）</p>
+<h4 id="分库分表策略"><a href="#分库分表策略" class="headerlink" title="分库分表策略"></a>分库分表策略</h4><p>主要原理：<strong>分区，取模，数据路由表</strong></p>
+<h4 id="1、按时间区间"><a href="#1、按时间区间" class="headerlink" title="1、按时间区间"></a>1、按时间区间</h4><p>一定时间区间内产生的数据放到一张表里面，多个时间区间的表放到一个库里面</p>
+<p>比如，</p>
+<p>a、单库多表结构，按月分表可以这样：user_201701, user_201702…user_201712；按年分表可以这样，user_2016, user_2017…</p>
+<p>b、多库多表，比如按天分表，每天一张表，当单库超过100张表的时候，进行分库到下一张表。那么假如第一张表在库db0，表名是user_20160201。从db0.user_20160201 - db0.user_20160511就是100张表了，接下来就是分库，进入20160512，就是db1.user_20160512，这个算法就是上线的时候定一个上线日期，具体算法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">库ID = （当前日期 - 上线日期）/ 100</div><div class="line">表ID = user_yyyyMMdd</div></pre></td></tr></table></figure>
+<p><strong>注：好处是可以直接根据时间经过简单计算定位到哪个库和哪个表</strong></p>
+<p>还有一种算法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">表ID = (当前日期 - 上线日期) % 100</div><div class="line">表名如下： DB0.user_0001，user_0002 .... user_01000</div></pre></td></tr></table></figure></p>
+<p><strong>注：表名和库名都要经过计算，比较麻烦</strong></p>
+<p>c、按月分表，每个月一张表。这种情况，一般就不用分库了，一年12张表说明量也不会特别大，如果量特别大，或者是热点数据，可以一年分一个库，具体算法和上面差不多。</p>
+<p>d、按季度分表，按年度分表（基本不用分库）</p>
+<h4 id="2、按主键ID区间"><a href="#2、按主键ID区间" class="headerlink" title="2、按主键ID区间"></a>2、按主键ID区间</h4><p>对于自增的主键ID，可以按照ID区间进行分表，以1000万数据量为分界线，对线性的ID进行切割分表，每涨到1000万数据，分到下一张表，超过一定数目的表，进行分库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">库ID = 主键ID / 1000万 / 100</div><div class="line">表ID = 主键ID / 1000万 % 100</div></pre></td></tr></table></figure>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db0.user_0000 ... db0.user_0099 </div><div class="line">db1.user_0000 ... db1.user_0099</div></pre></td></tr></table></figure>
+<h4 id="3、按照用户ID取模"><a href="#3、按照用户ID取模" class="headerlink" title="3、按照用户ID取模"></a>3、按照用户ID取模</h4><p>这里把按照用户ID取模单独拎出来，因为就使用而言，是使用场景最多的情况，很多时候都是用户相关数据量最大，需要分库分表，查询维度更多也是按照用户来查询，所以对用户取模，让同一个用户的数据落到一张表里面，再好不过了。</p>
+<p>这里模式用户ID是整数型的。假设库数量要分4库，每个库表数量8表，一共32张表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">库ID = userId % 库数量4</div><div class="line">表ID = userId / 库数量4 % 表数量8</div><div class="line">或者</div><div class="line">库ID = userId / 表数量4 % 库数量4</div><div class="line">表ID = userId % 表数量8</div></pre></td></tr></table></figure>
+<h4 id="4、按照指定字段hash后再取模"><a href="#4、按照指定字段hash后再取模" class="headerlink" title="4、按照指定字段hash后再取模"></a>4、按照指定字段hash后再取模</h4><p>如果要取模的字段不是整数型，要先hash后，再通过取模算法，算出在哪个库和那个表。具体算法，参照上面的按用户ID取模。</p>
+<h4 id="5、数据路由表"><a href="#5、数据路由表" class="headerlink" title="5、数据路由表"></a>5、数据路由表</h4><p>如果分库分表的算法很复杂，可以通过路由表+程序算法，来存储和计算分库分表规则，不过一般不建议，分库分表搞得太复杂，不便于维护和查询问题</p>
+<h3 id="四、第三方中间件"><a href="#四、第三方中间件" class="headerlink" title="四、第三方中间件"></a>四、第三方中间件</h3><p>1、Cobar</p>
+<p>开源地址：<a href="https://github.com/alibaba/cobar" target="_blank" rel="external">https://github.com/alibaba/cobar</a></p>
+<p>2、Shark</p>
+<p>开源地址：<a href="https://github.com/gaoxianglong/shark" target="_blank" rel="external">https://github.com/gaoxianglong/shark</a></p>
+<h3 id="五、需要考虑的问题"><a href="#五、需要考虑的问题" class="headerlink" title="五、需要考虑的问题"></a>五、需要考虑的问题</h3><p>一旦数据库实施分库分表后，便会对开发造成一定的影响。具体问题如下：</p>
+<ul>
+<li>数据的原子性，一致性，隔离性，持久性如何保证</li>
+<li>多表之间的关联查询如何进行</li>
+<li>无法继续使用外键约束</li>
+<li>无法继续使用Oracle提供的Sequence或MySQL提供的AUTO_INCREMENT生成全局唯一和连续性ID。</li>
+</ul>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
+<li><a href="https://baijiahao.baidu.com/s?id=1564548884823698&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">https://baijiahao.baidu.com/s?id=1564548884823698&amp;wfr=spider&amp;for=pc</a></li>
+<li><a href="http://blog.csdn.net/xlgen157387/article/details/53976153" target="_blank" rel="external">http://blog.csdn.net/xlgen157387/article/details/53976153</a></li>
+<li><a href="http://blog.csdn.net/dinglang_2009/article/details/53195871" target="_blank" rel="external">http://blog.csdn.net/dinglang_2009/article/details/53195871</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mysql/" rel="tag">#Mysql</a>
+          
+            <a href="/tags/shard/" rel="tag">#shard</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/02/scrapy-deploy-usage/" rel="next" title="Scrapy 部署笔记">
+                <i class="fa fa-chevron-left"></i> Scrapy 部署笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/29/python-face-recognition/" rel="prev" title="基于 Python 的开源人脸识别库">
+                基于 Python 的开源人脸识别库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/29/database-sharding/"
+           data-title="数据库分库分表" data-url="http://yoursite.com/2017/07/29/database-sharding/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Finger Chou" />
+          <p class="site-author-name" itemprop="name">Finger Chou</p>
+          <p class="site-description motion-element" itemprop="description">If we dream, everything is possible.</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/zhoujun" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/hifinger" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/junzhou" target="_blank" title="Douban">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Douban
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、背景"><span class="nav-number">1.</span> <span class="nav-text">一、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、读写分离"><span class="nav-number">2.</span> <span class="nav-text">二、读写分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、分库分表"><span class="nav-number">3.</span> <span class="nav-text">三、分库分表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分库分表策略"><span class="nav-number">3.1.</span> <span class="nav-text">分库分表策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1、按时间区间"><span class="nav-number">3.2.</span> <span class="nav-text">1、按时间区间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、按主键ID区间"><span class="nav-number">3.3.</span> <span class="nav-text">2、按主键ID区间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、按照用户ID取模"><span class="nav-number">3.4.</span> <span class="nav-text">3、按照用户ID取模</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、按照指定字段hash后再取模"><span class="nav-number">3.5.</span> <span class="nav-text">4、按照指定字段hash后再取模</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、数据路由表"><span class="nav-number">3.6.</span> <span class="nav-text">5、数据路由表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、第三方中间件"><span class="nav-number">4.</span> <span class="nav-text">四、第三方中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、需要考虑的问题"><span class="nav-number">5.</span> <span class="nav-text">五、需要考虑的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">6.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finger Chou</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"junzhou"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

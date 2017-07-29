@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next muse use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -103,28 +103,28 @@
 
 
 <meta name="description" content="关键字：
-*scrapy， scrapyd， scrapy-client， spiderkeeper*
-一、新建一个scrapy项目12345678910$ scrapy startproject scrapy_example$ cd scrapy_example# 修改配置文件scrapy.cfg[settings]default = scrapy_example.settings[deplo">
+scrapy， scrapyd， scrapy-client， spiderkeeper
+一、新建一个scrapy项目12345678910$ scrapy startproject scrapy_example$ cd scrapy_example# 修改配置文件scrapy.cfg[settings]default = scrapy_example.settings[deploy:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Scrapy 部署笔记">
 <meta property="og:url" content="http://yoursite.com/2017/07/02/scrapy-deploy-usage/index.html">
 <meta property="og:site_name" content="Finger's Blog">
 <meta property="og:description" content="关键字：
-*scrapy， scrapyd， scrapy-client， spiderkeeper*
-一、新建一个scrapy项目12345678910$ scrapy startproject scrapy_example$ cd scrapy_example# 修改配置文件scrapy.cfg[settings]default = scrapy_example.settings[deplo">
-<meta property="og:updated_time" content="2017-07-02T02:45:51.454Z">
+scrapy， scrapyd， scrapy-client， spiderkeeper
+一、新建一个scrapy项目12345678910$ scrapy startproject scrapy_example$ cd scrapy_example# 修改配置文件scrapy.cfg[settings]default = scrapy_example.settings[deploy:">
+<meta property="og:updated_time" content="2017-07-29T05:43:25.073Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scrapy 部署笔记">
 <meta name="twitter:description" content="关键字：
-*scrapy， scrapyd， scrapy-client， spiderkeeper*
-一、新建一个scrapy项目12345678910$ scrapy startproject scrapy_example$ cd scrapy_example# 修改配置文件scrapy.cfg[settings]default = scrapy_example.settings[deplo">
+scrapy， scrapyd， scrapy-client， spiderkeeper
+一、新建一个scrapy项目12345678910$ scrapy startproject scrapy_example$ cd scrapy_example# 修改配置文件scrapy.cfg[settings]default = scrapy_example.settings[deploy:">
 
 
 
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Muse',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -239,6 +239,16 @@
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
             关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
           </a>
         </li>
       
@@ -360,7 +370,7 @@
       
         <hr>
 <p>关键字：</p>
-<p><strong>*scrapy</strong>， <strong>scrapyd</strong>， <strong>scrapy-client</strong>， <strong>spiderkeeper*</strong></p>
+<p><strong>scrapy</strong>， <strong>scrapyd</strong>， <strong>scrapy-client</strong>， <strong>spiderkeeper</strong></p>
 <h4 id="一、新建一个scrapy项目"><a href="#一、新建一个scrapy项目" class="headerlink" title="一、新建一个scrapy项目"></a>一、新建一个scrapy项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ scrapy startproject scrapy_example</div><div class="line">$ cd scrapy_example</div><div class="line"></div><div class="line"># 修改配置文件scrapy.cfg</div><div class="line">[settings]</div><div class="line">default = scrapy_example.settings</div><div class="line"></div><div class="line">[deploy:scrapyd1]</div><div class="line">url = http://localhost:6800/</div><div class="line">project = scrapy_example</div></pre></td></tr></table></figure>
 <h4 id="二、安装并启动scrapyd"><a href="#二、安装并启动scrapyd" class="headerlink" title="二、安装并启动scrapyd"></a>二、安装并启动scrapyd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ pip install scrapyd</div><div class="line"></div><div class="line"># 启动, 默认的端口是6800。可以在浏览器中查看结果，比如：http://127.0.0.1:6800/。</div><div class="line">$ scrapyd</div></pre></td></tr></table></figure>
 <h4 id="三、发布工程到scrapyd"><a href="#三、发布工程到scrapyd" class="headerlink" title="三、发布工程到scrapyd"></a>三、发布工程到scrapyd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 发布scrapyd需要安装scrapy-client</div><div class="line">$ pip install scrapy-client</div><div class="line"># 发布命令：scrapyd-deploy &lt;target&gt; -p &lt;project&gt;</div><div class="line">$ scrapyd-deploy scrapyd1 -p scrapy_example</div><div class="line"></div><div class="line"># 检查发布是否成功</div><div class="line">$ scrapyd-deploy -l 或者 scrapyd-deploy -L scrapyd1</div><div class="line"></div><div class="line"># 启动爬虫</div><div class="line">$ curl http://127.0.0.1:6800/schedule.json -d project=scrapy_example -d spider=example</div></pre></td></tr></table></figure>
@@ -410,6 +420,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/29/database-sharding/" rel="prev" title="数据库分库分表">
+                数据库分库分表 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -481,7 +495,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -489,7 +503,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -498,7 +512,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -574,7 +588,7 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy;  2015 - 
+  &copy;  2016 - 
   <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -589,7 +603,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Muse
   </a>
 </div>
 
@@ -654,13 +668,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>

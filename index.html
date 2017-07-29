@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next muse use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -117,7 +117,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Muse',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -237,6 +237,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -254,6 +264,299 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/29/python-face-recognition/" itemprop="url">
+                  基于 Python 的开源人脸识别库
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-29T14:28:00+08:00" content="2017-07-29">
+              2017-07-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/29/python-face-recognition/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/29/python-face-recognition/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h3 id="项目说明"><a href="#项目说明" class="headerlink" title="项目说明"></a>项目说明</h3><p>基于 Python 的开源人脸识别库：离线识别率高达 99.38%</p>
+<p>该库使用 dlib 顶尖的深度学习人脸识别技术构建，在户外脸部检测数据库基准（Labeled Faces in the Wild benchmark）上的准确率高达 99.38%。<br>该项目是要构建一款免费、开源、实时、离线的网络 app，支持组织者使用人脸识别技术或二维码识别所有受邀人员。有了世界上最简单的人脸识别库，使用 Python 或命令行，即可识别和控制人脸。</p>
+<p>项目地址：<br><a href="https://github.com/ageitgey/face_recognition#face-recognition" target="_blank" rel="external">https://github.com/ageitgey/face_recognition#face-recognition</a></p>
+<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="1、从图片中识别出人脸"><a href="#1、从图片中识别出人脸" class="headerlink" title="1、从图片中识别出人脸"></a>1、从图片中识别出人脸</h4><p><img src="/imgs/20170729/42c65360-025d-11e7-94ea-b12f28cb34b4.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">image = face_recognition.load_image_file(<span class="string">"your_file.jpg"</span>)</div><div class="line">face_locations = face_recognition.face_locations(image)</div></pre></td></tr></table></figure>
+<h4 id="2、从图片中识别面部特征，比如：眼睛-鼻子-嘴和下巴。"><a href="#2、从图片中识别面部特征，比如：眼睛-鼻子-嘴和下巴。" class="headerlink" title="2、从图片中识别面部特征，比如：眼睛, 鼻子, 嘴和下巴。"></a>2、从图片中识别面部特征，比如：眼睛, 鼻子, 嘴和下巴。</h4><p><img src="/imgs/20170729/7f2d79dc-025d-11e7-8728-d8924596f8fa.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">image = face_recognition.load_image_file(<span class="string">"your_file.jpg"</span>)</div><div class="line">face_landmarks_list = face_recognition.face_landmarks(image)</div></pre></td></tr></table></figure></p>
+<h4 id="3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能"><a href="#3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能" class="headerlink" title="3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能"></a>3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能</h4><p><img src="/imgs/20170729/80638760-025d-11e7-80a2-1d2779f7ccab.png" alt=""></p>
+<h4 id="4、从图片中识别出某个具体的人"><a href="#4、从图片中识别出某个具体的人" class="headerlink" title="4、从图片中识别出某个具体的人"></a>4、从图片中识别出某个具体的人</h4><p><img src="/imgs/20170729/45e049b6-025d-11e7-89cc-8a71cf89e713.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">known_image = face_recognition.load_image_file(<span class="string">"biden.jpg"</span>)</div><div class="line">unknown_image = face_recognition.load_image_file(<span class="string">"unknown.jpg"</span>)</div><div class="line"></div><div class="line">biden_encoding = face_recognition.face_encodings(known_image)[<span class="number">0</span>]</div><div class="line">unknown_encoding = face_recognition.face_encodings(unknown_image)[<span class="number">0</span>]</div><div class="line"></div><div class="line">results = face_recognition.compare_faces([biden_encoding], unknown_encoding)</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/29/database-sharding/" itemprop="url">
+                  数据库分库分表
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-29T13:44:00+08:00" content="2017-07-29">
+              2017-07-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Database/" itemprop="url" rel="index">
+                    <span itemprop="name">Database</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/29/database-sharding/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/29/database-sharding/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h3 id="一、背景"><a href="#一、背景" class="headerlink" title="一、背景"></a>一、背景</h3><ul>
+<li>大量的并发读/写操作，导致单库出现难以承受的负载压力</li>
+<li>单表存储数据量过大，导致索引效率低下</li>
+</ul>
+<h3 id="二、读写分离"><a href="#二、读写分离" class="headerlink" title="二、读写分离"></a>二、读写分离</h3><p>将数据库设置为读写分离状态，由Master（主）负责写数据，Salve（从）只负责读数据。主从之间保持数据同步。根据二八法则，80%的数据库操作是读，20%则为写。读写分离后，可以大大提升单库负载压力。</p>
+<p><strong>但是，当Master存在TPS（系统吞吐量）较高的情况，Master和Slave数据库之间数据同步是会存在一定延迟，因此在写入Master之前最好还是要将同一份数据放入缓存中，以避免高并发情况下，从Slave中获取不到指定数据的情况</strong></p>
+<h3 id="三、分库分表"><a href="#三、分库分表" class="headerlink" title="三、分库分表"></a>三、分库分表</h3><p>随着用户规模的不断上升，仅仅只是依靠数据库的读写分离并不能解决系统瓶颈。因此需要考虑分库分表的解决方案。</p>
+<p><strong>分表</strong> 就是将原来冗余在单库中的单个业务表拆分为N个“逻辑相关”的业务子表（如tab_0000, tab_0001, tab_0002…），不同的业务字表各自负责存储不同区间数据，对外形成一个整体</p>
+<p><strong>分库</strong> 就是将分表后的业务子表按照特定的算法和规则分散到N个“逻辑相关”的业务子库中（如db_0000, db_0001, db_0002…）</p>
+<h4 id="分库分表策略"><a href="#分库分表策略" class="headerlink" title="分库分表策略"></a>分库分表策略</h4><p>主要原理：<strong>分区，取模，数据路由表</strong></p>
+<h4 id="1、按时间区间"><a href="#1、按时间区间" class="headerlink" title="1、按时间区间"></a>1、按时间区间</h4><p>一定时间区间内产生的数据放到一张表里面，多个时间区间的表放到一个库里面</p>
+<p>比如，</p>
+<p>a、单库多表结构，按月分表可以这样：user_201701, user_201702…user_201712；按年分表可以这样，user_2016, user_2017…</p>
+<p>b、多库多表，比如按天分表，每天一张表，当单库超过100张表的时候，进行分库到下一张表。那么假如第一张表在库db0，表名是user_20160201。从db0.user_20160201 - db0.user_20160511就是100张表了，接下来就是分库，进入20160512，就是db1.user_20160512，这个算法就是上线的时候定一个上线日期，具体算法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">库ID = （当前日期 - 上线日期）/ 100</div><div class="line">表ID = user_yyyyMMdd</div></pre></td></tr></table></figure>
+<p><strong>注：好处是可以直接根据时间经过简单计算定位到哪个库和哪个表</strong></p>
+<p>还有一种算法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">表ID = (当前日期 - 上线日期) % 100</div><div class="line">表名如下： DB0.user_0001，user_0002 .... user_01000</div></pre></td></tr></table></figure></p>
+<p><strong>注：表名和库名都要经过计算，比较麻烦</strong></p>
+<p>c、按月分表，每个月一张表。这种情况，一般就不用分库了，一年12张表说明量也不会特别大，如果量特别大，或者是热点数据，可以一年分一个库，具体算法和上面差不多。</p>
+<p>d、按季度分表，按年度分表（基本不用分库）</p>
+<h4 id="2、按主键ID区间"><a href="#2、按主键ID区间" class="headerlink" title="2、按主键ID区间"></a>2、按主键ID区间</h4><p>对于自增的主键ID，可以按照ID区间进行分表，以1000万数据量为分界线，对线性的ID进行切割分表，每涨到1000万数据，分到下一张表，超过一定数目的表，进行分库。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">库ID = 主键ID / 1000万 / 100</div><div class="line">表ID = 主键ID / 1000万 % 100</div></pre></td></tr></table></figure>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db0.user_0000 ... db0.user_0099 </div><div class="line">db1.user_0000 ... db1.user_0099</div></pre></td></tr></table></figure>
+<h4 id="3、按照用户ID取模"><a href="#3、按照用户ID取模" class="headerlink" title="3、按照用户ID取模"></a>3、按照用户ID取模</h4><p>这里把按照用户ID取模单独拎出来，因为就使用而言，是使用场景最多的情况，很多时候都是用户相关数据量最大，需要分库分表，查询维度更多也是按照用户来查询，所以对用户取模，让同一个用户的数据落到一张表里面，再好不过了。</p>
+<p>这里模式用户ID是整数型的。假设库数量要分4库，每个库表数量8表，一共32张表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">库ID = userId % 库数量4</div><div class="line">表ID = userId / 库数量4 % 表数量8</div><div class="line">或者</div><div class="line">库ID = userId / 表数量4 % 库数量4</div><div class="line">表ID = userId % 表数量8</div></pre></td></tr></table></figure>
+<h4 id="4、按照指定字段hash后再取模"><a href="#4、按照指定字段hash后再取模" class="headerlink" title="4、按照指定字段hash后再取模"></a>4、按照指定字段hash后再取模</h4><p>如果要取模的字段不是整数型，要先hash后，再通过取模算法，算出在哪个库和那个表。具体算法，参照上面的按用户ID取模。</p>
+<h4 id="5、数据路由表"><a href="#5、数据路由表" class="headerlink" title="5、数据路由表"></a>5、数据路由表</h4><p>如果分库分表的算法很复杂，可以通过路由表+程序算法，来存储和计算分库分表规则，不过一般不建议，分库分表搞得太复杂，不便于维护和查询问题</p>
+<h3 id="四、第三方中间件"><a href="#四、第三方中间件" class="headerlink" title="四、第三方中间件"></a>四、第三方中间件</h3><p>1、Cobar</p>
+<p>开源地址：<a href="https://github.com/alibaba/cobar" target="_blank" rel="external">https://github.com/alibaba/cobar</a></p>
+<p>2、Shark</p>
+<p>开源地址：<a href="https://github.com/gaoxianglong/shark" target="_blank" rel="external">https://github.com/gaoxianglong/shark</a></p>
+<h3 id="五、需要考虑的问题"><a href="#五、需要考虑的问题" class="headerlink" title="五、需要考虑的问题"></a>五、需要考虑的问题</h3><p>一旦数据库实施分库分表后，便会对开发造成一定的影响。具体问题如下：</p>
+<ul>
+<li>数据的原子性，一致性，隔离性，持久性如何保证</li>
+<li>多表之间的关联查询如何进行</li>
+<li>无法继续使用外键约束</li>
+<li>无法继续使用Oracle提供的Sequence或MySQL提供的AUTO_INCREMENT生成全局唯一和连续性ID。</li>
+</ul>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
+<li><a href="https://baijiahao.baidu.com/s?id=1564548884823698&amp;wfr=spider&amp;for=pc" target="_blank" rel="external">https://baijiahao.baidu.com/s?id=1564548884823698&amp;wfr=spider&amp;for=pc</a></li>
+<li><a href="http://blog.csdn.net/xlgen157387/article/details/53976153" target="_blank" rel="external">http://blog.csdn.net/xlgen157387/article/details/53976153</a></li>
+<li><a href="http://blog.csdn.net/dinglang_2009/article/details/53195871" target="_blank" rel="external">http://blog.csdn.net/dinglang_2009/article/details/53195871</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -360,7 +663,7 @@
           
             <hr>
 <p>关键字：</p>
-<p><strong>*scrapy</strong>， <strong>scrapyd</strong>， <strong>scrapy-client</strong>， <strong>spiderkeeper*</strong></p>
+<p><strong>scrapy</strong>， <strong>scrapyd</strong>， <strong>scrapy-client</strong>， <strong>spiderkeeper</strong></p>
 <h4 id="一、新建一个scrapy项目"><a href="#一、新建一个scrapy项目" class="headerlink" title="一、新建一个scrapy项目"></a>一、新建一个scrapy项目</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ scrapy startproject scrapy_example</div><div class="line">$ cd scrapy_example</div><div class="line"></div><div class="line"># 修改配置文件scrapy.cfg</div><div class="line">[settings]</div><div class="line">default = scrapy_example.settings</div><div class="line"></div><div class="line">[deploy:scrapyd1]</div><div class="line">url = http://localhost:6800/</div><div class="line">project = scrapy_example</div></pre></td></tr></table></figure>
 <h4 id="二、安装并启动scrapyd"><a href="#二、安装并启动scrapyd" class="headerlink" title="二、安装并启动scrapyd"></a>二、安装并启动scrapyd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ pip install scrapyd</div><div class="line"></div><div class="line"># 启动, 默认的端口是6800。可以在浏览器中查看结果，比如：http://127.0.0.1:6800/。</div><div class="line">$ scrapyd</div></pre></td></tr></table></figure>
 <h4 id="三、发布工程到scrapyd"><a href="#三、发布工程到scrapyd" class="headerlink" title="三、发布工程到scrapyd"></a>三、发布工程到scrapyd</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># 发布scrapyd需要安装scrapy-client</div><div class="line">$ pip install scrapy-client</div><div class="line"># 发布命令：scrapyd-deploy &lt;target&gt; -p &lt;project&gt;</div><div class="line">$ scrapyd-deploy scrapyd1 -p scrapy_example</div><div class="line"></div><div class="line"># 检查发布是否成功</div><div class="line">$ scrapyd-deploy -l 或者 scrapyd-deploy -L scrapyd1</div><div class="line"></div><div class="line"># 启动爬虫</div><div class="line">$ curl http://127.0.0.1:6800/schedule.json -d project=scrapy_example -d spider=example</div></pre></td></tr></table></figure>
@@ -1104,7 +1407,7 @@ if __name__ == &quot;__main__&quot;:
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1112,7 +1415,7 @@ if __name__ == &quot;__main__&quot;:
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1121,7 +1424,7 @@ if __name__ == &quot;__main__&quot;:
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1186,7 +1489,7 @@ if __name__ == &quot;__main__&quot;:
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy;  2015 - 
+  &copy;  2016 - 
   <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -1201,7 +1504,7 @@ if __name__ == &quot;__main__&quot;:
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Muse
   </a>
 </div>
 
@@ -1266,13 +1569,6 @@ if __name__ == &quot;__main__&quot;:
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
 
   
 
