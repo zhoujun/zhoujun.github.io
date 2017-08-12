@@ -86,17 +86,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Cocos2dx－上传Google Play遇到的问题]]></title>
-    <url>%2F2017%2F01%2F27%2Fcocos2dx-upload-google-play%2F</url>
-    <content type="text"><![CDATA[一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL 因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下： 12345678910111213141516171819202122Vulnerability-----------------------------------------------------------**OpenSSL**The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;You can find more information and next steps in this Google Help Center article.-----------------------------------------------------------To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.If you feel we have made this determination in error, please reach out to our developer support team.Best,The Google Play Team 解决方案 邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9 具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。 https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin 二、Google Play支付(in-app Billing)注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致 1、错误提示 1231. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效 2、系统异常 123456789101112131415java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)// 解决方法// 1、mHelper.flagEndAsync() 修改成public// 2、在launchPurchaseFlow() 之前调用flagEndAsync()----------------------------------------------------if (mHelper != null) &#123; try &#123; mHelper.flagEndAsync(); mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;); &#125; catch(IllegalStateException ex)&#123; Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show(); &#125;&#125;]]></content>
-      <categories>
-        <category>Cocos2d-x</category>
-      </categories>
-      <tags>
-        <tag>Cocos2d-x</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Hexo使用笔记]]></title>
     <url>%2F2017%2F01%2F27%2Fhexo-usage%2F</url>
     <content type="text"><![CDATA[中文文档：https://hexo.io/zh-cn/docs/index.html 参考博客：http://blog.csdn.net/poem_of_sunshine/article/details/29369785/http://www.jianshu.com/p/465830080ea9#http://www.jianshu.com/p/a2023a601ceb Github配置：https://help.github.com/articles/generating-an-ssh-key/https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/ 常用命令1234hexo server | s --debughexo cleanhexo generatehexo deploy 绑定阿里云域名：http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html 后端管理插件hexo-admin123npm install --save hexo-adminhexo server -dopen http://localhost:4000/admin/ 设置后台密码修改站点配置文件，就是网站根目录下的 _config.yml文件:1234admin: username: finger password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa secret: a secret something username：后端登录用户名 password_hash：后端登录用户密码对应的md5 hash值 secret：用于保证cookie安全 密码生成hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块1234$ node&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos; 在线生成https://www.bcrypt-generator.com/ Hexo主题： https://hexo.io/themes/ https://github.com/henryhuang/oishi https://github.com/haojen/hexo-theme-Anisina https://github.com/stiekel/hexo-theme-random https://github.com/SuperKieran/TKL https://github.com/iissnan/hexo-theme-next Next 皮肤设置http://theme-next.iissnan.com/theme-settings.html]]></content>
@@ -105,6 +94,17 @@
       </categories>
       <tags>
         <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Cocos2dx－上传Google Play遇到的问题]]></title>
+    <url>%2F2017%2F01%2F27%2Fcocos2dx-upload-google-play%2F</url>
+    <content type="text"><![CDATA[一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL 因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下： 12345678910111213141516171819202122Vulnerability-----------------------------------------------------------**OpenSSL**The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;You can find more information and next steps in this Google Help Center article.-----------------------------------------------------------To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.If you feel we have made this determination in error, please reach out to our developer support team.Best,The Google Play Team 解决方案 邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9 具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。 https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin 二、Google Play支付(in-app Billing)注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致 1、错误提示 1231. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效 2、系统异常 123456789101112131415java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)// 解决方法// 1、mHelper.flagEndAsync() 修改成public// 2、在launchPurchaseFlow() 之前调用flagEndAsync()----------------------------------------------------if (mHelper != null) &#123; try &#123; mHelper.flagEndAsync(); mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;); &#125; catch(IllegalStateException ex)&#123; Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show(); &#125;&#125;]]></content>
+      <categories>
+        <category>Cocos2d-x</category>
+      </categories>
+      <tags>
+        <tag>Cocos2d-x</tag>
       </tags>
   </entry>
 </search>
