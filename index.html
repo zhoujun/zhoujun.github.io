@@ -319,8 +319,8 @@
             
               
                 
-                <a class="post-title-link" href="/2017/07/29/python-face-recognition/" itemprop="url">
-                  基于 Python 的开源人脸识别库
+                <a class="post-title-link" href="/2017/08/12/elasticsearch-dsl-with-python-usage-1/" itemprop="url">
+                  Python Elasticsearch DSL 使用笔记(一)
                 </a>
               
             
@@ -333,8 +333,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-29T14:28:00+08:00" content="2017-07-29">
-              2017-07-29
+            <time itemprop="dateCreated" datetime="2017-08-12T20:39:00+08:00" content="2017-08-12">
+              2017-08-12
             </time>
           </span>
 
@@ -347,8 +347,20 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/elasticsearch/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
                   </a>
                 </span>
 
@@ -363,8 +375,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/07/29/python-face-recognition/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/29/python-face-recognition/" itemprop="commentsCount"></span>
+                <a href="/2017/08/12/elasticsearch-dsl-with-python-usage-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/12/elasticsearch-dsl-with-python-usage-1/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -390,14 +402,203 @@
         
           
             <hr>
-<h3 id="项目说明"><a href="#项目说明" class="headerlink" title="项目说明"></a>项目说明</h3><p>基于 Python 的开源人脸识别库：离线识别率高达 99.38%</p>
-<p>该库使用 dlib 顶尖的深度学习人脸识别技术构建，在户外脸部检测数据库基准（Labeled Faces in the Wild benchmark）上的准确率高达 99.38%。<br>该项目是要构建一款免费、开源、实时、离线的网络 app，支持组织者使用人脸识别技术或二维码识别所有受邀人员。有了世界上最简单的人脸识别库，使用 Python 或命令行，即可识别和控制人脸。</p>
+<p><strong>下载地址</strong>: <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external">https://www.elastic.co/downloads/elasticsearch</a></p>
+<p><strong>使用版本</strong>: elasticsearch-5.5.1</p>
+<p><strong>Python Elasticsearch DSL</strong>: <a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="external">https://github.com/elastic/elasticsearch-dsl-py</a></p>
+<h3 id="一、Elasticsearch的基本概念"><a href="#一、Elasticsearch的基本概念" class="headerlink" title="一、Elasticsearch的基本概念"></a>一、Elasticsearch的基本概念</h3><ul>
+<li>Index：Elasticsearch用来存储数据的逻辑区域，它类似于关系型数据库中的database 概念。一个index可以在一个或者多个shard上面，同时一个shard也可能会有多个replicas。</li>
+<li>Document：Elasticsearch里面存储的实体数据，类似于关系数据中一个table里面的一行数据。 document由多个field组成，不同的document里面同名的field一定具有相同的类型。document里面field可以重复出现，也就是一个field会有多个值，即multivalued。</li>
+<li>Document type：为了查询需要，一个index可能会有多种document，也就是document type. 它类似于关系型数据库中的 table 概念。但需要注意，不同document里面同名的field一定要是相同类型的。</li>
+<li>Mapping：它类似于关系型数据库中的 schema 定义概念。存储field的相关映射信息，不同document type会有不同的mapping。</li>
+</ul>
+<p>下图是ElasticSearch和关系型数据库的一些术语比较：</p>
+<table>
+<thead>
+<tr>
+<th>Relationnal database</th>
+<th style="text-align:left">Elasticsearch           </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database</td>
+<td style="text-align:left">Index          </td>
+</tr>
+<tr>
+<td>Table</td>
+<td style="text-align:left">Type             </td>
+</tr>
+<tr>
+<td>Row</td>
+<td style="text-align:left">Document          </td>
+</tr>
+<tr>
+<td>Column</td>
+<td style="text-align:left">Field            </td>
+</tr>
+<tr>
+<td>Schema</td>
+<td style="text-align:left">Mapping        </td>
+</tr>
+<tr>
+<td>Index</td>
+<td style="text-align:left">Everything is indexed       </td>
+</tr>
+<tr>
+<td>SQL</td>
+<td style="text-align:left">Query DSL       </td>
+</tr>
+<tr>
+<td>SELECT * FROM table…</td>
+<td style="text-align:left">GET http://…  </td>
+</tr>
+<tr>
+<td>UPDATE table SET</td>
+<td style="text-align:left">PUT http://…   </td>
+</tr>
+</tbody>
+</table>
+<h3 id="二、Python-Elasticsearch-DSL使用简介-一"><a href="#二、Python-Elasticsearch-DSL使用简介-一" class="headerlink" title="二、Python Elasticsearch DSL使用简介(一)"></a>二、Python Elasticsearch DSL使用简介(一)</h3><h4 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a>1、安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install elasticsearch-dsl</div></pre></td></tr></table></figure>
+<h4 id="2、创建索引和文档"><a href="#2、创建索引和文档" class="headerlink" title="2、创建索引和文档"></a>2、创建索引和文档</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Date, Integer, Keyword, Text</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections</div><div class="line"></div><div class="line"><span class="comment"># Define a default Elasticsearch client</span></div><div class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(DocType)</span>:</span></div><div class="line">    title = Text(analyzer=<span class="string">'snowball'</span>, fields=&#123;<span class="string">'raw'</span>: Keyword()&#125;)</div><div class="line">    body = Text(analyzer=<span class="string">'snowball'</span>)</div><div class="line">    tags = Keyword()</div><div class="line">    published_from = Date()</div><div class="line">    lines = Integer()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blog'</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, ** kwargs)</span>:</span></div><div class="line">        self.lines = len(self.body.split())</div><div class="line">        <span class="keyword">return</span> super(Article, self).save(** kwargs)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_published</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> datetime.now() &gt;= self.published_from</div><div class="line"></div><div class="line"><span class="comment"># create the mappings in elasticsearch</span></div><div class="line">Article.init()</div></pre></td></tr></table></figure>
+<p>创建了一个索引为blog，文档为article的Elasticsearch数据库和表。<br>必须执行<code>Article.init()</code>方法。 这样Elasticsearch才会根据你的DocType产生对应的Mapping。否则Elasticsearch就会在你第一次创建Index和Type的时候根据你的内容建立对应的Mapping。</p>
+<p>现在我们可以通过Elasticsearch Restful API来检查<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/_mapping/</div><div class="line"></div><div class="line">&#123;&quot;blog&quot;:</div><div class="line">	&#123;&quot;mappings&quot;:</div><div class="line">		&#123;&quot;article&quot;:</div><div class="line">			&#123;&quot;properties&quot;:&#123;</div><div class="line">				&quot;body&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;,</div><div class="line">				&quot;lines&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</div><div class="line">				&quot;published_from&quot;:&#123;&quot;type&quot;:&quot;date&quot;&#125;,</div><div class="line">				&quot;tags&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</div><div class="line">				&quot;title&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;fields&quot;:&#123;&quot;raw&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;&#125;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="三、使用Elasticsearch进行CRUD操作"><a href="#三、使用Elasticsearch进行CRUD操作" class="headerlink" title="三、使用Elasticsearch进行CRUD操作"></a>三、使用Elasticsearch进行CRUD操作</h3><h4 id="1、Create-a-article"><a href="#1、Create-a-article" class="headerlink" title="1、Create a article"></a>1、Create a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># create and save and article</span></div><div class="line">article = Article(meta=&#123;<span class="string">'id'</span>: <span class="number">1</span>&#125;, title=<span class="string">'Hello elasticsearch!'</span>, tags=[<span class="string">'elasticsearch'</span>])</div><div class="line">article.body = <span class="string">''' looong text '''</span></div><div class="line">article.published_from = datetime.now()</div><div class="line">article.save()</div></pre></td></tr></table></figure>
+<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">http POST http://127.0.0.1:9200/blog/article/1 title=&quot;hello elasticsearch&quot; tags:=&apos;[&quot;elasticsearch&quot;]&apos;</div><div class="line"></div><div class="line">HTTP/1.1 201 Created</div><div class="line">Content-Length: 73</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;created&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="2、Get-a-article"><a href="#2、Get-a-article" class="headerlink" title="2、Get a article"></a>2、Get a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="comment"># 如果获取一个不存在的文章则返回None</span></div><div class="line">a = Article.get(id=<span class="string">'no-in-es'</span>)</div><div class="line">a <span class="keyword">is</span> <span class="keyword">None</span></div><div class="line"></div><div class="line"><span class="comment"># 还可以获取多个文章</span></div><div class="line">articles = Article.mget([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
+<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/article/1</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 141</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_source&quot;: &#123;</div><div class="line">        &quot;tags&quot;: [</div><div class="line">            &quot;elasticsearch&quot;</div><div class="line">        ], </div><div class="line">        &quot;title&quot;: &quot;hello elasticsearch&quot;</div><div class="line">    &#125;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;found&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="3、Update-a-article"><a href="#3、Update-a-article" class="headerlink" title="3、Update a article"></a>3、Update a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line">article.tags = [<span class="string">'elasticsearch'</span>, <span class="string">'hello'</span>]</div><div class="line">article.save()</div><div class="line"></div><div class="line"><span class="comment"># 或者</span></div><div class="line">article.update(body=<span class="string">'Today is good day!'</span>, published_by=<span class="string">'me'</span>)</div></pre></td></tr></table></figure>
+<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">http PUT http://127.0.0.1:9200/blog/article/1 title=&quot;hello elasticsearch&quot; tags:=&apos;[&quot;elasticsearch&quot;, &quot;hello&quot;]&apos;</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 74</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 2, </div><div class="line">    &quot;created&quot;: false</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="4、Delete-a-article"><a href="#4、Delete-a-article" class="headerlink" title="4、Delete a article"></a>4、Delete a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line">article.delete()</div></pre></td></tr></table></figure>
+<p>=&gt; Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">http DELETE http://127.0.0.1:9200/blog/article/1</div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 71</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 4, </div><div class="line">    &quot;found&quot;: true</div><div class="line">&#125;</div><div class="line"></div><div class="line">http HEAD  http://127.0.0.1:9200/blog/article/1</div><div class="line">HTTP/1.1 404 Not Found</div><div class="line">Content-Length: 0</div><div class="line">Content-Type: text/plain; charset=UTF-8</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/30/python-face-recognition/" itemprop="url">
+                  基于 Python 的开源人脸识别库
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-30T10:41:00+08:00" content="2017-07-30">
+              2017-07-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/30/python-face-recognition/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/30/python-face-recognition/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h3 id="项目说明"><a href="#项目说明" class="headerlink" title="项目说明"></a>项目说明</h3><p>该库使用 dlib 顶尖的深度学习人脸识别技术构建，在户外脸部检测数据库基准（Labeled Faces in the Wild benchmark）上的准确率高达 99.38%。<br>该项目是要构建一款免费、开源、实时、离线的网络 app，支持组织者使用人脸识别技术或二维码识别所有受邀人员。有了世界上最简单的人脸识别库，使用 Python 或命令行，即可识别和控制人脸。</p>
 <p>项目地址：<br><a href="https://github.com/ageitgey/face_recognition#face-recognition" target="_blank" rel="external">https://github.com/ageitgey/face_recognition#face-recognition</a></p>
 <h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="1、从图片中识别出人脸"><a href="#1、从图片中识别出人脸" class="headerlink" title="1、从图片中识别出人脸"></a>1、从图片中识别出人脸</h4><p><img src="/imgs/20170729/42c65360-025d-11e7-94ea-b12f28cb34b4.png" alt=""></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">image = face_recognition.load_image_file(<span class="string">"your_file.jpg"</span>)</div><div class="line">face_locations = face_recognition.face_locations(image)</div></pre></td></tr></table></figure>
 <h4 id="2、从图片中识别面部特征，比如：眼睛-鼻子-嘴和下巴。"><a href="#2、从图片中识别面部特征，比如：眼睛-鼻子-嘴和下巴。" class="headerlink" title="2、从图片中识别面部特征，比如：眼睛, 鼻子, 嘴和下巴。"></a>2、从图片中识别面部特征，比如：眼睛, 鼻子, 嘴和下巴。</h4><p><img src="/imgs/20170729/7f2d79dc-025d-11e7-8728-d8924596f8fa.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">image = face_recognition.load_image_file(<span class="string">"your_file.jpg"</span>)</div><div class="line">face_landmarks_list = face_recognition.face_landmarks(image)</div></pre></td></tr></table></figure></p>
 <h4 id="3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能"><a href="#3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能" class="headerlink" title="3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能"></a>3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能</h4><p><img src="/imgs/20170729/80638760-025d-11e7-80a2-1d2779f7ccab.png" alt=""></p>
 <h4 id="4、从图片中识别出某个具体的人"><a href="#4、从图片中识别出某个具体的人" class="headerlink" title="4、从图片中识别出某个具体的人"></a>4、从图片中识别出某个具体的人</h4><p><img src="/imgs/20170729/45e049b6-025d-11e7-89cc-8a71cf89e713.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">known_image = face_recognition.load_image_file(<span class="string">"biden.jpg"</span>)</div><div class="line">unknown_image = face_recognition.load_image_file(<span class="string">"unknown.jpg"</span>)</div><div class="line"></div><div class="line">biden_encoding = face_recognition.face_encodings(known_image)[<span class="number">0</span>]</div><div class="line">unknown_encoding = face_recognition.face_encodings(unknown_image)[<span class="number">0</span>]</div><div class="line"></div><div class="line">results = face_recognition.compare_faces([biden_encoding], unknown_encoding)</div></pre></td></tr></table></figure></p>
+<p>更多请查看项目主页：</p>
+<p><a href="https://github.com/ageitgey/face_recognition#face-recognition" target="_blank" rel="external">https://github.com/ageitgey/face_recognition#face-recognition</a></p>
 
           
         
@@ -1440,7 +1641,7 @@ if __name__ == &quot;__main__&quot;:
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1448,7 +1649,7 @@ if __name__ == &quot;__main__&quot;:
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1457,7 +1658,7 @@ if __name__ == &quot;__main__&quot;:
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
