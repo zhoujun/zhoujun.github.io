@@ -121,4 +121,16 @@
         <tag>Cocos2d-x</tag>
       </tags>
   </entry>
+  <entry>
+    <title><![CDATA[github 本地配置]]></title>
+    <url>%2F2017%2F01%2F13%2Fgithub-config-usage%2F</url>
+    <content type="text"><![CDATA[本地配置github用户名密码1、使用命令123git config --global user.name [username]git config --global user.email [email]git config --global credential.helper store 2、配置文件123[user] name = finger email = finger_chou@163.com 保存用户名密码1、使用命令12echo &quot;[credential]&quot; &gt;&gt; .git/configecho &quot; helper = store&quot; &gt;&gt; .git/config 2、配置文件12[credential] helper = store 查看配置1git config --list]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>github</tag>
+      </tags>
+  </entry>
 </search>
