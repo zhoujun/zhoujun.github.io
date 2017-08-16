@@ -319,6 +319,275 @@
             
               
                 
+                <a class="post-title-link" href="/2017/08/16/elasticsearch-search-suggest-with-python/" itemprop="url">
+                  用Python实现Elasticsearch提供的搜索建议
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-16T23:01:00+08:00" content="2017-08-16">
+              2017-08-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/08/16/elasticsearch-search-suggest-with-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/16/elasticsearch-search-suggest-with-python/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<h3 id="Suggest搜索"><a href="#Suggest搜索" class="headerlink" title="Suggest搜索"></a>Suggest搜索</h3><p><code>Elasticsearch</code>支持多种<code>suggest</code>类型，也支持模糊搜索。</p>
+<p><code>Elasticsearch</code>支持如下4种搜索类型：</p>
+<ul>
+<li>Term。基于编辑距离的搜索，也就是对比两个字串之间，由一个转成另一个所需的最少编辑操作次数，编辑距离越少说明越相近。搜索时需要指定字段，是很基础的一种搜索。</li>
+<li>Phrase。Term的优化，能够基于共现和频率来做出关于选择哪些token的更好的决定。</li>
+<li>Completion。提供自动完成/按需搜索的功能，这是一种导航功能，可在用户输入时引导用户查看相关结果，从而提高搜索精度。和前2种用法不同，需要在mapping时指定suggester字段，使用允许快速查找的数据结构，所以在搜索速度上得到了很大的优化。</li>
+<li>Context。Completion搜索的是索引中的全部文档，但是有时候希望对这个结果进行一些and/or的过滤，就需要使用Context类型了。</li>
+</ul>
+<p>下面使用<a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="external">elasticsearch_dsl</a>自带的<code>Suggestions</code>功能<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Text, Keyword, Completion</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections</div><div class="line"></div><div class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BlogLive</span><span class="params">(DocType)</span>:</span></div><div class="line">    subject = Text()</div><div class="line">    description = Text()</div><div class="line">    topics = Keyword()</div><div class="line">    live_suggest = Completion()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blog'</span></div><div class="line">        type = <span class="string">'live'</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, ** kwargs)</span>:</span></div><div class="line">        <span class="keyword">return</span> super(BlogLive, self).save(** kwargs)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># create the mappings in elasticsearch</span></div><div class="line">BlogLive.init()</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_live</span><span class="params">(id_, subject, description)</span>:</span></div><div class="line">    live = BlogLive(meta=&#123;<span class="string">'id'</span>: id_&#125;)</div><div class="line">    live.subject = subject</div><div class="line">    live.description = description</div><div class="line">    live.live_suggest = subject</div><div class="line">    live.save()</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_data</span><span class="params">()</span>:</span></div><div class="line">    add_live(<span class="number">1</span>, <span class="string">'python'</span>, <span class="string">'python is good'</span>)</div><div class="line">    add_live(<span class="number">2</span>, <span class="string">'python django'</span>, <span class="string">'django is web framework'</span>)</div><div class="line">    add_live(<span class="number">3</span>, <span class="string">'python flask'</span>, <span class="string">'flask is web framework'</span>)</div><div class="line">    add_live(<span class="number">4</span>, <span class="string">'elasticsearch'</span>, <span class="string">'elasticsearch is searchengine'</span>)</div><div class="line">    add_live(<span class="number">5</span>, <span class="string">'elasticsearch-dsl python'</span>, <span class="string">'python elasticsearch dsl is client API'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">suggest</span><span class="params">(key)</span>:</span></div><div class="line">    s = BlogLive.search()</div><div class="line">    s = s.suggest(<span class="string">'live_suggestion'</span>, key,</div><div class="line">                  completion=&#123;<span class="string">'field'</span>: <span class="string">'live_suggest'</span>, <span class="string">'fuzzy'</span>: &#123;<span class="string">'fuzziness'</span>: <span class="number">2</span>, <span class="string">'prefix_length'</span>: <span class="number">2</span>&#125;, <span class="string">'size'</span>: <span class="number">10</span>&#125;)</div><div class="line">    print(s.to_dict())</div><div class="line">    <span class="string">"""</span></div><div class="line">    &#123;'suggest': </div><div class="line">        &#123;'live_suggestion': </div><div class="line">             &#123;</div><div class="line">                'completion': &#123;'field': 'live_suggest', 'size': 10, 'fuzzy': &#123;'fuzziness': 2, 'prefix_length': 2&#125;&#125;, </div><div class="line">                'text': 'python'</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    """</div><div class="line">    suggestions = s.execute_suggest()</div><div class="line">    <span class="comment"># print(suggestions.live_suggestion)</span></div><div class="line">    <span class="keyword">for</span> match <span class="keyword">in</span> suggestions.live_suggestion[<span class="number">0</span>].options:</div><div class="line">        source = match._source</div><div class="line">        print(source[<span class="string">'subject'</span>],  source[<span class="string">'description'</span>], match._score)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    init_data()</div><div class="line">    suggest(<span class="string">'python'</span>)</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/16/using-elasticsearch-bulk-with-python/" itemprop="url">
+                  Using Elasticsearch Bulk With Python
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-16T22:02:00+08:00" content="2017-08-16">
+              2017-08-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/08/16/using-elasticsearch-bulk-with-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/16/using-elasticsearch-bulk-with-python/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <hr>
+<p>Python Elasticsearch客户端提供了批量索引的功能，详情请查看<a href="https://github.com/elastic/elasticsearch-py" target="_blank" rel="external">项目主页</a></p>
+<p>主要封装了两种方式进行<code>bulk</code>操作：</p>
+<ul>
+<li>streaming_bulk     流式</li>
+<li>parallel_buck     多线程</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">streaming_bulk</span><span class="params">(</span></span></div><div class="line">	client, </div><div class="line">	actions, </div><div class="line">	chunk_size=<span class="number">500</span>, </div><div class="line">	max_chunk_bytes=<span class="number">104857600</span>, </div><div class="line">	raise_on_error=True, </div><div class="line">	expand_action_callback=&lt;function expand_action&gt;, </div><div class="line">	raise_on_exception=True, </div><div class="line">	max_retries=<span class="number">0</span>, </div><div class="line">	initial_backoff=<span class="number">2</span>, </div><div class="line">	max_backoff=<span class="number">600</span>, </div><div class="line">	yield_ok=True, </div><div class="line">	**kwargs): <span class="keyword">pass</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parallel_bulk</span><span class="params">(</span></span></div><div class="line">	client, </div><div class="line">	actions, </div><div class="line">	thread_count=<span class="number">4</span>, </div><div class="line">	chunk_size=<span class="number">500</span>, </div><div class="line">	max_chunk_bytes=<span class="number">104857600</span>, </div><div class="line">	queue_size=<span class="number">4</span>, </div><div class="line">	expand_action_callback=&lt;function expand_action&gt;, </div><div class="line">	**kwargs): <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p><code>streaming</code>比<code>parallel</code>多了重试的机制。两个方法默认都是每次处理500索引，两个方法都返回迭代器对象，<code>bulk</code>方法默认使用的是<code>streaming_bulk</code>方式。如果要使用<code>parallel_buck</code>需要修改源代码或者自己扩展。</p>
+<p>bulk方法定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bulk</span><span class="params">(client, actions, stats_only=False, **kwargs)</span>:</span></div><div class="line">    success, failed = <span class="number">0</span>, <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="comment"># list of errors to be collected is not stats_only</span></div><div class="line">    errors = []</div><div class="line"></div><div class="line">    <span class="keyword">for</span> ok, item <span class="keyword">in</span> streaming_bulk(client, actions, **kwargs):</div><div class="line">        <span class="comment"># go through request-reponse pairs and detect failures</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ok:</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> stats_only:</div><div class="line">                errors.append(item)</div><div class="line">            failed += <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            success += <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> success, failed <span class="keyword">if</span> stats_only <span class="keyword">else</span> errors</div></pre></td></tr></table></figure></p>
+<ul>
+<li>client     为ElasticSearch实例对象</li>
+<li>actions     索引内容</li>
+<li>stats_only 为True则只返回成功和失败的数量，False则会返回具体的失败内容列表</li>
+</ul>
+<p>格式为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &apos;_op_type&apos;: &apos;delete&apos;,</div><div class="line">    &apos;_index&apos;: &apos;index-name&apos;,</div><div class="line">    &apos;_type&apos;: &apos;type-name&apos;,</div><div class="line">    &apos;_id&apos;: 1,</div><div class="line">&#125;</div><div class="line">&#123;</div><div class="line">    &apos;_op_type&apos;: &apos;update&apos;,</div><div class="line">    &apos;_index&apos;: &apos;index-name&apos;,</div><div class="line">    &apos;_type&apos;: &apos;type-name&apos;,</div><div class="line">    &apos;_id&apos;: 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>_op_type</code> 可以是<code>index</code>, <code>create</code>, <code>delete</code>, <code>update</code>操作，默认使用<code>index</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch</div><div class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> helpers</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_streaming_bulk</span><span class="params">()</span>:</span></div><div class="line">    actions = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>, <span class="number">100000</span>):</div><div class="line">        actions.append(&#123;<span class="string">'_index'</span>: <span class="string">'test_index'</span>, <span class="string">'_type'</span>: <span class="string">'test'</span>, <span class="string">'x'</span>: i&#125;)</div><div class="line"></div><div class="line">    helpers.bulk(es, actions, <span class="keyword">False</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_parallel_bulk</span><span class="params">()</span>:</span></div><div class="line">    actions = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>, <span class="number">100000</span>):</div><div class="line">        actions.append(&#123;<span class="string">'_index'</span>: <span class="string">'test_index'</span>, <span class="string">'_type'</span>: <span class="string">'test'</span>, <span class="string">'x'</span>: i&#125;)</div><div class="line"></div><div class="line">    parallel_bulk(es, actions)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parallel_bulk</span><span class="params">(client, actions, stats_only=False, **kwargs)</span>:</span></div><div class="line"></div><div class="line">    success, failed = <span class="number">0</span>, <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="comment"># list of errors to be collected is not stats_only</span></div><div class="line">    errors = []</div><div class="line"></div><div class="line">    <span class="keyword">for</span> ok, item <span class="keyword">in</span> helpers.parallel_bulk(client, actions, **kwargs):</div><div class="line">        <span class="comment"># print ok, item</span></div><div class="line">        <span class="comment"># go through request-reponse pairs and detect failures</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ok:</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> stats_only:</div><div class="line">                errors.append(item)</div><div class="line">            failed += <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            success += <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> success, failed <span class="keyword">if</span> stats_only <span class="keyword">else</span> errors</div></pre></td></tr></table></figure>
+<p>测试代码： <a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/08/15/elasticsearch-document-api/" itemprop="url">
                   Elasticsearch Documents APIs
                 </a>
@@ -1506,279 +1775,6 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/01/27/ubuntu-install-svn-simple-server/" itemprop="url">
-                  Ubuntu 安装svn服务
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-01-27T20:56:00+08:00" content="2017-01-27">
-              2017-01-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index">
-                    <span itemprop="name">Note</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/01/27/ubuntu-install-svn-simple-server/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/ubuntu-install-svn-simple-server/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、安装Subversion-Server"><a href="#一、安装Subversion-Server" class="headerlink" title="一、安装Subversion Server"></a>一、安装Subversion Server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install subversion</div></pre></td></tr></table></figure>
-<h3 id="二、创建SVN版本库"><a href="#二、创建SVN版本库" class="headerlink" title="二、创建SVN版本库"></a>二、创建SVN版本库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /srv/svn          # 创建SVN根目录</div><div class="line">svnadmin create test    # 创建测试项目库</div></pre></td></tr></table></figure>
-<h3 id="三、SVN配置"><a href="#三、SVN配置" class="headerlink" title="三、SVN配置"></a>三、SVN配置</h3><p>主要包含以下三个配置文件：</p>
-<h5 id="1-svnserve-conf"><a href="#1-svnserve-conf" class="headerlink" title="1. svnserve.conf"></a>1. svnserve.conf</h5><p>服务配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[general]</div><div class="line">anon-access = none      # 匿名用户不可读</div><div class="line">auth-access = write     # 权限用户可写</div><div class="line">password-db = passwd    # 启用密码文件</div><div class="line">authz-db = authz        # 启用权限文件</div><div class="line">realm = repos           # 认证域名称</div></pre></td></tr></table></figure></p>
-<h5 id="2-passwd"><a href="#2-passwd" class="headerlink" title="2. passwd"></a>2. passwd</h5><p>账号配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[user]</div><div class="line">finger = 123456</div></pre></td></tr></table></figure></p>
-<h5 id="3-authz"><a href="#3-authz" class="headerlink" title="3. authz"></a>3. authz</h5><p>权限配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[groups]</div><div class="line">admin = finger</div><div class="line"></div><div class="line">[/]</div><div class="line">@admin = rw         # admin组拥有所有读写权限</div><div class="line">* = r               # 其他只有读权限</div></pre></td></tr></table></figure></p>
-<h3 id="四、启动和停止"><a href="#四、启动和停止" class="headerlink" title="四、启动和停止"></a>四、启动和停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">启动：</div><div class="line">svnserve -d -r /srv/svn   # -d 表示后台运行 -r 表示根目录</div><div class="line"></div><div class="line">停止：</div><div class="line">ps -ef | grep svn   # 查看svn进程ID</div><div class="line"></div><div class="line">kill -9 进程ID</div></pre></td></tr></table></figure>
-<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">svn co svn://127.0.0.1/test</div></pre></td></tr></table></figure>
-<h3 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h3><p><strong>1、svn: E220003: Invalid authz configuration</strong></p>
-<p>原因是authz文件配置错误，仔细检查authz文件。</p>
-<h3 id="七、参考文献"><a href="#七、参考文献" class="headerlink" title="七、参考文献"></a>七、参考文献</h3><p><a href="https://my.oschina.net/jast90/blog/382688" target="_blank" rel="external">https://my.oschina.net/jast90/blog/382688</a></p>
-<p><a href="http://www.linuxidc.com/Linux/2015-01/111956.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2015-01/111956.htm</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/01/27/hexo-usage/" itemprop="url">
-                  Hexo使用笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-01-27T20:40:00+08:00" content="2017-01-27">
-              2017-01-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index">
-                    <span itemprop="name">Note</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/01/27/hexo-usage/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/hexo-usage/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="中文文档："><a href="#中文文档：" class="headerlink" title="中文文档："></a>中文文档：</h4><p><a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">https://hexo.io/zh-cn/docs/index.html</a></p>
-<p><strong>参考博客：</strong><br><a href="http://blog.csdn.net/poem_of_sunshine/article/details/29369785/" target="_blank" rel="external">http://blog.csdn.net/poem_of_sunshine/article/details/29369785/</a><br><a href="http://www.jianshu.com/p/465830080ea9#" target="_blank" rel="external">http://www.jianshu.com/p/465830080ea9#</a><br><a href="http://www.jianshu.com/p/a2023a601ceb" target="_blank" rel="external">http://www.jianshu.com/p/a2023a601ceb</a></p>
-<p><strong>Github配置：</strong><br><a href="https://help.github.com/articles/generating-an-ssh-key/" target="_blank" rel="external">https://help.github.com/articles/generating-an-ssh-key/</a><br><a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/" target="_blank" rel="external">https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/</a></p>
-<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo server | s --debug</div><div class="line">hexo clean</div><div class="line">hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure>
-<p>绑定阿里云域名：<br><a href="http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html" target="_blank" rel="external">http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html</a></p>
-<h4 id="后端管理插件hexo-admin"><a href="#后端管理插件hexo-admin" class="headerlink" title="后端管理插件hexo-admin"></a>后端管理插件hexo-admin</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install --save hexo-admin</div><div class="line">hexo server -d</div><div class="line">open http://localhost:4000/admin/</div></pre></td></tr></table></figure>
-<p><strong>设置后台密码</strong><br>修改站点配置文件，就是网站根目录下的 _config.yml文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">admin:</div><div class="line">  username: finger</div><div class="line">  password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa</div><div class="line">  secret: a secret something</div></pre></td></tr></table></figure></p>
-<ul>
-<li>username：后端登录用户名</li>
-<li>password_hash：后端登录用户密码对应的md5 hash值</li>
-<li>secret：用于保证cookie安全</li>
-</ul>
-<p><strong>密码生成</strong><br>hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ node</div><div class="line">&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)</div><div class="line">&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)</div><div class="line">//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos;</div></pre></td></tr></table></figure></p>
-<p><strong>在线生成</strong><br><a href="https://www.bcrypt-generator.com/" target="_blank" rel="external">https://www.bcrypt-generator.com/</a></p>
-<h4 id="Hexo主题："><a href="#Hexo主题：" class="headerlink" title="Hexo主题："></a>Hexo主题：</h4><ul>
-<li><a href="https://hexo.io/themes/" target="_blank" rel="external">https://hexo.io/themes/</a></li>
-<li><a href="https://github.com/henryhuang/oishi" target="_blank" rel="external">https://github.com/henryhuang/oishi</a></li>
-<li><a href="https://github.com/haojen/hexo-theme-Anisina" target="_blank" rel="external">https://github.com/haojen/hexo-theme-Anisina</a></li>
-<li><a href="https://github.com/stiekel/hexo-theme-random" target="_blank" rel="external">https://github.com/stiekel/hexo-theme-random</a></li>
-<li><a href="https://github.com/SuperKieran/TKL" target="_blank" rel="external">https://github.com/SuperKieran/TKL</a></li>
-<li><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next</a></li>
-</ul>
-<h4 id="Next-皮肤设置"><a href="#Next-皮肤设置" class="headerlink" title="Next 皮肤设置"></a>Next 皮肤设置</h4><p><a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="external">http://theme-next.iissnan.com/theme-settings.html</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1824,7 +1820,7 @@ if __name__ == &quot;__main__&quot;:
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

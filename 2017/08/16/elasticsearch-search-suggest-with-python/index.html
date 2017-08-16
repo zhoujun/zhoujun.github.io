@@ -86,7 +86,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Ubuntu,SVN," />
+  <meta name="keywords" content="elasticsearch,searchengine," />
 
 
 
@@ -102,25 +102,31 @@
 
 
 
-<meta name="description" content="一、安装Subversion Server1apt-get install subversion
-二、创建SVN版本库12mkdir /srv/svn          # 创建SVN根目录svnadmin create test    # 创建测试项目库
-三、SVN配置主要包含以下三个配置文件：
-1. svnserve.conf服务配置：123456[general]anon-access =">
+<meta name="description" content="Suggest搜索Elasticsearch支持多种suggest类型，也支持模糊搜索。
+Elasticsearch支持如下4种搜索类型：
+
+Term。基于编辑距离的搜索，也就是对比两个字串之间，由一个转成另一个所需的最少编辑操作次数，编辑距离越少说明越相近。搜索时需要指定字段，是很基础的一种搜索。
+Phrase。Term的优化，能够基于共现和频率来做出关于选择哪些token的更好的决定。
+Co">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu 安装svn服务">
-<meta property="og:url" content="http://yoursite.com/2017/01/27/ubuntu-install-svn-simple-server/index.html">
+<meta property="og:title" content="用Python实现Elasticsearch提供的搜索建议">
+<meta property="og:url" content="http://yoursite.com/2017/08/16/elasticsearch-search-suggest-with-python/index.html">
 <meta property="og:site_name" content="Finger's Blog">
-<meta property="og:description" content="一、安装Subversion Server1apt-get install subversion
-二、创建SVN版本库12mkdir /srv/svn          # 创建SVN根目录svnadmin create test    # 创建测试项目库
-三、SVN配置主要包含以下三个配置文件：
-1. svnserve.conf服务配置：123456[general]anon-access =">
-<meta property="og:updated_time" content="2017-06-22T16:03:42.401Z">
+<meta property="og:description" content="Suggest搜索Elasticsearch支持多种suggest类型，也支持模糊搜索。
+Elasticsearch支持如下4种搜索类型：
+
+Term。基于编辑距离的搜索，也就是对比两个字串之间，由一个转成另一个所需的最少编辑操作次数，编辑距离越少说明越相近。搜索时需要指定字段，是很基础的一种搜索。
+Phrase。Term的优化，能够基于共现和频率来做出关于选择哪些token的更好的决定。
+Co">
+<meta property="og:updated_time" content="2017-08-16T15:05:16.602Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu 安装svn服务">
-<meta name="twitter:description" content="一、安装Subversion Server1apt-get install subversion
-二、创建SVN版本库12mkdir /srv/svn          # 创建SVN根目录svnadmin create test    # 创建测试项目库
-三、SVN配置主要包含以下三个配置文件：
-1. svnserve.conf服务配置：123456[general]anon-access =">
+<meta name="twitter:title" content="用Python实现Elasticsearch提供的搜索建议">
+<meta name="twitter:description" content="Suggest搜索Elasticsearch支持多种suggest类型，也支持模糊搜索。
+Elasticsearch支持如下4种搜索类型：
+
+Term。基于编辑距离的搜索，也就是对比两个字串之间，由一个转成另一个所需的最少编辑操作次数，编辑距离越少说明越相近。搜索时需要指定字段，是很基础的一种搜索。
+Phrase。Term的优化，能够基于共现和频率来做出关于选择哪些token的更好的决定。
+Co">
 
 
 
@@ -141,9 +147,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/01/27/ubuntu-install-svn-simple-server/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/16/elasticsearch-search-suggest-with-python/"/>
 
-  <title> Ubuntu 安装svn服务 | Finger's Blog </title>
+  <title> 用Python实现Elasticsearch提供的搜索建议 | Finger's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -326,7 +332,7 @@
             
             
               
-                Ubuntu 安装svn服务
+                用Python实现Elasticsearch提供的搜索建议
               
             
           </h1>
@@ -338,8 +344,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-01-27T20:56:00+08:00" content="2017-01-27">
-              2017-01-27
+            <time itemprop="dateCreated" datetime="2017-08-16T23:01:00+08:00" content="2017-08-16">
+              2017-08-16
             </time>
           </span>
 
@@ -352,8 +358,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Note/" itemprop="url" rel="index">
-                    <span itemprop="name">Note</span>
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
                   </a>
                 </span>
 
@@ -368,8 +374,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/01/27/ubuntu-install-svn-simple-server/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/ubuntu-install-svn-simple-server/" itemprop="commentsCount"></span>
+                <a href="/2017/08/16/elasticsearch-search-suggest-with-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/16/elasticsearch-search-suggest-with-python/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -392,18 +398,16 @@
       
 
       
-        <h3 id="一、安装Subversion-Server"><a href="#一、安装Subversion-Server" class="headerlink" title="一、安装Subversion Server"></a>一、安装Subversion Server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install subversion</div></pre></td></tr></table></figure>
-<h3 id="二、创建SVN版本库"><a href="#二、创建SVN版本库" class="headerlink" title="二、创建SVN版本库"></a>二、创建SVN版本库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /srv/svn          # 创建SVN根目录</div><div class="line">svnadmin create test    # 创建测试项目库</div></pre></td></tr></table></figure>
-<h3 id="三、SVN配置"><a href="#三、SVN配置" class="headerlink" title="三、SVN配置"></a>三、SVN配置</h3><p>主要包含以下三个配置文件：</p>
-<h5 id="1-svnserve-conf"><a href="#1-svnserve-conf" class="headerlink" title="1. svnserve.conf"></a>1. svnserve.conf</h5><p>服务配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[general]</div><div class="line">anon-access = none      # 匿名用户不可读</div><div class="line">auth-access = write     # 权限用户可写</div><div class="line">password-db = passwd    # 启用密码文件</div><div class="line">authz-db = authz        # 启用权限文件</div><div class="line">realm = repos           # 认证域名称</div></pre></td></tr></table></figure></p>
-<h5 id="2-passwd"><a href="#2-passwd" class="headerlink" title="2. passwd"></a>2. passwd</h5><p>账号配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[user]</div><div class="line">finger = 123456</div></pre></td></tr></table></figure></p>
-<h5 id="3-authz"><a href="#3-authz" class="headerlink" title="3. authz"></a>3. authz</h5><p>权限配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[groups]</div><div class="line">admin = finger</div><div class="line"></div><div class="line">[/]</div><div class="line">@admin = rw         # admin组拥有所有读写权限</div><div class="line">* = r               # 其他只有读权限</div></pre></td></tr></table></figure></p>
-<h3 id="四、启动和停止"><a href="#四、启动和停止" class="headerlink" title="四、启动和停止"></a>四、启动和停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">启动：</div><div class="line">svnserve -d -r /srv/svn   # -d 表示后台运行 -r 表示根目录</div><div class="line"></div><div class="line">停止：</div><div class="line">ps -ef | grep svn   # 查看svn进程ID</div><div class="line"></div><div class="line">kill -9 进程ID</div></pre></td></tr></table></figure>
-<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">svn co svn://127.0.0.1/test</div></pre></td></tr></table></figure>
-<h3 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h3><p><strong>1、svn: E220003: Invalid authz configuration</strong></p>
-<p>原因是authz文件配置错误，仔细检查authz文件。</p>
-<h3 id="七、参考文献"><a href="#七、参考文献" class="headerlink" title="七、参考文献"></a>七、参考文献</h3><p><a href="https://my.oschina.net/jast90/blog/382688" target="_blank" rel="external">https://my.oschina.net/jast90/blog/382688</a></p>
-<p><a href="http://www.linuxidc.com/Linux/2015-01/111956.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2015-01/111956.htm</a></p>
+        <hr>
+<h3 id="Suggest搜索"><a href="#Suggest搜索" class="headerlink" title="Suggest搜索"></a>Suggest搜索</h3><p><code>Elasticsearch</code>支持多种<code>suggest</code>类型，也支持模糊搜索。</p>
+<p><code>Elasticsearch</code>支持如下4种搜索类型：</p>
+<ul>
+<li>Term。基于编辑距离的搜索，也就是对比两个字串之间，由一个转成另一个所需的最少编辑操作次数，编辑距离越少说明越相近。搜索时需要指定字段，是很基础的一种搜索。</li>
+<li>Phrase。Term的优化，能够基于共现和频率来做出关于选择哪些token的更好的决定。</li>
+<li>Completion。提供自动完成/按需搜索的功能，这是一种导航功能，可在用户输入时引导用户查看相关结果，从而提高搜索精度。和前2种用法不同，需要在mapping时指定suggester字段，使用允许快速查找的数据结构，所以在搜索速度上得到了很大的优化。</li>
+<li>Context。Completion搜索的是索引中的全部文档，但是有时候希望对这个结果进行一些and/or的过滤，就需要使用Context类型了。</li>
+</ul>
+<p>下面使用<a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="external">elasticsearch_dsl</a>自带的<code>Suggestions</code>功能<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Text, Keyword, Completion</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections</div><div class="line"></div><div class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BlogLive</span><span class="params">(DocType)</span>:</span></div><div class="line">    subject = Text()</div><div class="line">    description = Text()</div><div class="line">    topics = Keyword()</div><div class="line">    live_suggest = Completion()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blog'</span></div><div class="line">        type = <span class="string">'live'</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, ** kwargs)</span>:</span></div><div class="line">        <span class="keyword">return</span> super(BlogLive, self).save(** kwargs)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># create the mappings in elasticsearch</span></div><div class="line">BlogLive.init()</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_live</span><span class="params">(id_, subject, description)</span>:</span></div><div class="line">    live = BlogLive(meta=&#123;<span class="string">'id'</span>: id_&#125;)</div><div class="line">    live.subject = subject</div><div class="line">    live.description = description</div><div class="line">    live.live_suggest = subject</div><div class="line">    live.save()</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_data</span><span class="params">()</span>:</span></div><div class="line">    add_live(<span class="number">1</span>, <span class="string">'python'</span>, <span class="string">'python is good'</span>)</div><div class="line">    add_live(<span class="number">2</span>, <span class="string">'python django'</span>, <span class="string">'django is web framework'</span>)</div><div class="line">    add_live(<span class="number">3</span>, <span class="string">'python flask'</span>, <span class="string">'flask is web framework'</span>)</div><div class="line">    add_live(<span class="number">4</span>, <span class="string">'elasticsearch'</span>, <span class="string">'elasticsearch is searchengine'</span>)</div><div class="line">    add_live(<span class="number">5</span>, <span class="string">'elasticsearch-dsl python'</span>, <span class="string">'python elasticsearch dsl is client API'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">suggest</span><span class="params">(key)</span>:</span></div><div class="line">    s = BlogLive.search()</div><div class="line">    s = s.suggest(<span class="string">'live_suggestion'</span>, key,</div><div class="line">                  completion=&#123;<span class="string">'field'</span>: <span class="string">'live_suggest'</span>, <span class="string">'fuzzy'</span>: &#123;<span class="string">'fuzziness'</span>: <span class="number">2</span>, <span class="string">'prefix_length'</span>: <span class="number">2</span>&#125;, <span class="string">'size'</span>: <span class="number">10</span>&#125;)</div><div class="line">    print(s.to_dict())</div><div class="line">    <span class="string">"""</span></div><div class="line">    &#123;'suggest': </div><div class="line">        &#123;'live_suggestion': </div><div class="line">             &#123;</div><div class="line">                'completion': &#123;'field': 'live_suggest', 'size': 10, 'fuzzy': &#123;'fuzziness': 2, 'prefix_length': 2&#125;&#125;, </div><div class="line">                'text': 'python'</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    """</div><div class="line">    suggestions = s.execute_suggest()</div><div class="line">    <span class="comment"># print(suggestions.live_suggestion)</span></div><div class="line">    <span class="keyword">for</span> match <span class="keyword">in</span> suggestions.live_suggestion[<span class="number">0</span>].options:</div><div class="line">        source = match._source</div><div class="line">        print(source[<span class="string">'subject'</span>],  source[<span class="string">'description'</span>], match._score)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    init_data()</div><div class="line">    suggest(<span class="string">'python'</span>)</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -426,9 +430,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Ubuntu/" rel="tag">#Ubuntu</a>
+            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
           
-            <a href="/tags/SVN/" rel="tag">#SVN</a>
+            <a href="/tags/searchengine/" rel="tag">#searchengine</a>
           
         </div>
       
@@ -437,17 +441,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/27/cocos2dx-upload-google-play/" rel="next" title="Cocos2dx－上传Google Play遇到的问题">
-                <i class="fa fa-chevron-left"></i> Cocos2dx－上传Google Play遇到的问题
+              <a href="/2017/08/16/using-elasticsearch-bulk-with-python/" rel="next" title="Using Elasticsearch Bulk With Python">
+                <i class="fa fa-chevron-left"></i> Using Elasticsearch Bulk With Python
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/22/supervisord-usage/" rel="prev" title="Supervisord 使用笔记">
-                Supervisord 使用笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -496,8 +496,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/01/27/ubuntu-install-svn-simple-server/"
-           data-title="Ubuntu 安装svn服务" data-url="http://yoursite.com/2017/01/27/ubuntu-install-svn-simple-server/">
+      <div class="ds-thread" data-thread-key="2017/08/16/elasticsearch-search-suggest-with-python/"
+           data-title="用Python实现Elasticsearch提供的搜索建议" data-url="http://yoursite.com/2017/08/16/elasticsearch-search-suggest-with-python/">
       </div>
     
   </div>
@@ -617,7 +617,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、安装Subversion-Server"><span class="nav-number">1.</span> <span class="nav-text">一、安装Subversion Server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、创建SVN版本库"><span class="nav-number">2.</span> <span class="nav-text">二、创建SVN版本库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、SVN配置"><span class="nav-number">3.</span> <span class="nav-text">三、SVN配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-svnserve-conf"><span class="nav-number">3.0.1.</span> <span class="nav-text">1. svnserve.conf</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-passwd"><span class="nav-number">3.0.2.</span> <span class="nav-text">2. passwd</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-authz"><span class="nav-number">3.0.3.</span> <span class="nav-text">3. authz</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、启动和停止"><span class="nav-number">4.</span> <span class="nav-text">四、启动和停止</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、测试"><span class="nav-number">5.</span> <span class="nav-text">五、测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、问题"><span class="nav-number">6.</span> <span class="nav-text">六、问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、参考文献"><span class="nav-number">7.</span> <span class="nav-text">七、参考文献</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Suggest搜索"><span class="nav-number">1.</span> <span class="nav-text">Suggest搜索</span></a></li></ol></div>
             
           </div>
         </section>

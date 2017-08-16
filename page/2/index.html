@@ -319,6 +319,137 @@
             
               
                 
+                <a class="post-title-link" href="/2017/01/27/ubuntu-install-svn-simple-server/" itemprop="url">
+                  Ubuntu 安装svn服务
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-27T20:56:00+08:00" content="2017-01-27">
+              2017-01-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/27/ubuntu-install-svn-simple-server/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/ubuntu-install-svn-simple-server/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、安装Subversion-Server"><a href="#一、安装Subversion-Server" class="headerlink" title="一、安装Subversion Server"></a>一、安装Subversion Server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install subversion</div></pre></td></tr></table></figure>
+<h3 id="二、创建SVN版本库"><a href="#二、创建SVN版本库" class="headerlink" title="二、创建SVN版本库"></a>二、创建SVN版本库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /srv/svn          # 创建SVN根目录</div><div class="line">svnadmin create test    # 创建测试项目库</div></pre></td></tr></table></figure>
+<h3 id="三、SVN配置"><a href="#三、SVN配置" class="headerlink" title="三、SVN配置"></a>三、SVN配置</h3><p>主要包含以下三个配置文件：</p>
+<h5 id="1-svnserve-conf"><a href="#1-svnserve-conf" class="headerlink" title="1. svnserve.conf"></a>1. svnserve.conf</h5><p>服务配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[general]</div><div class="line">anon-access = none      # 匿名用户不可读</div><div class="line">auth-access = write     # 权限用户可写</div><div class="line">password-db = passwd    # 启用密码文件</div><div class="line">authz-db = authz        # 启用权限文件</div><div class="line">realm = repos           # 认证域名称</div></pre></td></tr></table></figure></p>
+<h5 id="2-passwd"><a href="#2-passwd" class="headerlink" title="2. passwd"></a>2. passwd</h5><p>账号配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[user]</div><div class="line">finger = 123456</div></pre></td></tr></table></figure></p>
+<h5 id="3-authz"><a href="#3-authz" class="headerlink" title="3. authz"></a>3. authz</h5><p>权限配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[groups]</div><div class="line">admin = finger</div><div class="line"></div><div class="line">[/]</div><div class="line">@admin = rw         # admin组拥有所有读写权限</div><div class="line">* = r               # 其他只有读权限</div></pre></td></tr></table></figure></p>
+<h3 id="四、启动和停止"><a href="#四、启动和停止" class="headerlink" title="四、启动和停止"></a>四、启动和停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">启动：</div><div class="line">svnserve -d -r /srv/svn   # -d 表示后台运行 -r 表示根目录</div><div class="line"></div><div class="line">停止：</div><div class="line">ps -ef | grep svn   # 查看svn进程ID</div><div class="line"></div><div class="line">kill -9 进程ID</div></pre></td></tr></table></figure>
+<h3 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">svn co svn://127.0.0.1/test</div></pre></td></tr></table></figure>
+<h3 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h3><p><strong>1、svn: E220003: Invalid authz configuration</strong></p>
+<p>原因是authz文件配置错误，仔细检查authz文件。</p>
+<h3 id="七、参考文献"><a href="#七、参考文献" class="headerlink" title="七、参考文献"></a>七、参考文献</h3><p><a href="https://my.oschina.net/jast90/blog/382688" target="_blank" rel="external">https://my.oschina.net/jast90/blog/382688</a></p>
+<p><a href="http://www.linuxidc.com/Linux/2015-01/111956.htm" target="_blank" rel="external">http://www.linuxidc.com/Linux/2015-01/111956.htm</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/01/27/cocos2dx-upload-google-play/" itemprop="url">
                   Cocos2dx－上传Google Play遇到的问题
                 </a>
@@ -401,6 +532,148 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本</div><div class="line">2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效</div></pre></td></tr></table></figure>
 <p>2、系统异常</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)</div><div class="line"></div><div class="line">// 解决方法</div><div class="line">// 1、mHelper.flagEndAsync() 修改成public</div><div class="line">// 2、在launchPurchaseFlow() 之前调用flagEndAsync()</div><div class="line">----------------------------------------------------</div><div class="line">if (mHelper != null) &#123;</div><div class="line">    try &#123;</div><div class="line">        mHelper.flagEndAsync();</div><div class="line">        mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;);</div><div class="line">    &#125;       </div><div class="line">    catch(IllegalStateException ex)&#123;</div><div class="line">        Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/27/hexo-usage/" itemprop="url">
+                  Hexo使用笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-27T20:40:00+08:00" content="2017-01-27">
+              2017-01-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Note</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/27/hexo-usage/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/hexo-usage/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="中文文档："><a href="#中文文档：" class="headerlink" title="中文文档："></a>中文文档：</h4><p><a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">https://hexo.io/zh-cn/docs/index.html</a></p>
+<p><strong>参考博客：</strong><br><a href="http://blog.csdn.net/poem_of_sunshine/article/details/29369785/" target="_blank" rel="external">http://blog.csdn.net/poem_of_sunshine/article/details/29369785/</a><br><a href="http://www.jianshu.com/p/465830080ea9#" target="_blank" rel="external">http://www.jianshu.com/p/465830080ea9#</a><br><a href="http://www.jianshu.com/p/a2023a601ceb" target="_blank" rel="external">http://www.jianshu.com/p/a2023a601ceb</a></p>
+<p><strong>Github配置：</strong><br><a href="https://help.github.com/articles/generating-an-ssh-key/" target="_blank" rel="external">https://help.github.com/articles/generating-an-ssh-key/</a><br><a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/" target="_blank" rel="external">https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/</a></p>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hexo server | s --debug</div><div class="line">hexo clean</div><div class="line">hexo generate</div><div class="line">hexo deploy</div></pre></td></tr></table></figure>
+<p>绑定阿里云域名：<br><a href="http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html" target="_blank" rel="external">http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html</a></p>
+<h4 id="后端管理插件hexo-admin"><a href="#后端管理插件hexo-admin" class="headerlink" title="后端管理插件hexo-admin"></a>后端管理插件hexo-admin</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install --save hexo-admin</div><div class="line">hexo server -d</div><div class="line">open http://localhost:4000/admin/</div></pre></td></tr></table></figure>
+<p><strong>设置后台密码</strong><br>修改站点配置文件，就是网站根目录下的 _config.yml文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">admin:</div><div class="line">  username: finger</div><div class="line">  password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa</div><div class="line">  secret: a secret something</div></pre></td></tr></table></figure></p>
+<ul>
+<li>username：后端登录用户名</li>
+<li>password_hash：后端登录用户密码对应的md5 hash值</li>
+<li>secret：用于保证cookie安全</li>
+</ul>
+<p><strong>密码生成</strong><br>hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ node</div><div class="line">&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)</div><div class="line">&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)</div><div class="line">//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos;</div></pre></td></tr></table></figure></p>
+<p><strong>在线生成</strong><br><a href="https://www.bcrypt-generator.com/" target="_blank" rel="external">https://www.bcrypt-generator.com/</a></p>
+<h4 id="Hexo主题："><a href="#Hexo主题：" class="headerlink" title="Hexo主题："></a>Hexo主题：</h4><ul>
+<li><a href="https://hexo.io/themes/" target="_blank" rel="external">https://hexo.io/themes/</a></li>
+<li><a href="https://github.com/henryhuang/oishi" target="_blank" rel="external">https://github.com/henryhuang/oishi</a></li>
+<li><a href="https://github.com/haojen/hexo-theme-Anisina" target="_blank" rel="external">https://github.com/haojen/hexo-theme-Anisina</a></li>
+<li><a href="https://github.com/stiekel/hexo-theme-random" target="_blank" rel="external">https://github.com/stiekel/hexo-theme-random</a></li>
+<li><a href="https://github.com/SuperKieran/TKL" target="_blank" rel="external">https://github.com/SuperKieran/TKL</a></li>
+<li><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next</a></li>
+</ul>
+<h4 id="Next-皮肤设置"><a href="#Next-皮肤设置" class="headerlink" title="Next 皮肤设置"></a>Next 皮肤设置</h4><p><a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="external">http://theme-next.iissnan.com/theme-settings.html</a></p>
 
           
         
@@ -599,7 +872,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
