@@ -417,6 +417,57 @@
 </blockquote>
 <p><code>log</code>函数将<code>votes</code>字段的效果减缓了，其效果类似下面的曲线：<br><img src="/imgs/20170819/20170819125819.png" alt=""><br>使用了<code>modifier</code>参数的请求如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure></p>
 <p><img src="/imgs/20170819/20170819131048.png" alt=""><br>可用的<code>modifiers</code>有：none(默认值)，log，log1p，log2p，ln，ln1p，ln2p，square，sqrt以及reciprocal。</p>
+<table>
+<thead>
+<tr>
+<th>Modifier</th>
+<th>Meaning </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>Do not apply any multiplier to the field value</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Take the logarithm of the field value </td>
+</tr>
+<tr>
+<td>log1p</td>
+<td>Add 1 to the field value and take the logarithm</td>
+</tr>
+<tr>
+<td>log2p</td>
+<td>Add 2 to the field value and take the logarithm</td>
+</tr>
+<tr>
+<td>ln</td>
+<td>Take the natural logarithm of the field value</td>
+</tr>
+<tr>
+<td>ln1p</td>
+<td>Add 1 to the field value and take the natural logarithm</td>
+</tr>
+<tr>
+<td>ln2p</td>
+<td>Add 2 to the field value and take the natural logarithm</td>
+</tr>
+<tr>
+<td>square</td>
+<td>Square the field value (multiply it by itself)</td>
+</tr>
+<tr>
+<td>sqrt</td>
+<td>Take the square root of the field value</td>
+</tr>
+<tr>
+<td>reciprocal</td>
+<td>Reciprocate the field value, same as 1/x where x is the field’s value</td>
+</tr>
+</tbody>
+</table>
+<p>具体详情请查阅<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html#function-field-value-factor" target="_blank" rel="external">官网介绍</a></p>
 <h4 id="factor"><a href="#factor" class="headerlink" title="factor"></a>factor</h4><p>可以通过将<code>votes</code>字段的值乘以某个数值来增加该字段的影响力，这个数值被称为<code>factor</code>：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>, factor=<span class="number">2</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure></p>
 <p>添加了<code>factor</code>将公式修改成这样：</p>
 <blockquote>
