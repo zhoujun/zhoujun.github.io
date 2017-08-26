@@ -86,7 +86,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Cocos2d-x," />
+  <meta name="keywords" content="elasticsearch,python," />
 
 
 
@@ -102,22 +102,21 @@
 
 
 
-<meta name="description" content="一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL
-因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下：
-12345678910111213141516171819202122Vulnerability---------------------------------------">
+<meta name="description" content="random_scorerandom_score函数，它的输出是一个介于0到1之间的数字，当给它提供相同的seed值时，它能够产生一致性随机的结果。random_score 子句不包含任何的filter，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。
+123456q = query.Q(    &apos;function_score&apos;,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cocos2dx－上传Google Play遇到的问题">
-<meta property="og:url" content="http://yoursite.com/2017/01/27/cocos2dx-upload-google-play/index.html">
+<meta property="og:title" content="用Python实现Elasticsearch function_score查询(二)">
+<meta property="og:url" content="http://yoursite.com/2017/08/26/using-elasticsearch-function-score-with-python-2/index.html">
 <meta property="og:site_name" content="Finger's Blog">
-<meta property="og:description" content="一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL
-因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下：
-12345678910111213141516171819202122Vulnerability---------------------------------------">
-<meta property="og:updated_time" content="2017-06-22T16:28:16.357Z">
+<meta property="og:description" content="random_scorerandom_score函数，它的输出是一个介于0到1之间的数字，当给它提供相同的seed值时，它能够产生一致性随机的结果。random_score 子句不包含任何的filter，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。
+123456q = query.Q(    &apos;function_score&apos;,">
+<meta property="og:image" content="http://yoursite.com/imgs/20170826/decay_2d.png">
+<meta property="og:updated_time" content="2017-08-26T03:52:22.003Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Cocos2dx－上传Google Play遇到的问题">
-<meta name="twitter:description" content="一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL
-因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下：
-12345678910111213141516171819202122Vulnerability---------------------------------------">
+<meta name="twitter:title" content="用Python实现Elasticsearch function_score查询(二)">
+<meta name="twitter:description" content="random_scorerandom_score函数，它的输出是一个介于0到1之间的数字，当给它提供相同的seed值时，它能够产生一致性随机的结果。random_score 子句不包含任何的filter，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。
+123456q = query.Q(    &apos;function_score&apos;,">
+<meta name="twitter:image" content="http://yoursite.com/imgs/20170826/decay_2d.png">
 
 
 
@@ -138,9 +137,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/01/27/cocos2dx-upload-google-play/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/26/using-elasticsearch-function-score-with-python-2/"/>
 
-  <title> Cocos2dx－上传Google Play遇到的问题 | Finger's Blog </title>
+  <title> 用Python实现Elasticsearch function_score查询(二) | Finger's Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -323,7 +322,7 @@
             
             
               
-                Cocos2dx－上传Google Play遇到的问题
+                用Python实现Elasticsearch function_score查询(二)
               
             
           </h1>
@@ -335,8 +334,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-01-27T20:40:00+08:00" content="2017-01-27">
-              2017-01-27
+            <time itemprop="dateCreated" datetime="2017-08-26T10:23:00+08:00" content="2017-08-26">
+              2017-08-26
             </time>
           </span>
 
@@ -349,8 +348,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
-                    <span itemprop="name">Cocos2d-x</span>
+                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticsearch</span>
                   </a>
                 </span>
 
@@ -365,8 +364,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2017/01/27/cocos2dx-upload-google-play/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/27/cocos2dx-upload-google-play/" itemprop="commentsCount"></span>
+                <a href="/2017/08/26/using-elasticsearch-function-score-with-python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/26/using-elasticsearch-function-score-with-python-2/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -389,18 +388,37 @@
       
 
       
-        <h4 id="一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL"><a href="#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL" class="headerlink" title="一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL"></a>一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL</h4><hr>
-<p>因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Vulnerability</div><div class="line">-----------------------------------------------------------</div><div class="line">**OpenSSL**</div><div class="line"></div><div class="line">The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:</div><div class="line"></div><div class="line">\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;</div><div class="line"></div><div class="line">You can find more information and next steps in this Google Help Center article.</div><div class="line">-----------------------------------------------------------</div><div class="line"></div><div class="line">To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.</div><div class="line"></div><div class="line">While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.</div><div class="line"></div><div class="line">Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.</div><div class="line"></div><div class="line">If you feel we have made this determination in error, please reach out to our developer support team.</div><div class="line"></div><div class="line">Best,</div><div class="line"></div><div class="line">The Google Play Team</div></pre></td></tr></table></figure>
-<p><strong>解决方案</strong></p>
-<p>邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：<a href="http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9" target="_blank" rel="external">http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9</a></p>
-<p>具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。</p>
-<p><a href="https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin" target="_blank" rel="external">https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin</a></p>
-<h4 id="二、Google-Play支付-in-app-Billing"><a href="#二、Google-Play支付-in-app-Billing" class="headerlink" title="二、Google Play支付(in-app Billing)"></a>二、Google Play支付(in-app Billing)</h4><p><strong>注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致</strong></p>
-<p>1、错误提示</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本</div><div class="line">2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效</div></pre></td></tr></table></figure>
-<p>2、系统异常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)</div><div class="line"></div><div class="line">// 解决方法</div><div class="line">// 1、mHelper.flagEndAsync() 修改成public</div><div class="line">// 2、在launchPurchaseFlow() 之前调用flagEndAsync()</div><div class="line">----------------------------------------------------</div><div class="line">if (mHelper != null) &#123;</div><div class="line">    try &#123;</div><div class="line">        mHelper.flagEndAsync();</div><div class="line">        mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;);</div><div class="line">    &#125;       </div><div class="line">    catch(IllegalStateException ex)&#123;</div><div class="line">        Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        <hr>
+<h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">     functions=[</div><div class="line">        query.SF(<span class="string">'random_score'</span>, seed=<span class="number">10</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;function_score&quot;: &#123;</div><div class="line">            &quot;random_score&quot;: &#123;</div><div class="line">                &quot;seed&quot;: 10</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="decay-functions"><a href="#decay-functions" class="headerlink" title="decay functions"></a>decay functions</h4><p>之前提过的<code>weight</code>，<code>field_value_factor</code>，<code>random_score</code>等函数都是一种线性的影响关系，给出的分数随着距离变大而变低。有时候我们会有范围性质，分数变化缓慢的需求场景。此时上述函数就显得不那么适用。<br><code>Elasticsearch</code>提供了三种<code>decay functions</code>，让我们可以基于一个单值的数值型字段（比如日期、地点或者价格类似标准的数值型字段）来计算分数。</p>
+<p>这三个衰减函数分别为：</p>
+<ul>
+<li>线性衰减(linear)</li>
+<li>指数衰减(exp)</li>
+<li>高斯衰减(gauss)</li>
+</ul>
+<p>它们可以操作数值，时间以及经纬度地理坐标点这样的字段，这三个函数都有以下参数：</p>
+<ul>
+<li>origin: 中心点或字段可能的最佳值，落在原点<code>origin</code>上的文档评分 _score 为满分1.0 。</li>
+<li>scale:  衰减率，即一个文档从原点origin下落时，评分<code>_score</code>改变的速度(例如每 £10 欧元或每 100 米)。</li>
+<li>decay:  从原点<code>origin</code>衰减到<code>scale</code>所得的评分<code>_score</code>，默认值为 0.5。</li>
+<li>offset: 以原点<code>origin</code>为中心点，为其设置一个非零的偏移量offset 覆盖一个范围，而不只是单个原点。在范围 -offset &lt;= origin &lt;= +offset 内的所有评分<code>_score</code>都是 1.0。</li>
+</ul>
+<p><code>origin</code>和<code>scale</code>参数是必须的。<code>origin</code>是中心点，计算是从这点开始。<code>scale</code>是衰变率。默认情况下，<code>offset</code>参数设置为0；如果定义了该参数，<code>decay</code>函数将只计算文档值比此参数的值大的文档得分。<code>decay</code>参数告诉Elasticsearch应该降低多少分数，默认设置为0.5。</p>
+<p>下面我们举一个例子：假设用户希望租一个离伦敦市中心({‘lat’:51.50, ‘lon’:0.12})且每晚不超过 £100 英镑的度假屋而且与距离相比，用户对价格更为敏感，这样查询可以写成：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">'match'</span>, properties=<span class="string">"balcony"</span>),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'gauss'</span>, price=&#123;<span class="string">'origin'</span>: <span class="string">'0'</span>, <span class="string">'scale'</span>: <span class="string">'20'</span>&#125;),</div><div class="line">        query.SF(<span class="string">'gauss'</span>, location=&#123;<span class="string">'origin'</span>: <span class="string">'51.50, 0.12'</span>, <span class="string">'scale'</span>: <span class="string">'2km'</span>&#125;)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"multiply"</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&#123;  </div><div class="line">    &quot;query&quot;: &#123;  </div><div class="line">        &quot;function_score&quot;: &#123;  </div><div class="line">          &quot;functions&quot;: [  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;price&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;0&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;20&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;,  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;location&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;11, 12&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;2km&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;  </div><div class="line">          ],  </div><div class="line">          &quot;query&quot;: &#123;  </div><div class="line">            &quot;match&quot;: &#123;  </div><div class="line">              &quot;properties&quot;: &quot;balcony&quot;  </div><div class="line">            &#125;  </div><div class="line">          &#125;,  </div><div class="line">          &quot;score_mode&quot;: &quot;multiply&quot;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于decay functions的衰减曲线性：如下图：<br><img src="/imgs/20170826/decay_2d.png" alt=""></p>
+<p>图中所有曲线的原点<code>origin</code>（即中心点）的值都是40，<code>offset</code>是5，也就是在范围 40 - 5 &lt;= value &lt;= 40 + 5 内的所有值都会被当作原点<code>origin</code>处理所有这些点的评分都是满分1.0 。<br>在此范围之外，评分开始衰减，衰减率由<code>scale</code>值（此例中的值为 5 ）和 衰减值<code>decay</code>此例中为默认值 0.5 ）共同决定。结果是所有三个曲线在 origin +/- (offset + scale) 处的评分都是 0.5，即点30和50处。</p>
+<p><code>linear</code> 、 <code>exp</code> 和 <code>gauss</code>函数三者之间的区别在于范围（ origin +/- (offset + scale) ）之外的曲线形状：</p>
+<ul>
+<li>linear 线性函数是条直线，一旦直线与横轴 0 相交，所有其他值的评分都是 0.0 。</li>
+<li>exp 指数函数是先剧烈衰减然后变缓。</li>
+<li>gauss 高斯函数是钟形的——它的衰减速率是先缓慢，然后变快，最后又放缓。</li>
+</ul>
+<p><strong>选择曲线的依据完全由期望评分<code>_score</code>的衰减速率来决定，即距原点<code>origin</code>的值。</strong></p>
+<p>Demo地址：<a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
 
       
     </div>
@@ -423,7 +441,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Cocos2d-x/" rel="tag">#Cocos2d-x</a>
+            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
+          
+            <a href="/tags/python/" rel="tag">#python</a>
           
         </div>
       
@@ -432,17 +452,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/27/hexo-usage/" rel="next" title="Hexo使用笔记">
-                <i class="fa fa-chevron-left"></i> Hexo使用笔记
+              <a href="/2017/08/19/using-elasticsearch-function-score-with-python-1/" rel="next" title="用Python实现Elasticsearch function_score查询(一)">
+                <i class="fa fa-chevron-left"></i> 用Python实现Elasticsearch function_score查询(一)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/01/27/ubuntu-install-svn-simple-server/" rel="prev" title="Ubuntu 安装svn服务">
-                Ubuntu 安装svn服务 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -491,8 +507,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/01/27/cocos2dx-upload-google-play/"
-           data-title="Cocos2dx－上传Google Play遇到的问题" data-url="http://yoursite.com/2017/01/27/cocos2dx-upload-google-play/">
+      <div class="ds-thread" data-thread-key="2017/08/26/using-elasticsearch-function-score-with-python-2/"
+           data-title="用Python实现Elasticsearch function_score查询(二)" data-url="http://yoursite.com/2017/08/26/using-elasticsearch-function-score-with-python-2/">
       </div>
     
   </div>
@@ -612,7 +628,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL"><span class="nav-number">1.</span> <span class="nav-text">一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、Google-Play支付-in-app-Billing"><span class="nav-number">2.</span> <span class="nav-text">二、Google Play支付(in-app Billing)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#random-score"><span class="nav-number">1.</span> <span class="nav-text">random_score</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#decay-functions"><span class="nav-number">2.</span> <span class="nav-text">decay functions</span></a></li></ol></div>
             
           </div>
         </section>

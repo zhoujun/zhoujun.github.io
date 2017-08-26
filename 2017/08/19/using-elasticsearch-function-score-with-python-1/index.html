@@ -126,7 +126,7 @@ weight 对每份文">
 <meta property="og:image" content="http://yoursite.com/imgs/20170819/20170819131050.png">
 <meta property="og:image" content="http://yoursite.com/imgs/20170819/20170819133115.png">
 <meta property="og:image" content="http://yoursite.com/imgs/20170819/20170819134205.png">
-<meta property="og:updated_time" content="2017-08-19T06:17:31.576Z">
+<meta property="og:updated_time" content="2017-08-26T03:02:47.484Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用Python实现Elasticsearch function_score查询(一)">
 <meta name="twitter:description" content="什么是function_scorefunction_score查询是处理分值计算过程的终极工具。它让你能够对所有匹配了主查询的每份文档调用一个函数来调整甚至是完全替换原来的_score。
@@ -414,7 +414,8 @@ weight 对每份文">
 <li><code>weight</code> 对每份文档适用一个简单的提升，且该提升不会被归约：当<code>weight</code>为2时，结果为2 * <code>_score</code>。</li>
 <li><code>field_value_factor</code> 使用文档中某个字段的值来改变<code>_score</code>，比如将受欢迎程度或者投票数量考虑在内。</li>
 <li><code>random_score</code> 使用一致性随机分值计算来对每个用户采用不同的结果排序方式，对相同用户仍然使用相同的排序方式。</li>
-<li>衰减函数(Decay Function)-(<code>linear</code>，<code>exp</code>，<code>gauss</code>) 将像<code>publish_date</code>，<code>geo_location</code>或者<code>price</code>这类浮动值考虑到<code>_score</code>中，偏好最近发布的文档，邻近于某个地理位置(译注：其中的某个字段)的文档或者价格(译注：其中的某个字段)靠近某一点的文档。<br>-<code>script_score</code> 使用自定义的脚本来完全控制分值计算逻辑。如果你需要以上预定义函数之外的功能，可以根据需要通过脚本进行实现。</li>
+<li>衰减函数(Decay Function)-(<code>linear</code>，<code>exp</code>，<code>gauss</code>) 将像<code>publish_date</code>，<code>geo_location</code>或者<code>price</code>这类浮动值考虑到<code>_score</code>中，偏好最近发布的文档，邻近于某个地理位置(译注：其中的某个字段)的文档或者价格(译注：其中的某个字段)靠近某一点的文档。</li>
+<li><code>script_score</code> 使用自定义的脚本来完全控制分值计算逻辑。如果你需要以上预定义函数之外的功能，可以根据需要通过脚本进行实现。</li>
 </ul>
 <p>没有<code>function_score</code>查询的话，我们也许就不能将全文搜索得到分值和近因进行结合了。我们将不得不根据<code>_score</code>或者<code>date</code>进行排序；无论采用哪一种都会抹去另一种的影响。<code>function_score</code>查询让我们能够将两者融合在一起：仍然通过全文相关度排序，但是给新近发布的文档，或者流行的文档，或者符合用户价格期望的文档额外的权重。你可以想象，一个拥有所有这些功能的查询看起来会相当复杂。我们从一个简单的例子开始，循序渐进地对它进行介绍。</p>
 <h3 id="如何使用function-score"><a href="#如何使用function-score" class="headerlink" title="如何使用function_score"></a>如何使用function_score</h3><p>假设我们有一个博客网站让用户投票选择他们喜欢的文章。我们希望让人气高的文章出现在结果列表的头部，但是主要的排序依据仍然是全文搜索分值。我们可以通过保存每篇文章的投票数量来实现。</p>
@@ -586,6 +587,10 @@ weight 对每份文">
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/08/26/using-elasticsearch-function-score-with-python-2/" rel="prev" title="用Python实现Elasticsearch function_score查询(二)">
+                用Python实现Elasticsearch function_score查询(二) <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -679,7 +684,7 @@ weight 对每份文">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
