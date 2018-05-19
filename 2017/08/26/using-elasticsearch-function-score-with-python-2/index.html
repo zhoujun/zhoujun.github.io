@@ -86,7 +86,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="elasticsearch,python," />
+  <meta name="keywords" content="Elasticsearch,Python," />
 
 
 
@@ -111,7 +111,7 @@
 <meta property="og:description" content="random_scorerandom_score函数，它的输出是一个介于0到1之间的数字，当给它提供相同的seed值时，它能够产生一致性随机的结果。random_score 子句不包含任何的filter，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。
 123456q = query.Q(    &apos;function_score&apos;,">
 <meta property="og:image" content="http://yoursite.com/imgs/20170826/decay_2d.png">
-<meta property="og:updated_time" content="2017-08-26T03:52:22.003Z">
+<meta property="og:updated_time" content="2018-05-19T06:42:40.237Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用Python实现Elasticsearch function_score查询(二)">
 <meta name="twitter:description" content="random_scorerandom_score函数，它的输出是一个介于0到1之间的数字，当给它提供相同的seed值时，它能够产生一致性随机的结果。random_score 子句不包含任何的filter，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。
@@ -348,8 +348,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -388,8 +388,7 @@
       
 
       
-        <hr>
-<h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
+        <h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">     functions=[</div><div class="line">        query.SF(<span class="string">'random_score'</span>, seed=<span class="number">10</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;function_score&quot;: &#123;</div><div class="line">            &quot;random_score&quot;: &#123;</div><div class="line">                &quot;seed&quot;: 10</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="decay-functions"><a href="#decay-functions" class="headerlink" title="decay functions"></a>decay functions</h4><p>之前提过的<code>weight</code>，<code>field_value_factor</code>，<code>random_score</code>等函数都是一种线性的影响关系，给出的分数随着距离变大而变低。有时候我们会有范围性质，分数变化缓慢的需求场景。此时上述函数就显得不那么适用。<br><code>Elasticsearch</code>提供了三种<code>decay functions</code>，让我们可以基于一个单值的数值型字段（比如日期、地点或者价格类似标准的数值型字段）来计算分数。</p>
@@ -441,9 +440,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/elasticsearch/" rel="tag">#elasticsearch</a>
+            <a href="/tags/Elasticsearch/" rel="tag">#Elasticsearch</a>
           
-            <a href="/tags/python/" rel="tag">#python</a>
+            <a href="/tags/Python/" rel="tag">#Python</a>
           
         </div>
       
@@ -565,7 +564,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -574,7 +573,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

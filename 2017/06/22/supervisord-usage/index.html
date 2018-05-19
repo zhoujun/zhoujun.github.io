@@ -103,18 +103,18 @@
 
 
 <meta name="description" content="一、安装1234- pip install supervisor  - echo_supervisord_conf  #或者  - echo_supervisord_conf &amp;gt; supervisord.conf  - supervisord -c ./supervisord.conf
-二、遇到错误123[root@localhost ~]# supervisord -c ./superv">
+二、遇到错误123[root@localhost ~]# supervisord -c ./supervi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Supervisord 使用笔记">
 <meta property="og:url" content="http://yoursite.com/2017/06/22/supervisord-usage/index.html">
 <meta property="og:site_name" content="Finger's Blog">
 <meta property="og:description" content="一、安装1234- pip install supervisor  - echo_supervisord_conf  #或者  - echo_supervisord_conf &amp;gt; supervisord.conf  - supervisord -c ./supervisord.conf
-二、遇到错误123[root@localhost ~]# supervisord -c ./superv">
-<meta property="og:updated_time" content="2017-06-22T15:48:24.784Z">
+二、遇到错误123[root@localhost ~]# supervisord -c ./supervi">
+<meta property="og:updated_time" content="2018-05-19T06:37:33.997Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Supervisord 使用笔记">
 <meta name="twitter:description" content="一、安装1234- pip install supervisor  - echo_supervisord_conf  #或者  - echo_supervisord_conf &amp;gt; supervisord.conf  - supervisord -c ./supervisord.conf
-二、遇到错误123[root@localhost ~]# supervisord -c ./superv">
+二、遇到错误123[root@localhost ~]# supervisord -c ./supervi">
 
 
 
@@ -338,6 +338,25 @@
           </span>
 
           
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
 
           
             
@@ -367,8 +386,7 @@
       
 
       
-        <hr>
-<h4 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- pip install supervisor  </div><div class="line">- echo_supervisord_conf  #或者  </div><div class="line">- echo_supervisord_conf &gt; supervisord.conf  </div><div class="line">- supervisord -c ./supervisord.conf</div></pre></td></tr></table></figure>
+        <h4 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- pip install supervisor  </div><div class="line">- echo_supervisord_conf  #或者  </div><div class="line">- echo_supervisord_conf &gt; supervisord.conf  </div><div class="line">- supervisord -c ./supervisord.conf</div></pre></td></tr></table></figure>
 <h4 id="二、遇到错误"><a href="#二、遇到错误" class="headerlink" title="二、遇到错误"></a>二、遇到错误</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# supervisord -c ./supervisord.conf   </div><div class="line">Error: .ini file does not include supervisord section  </div><div class="line">For help, use /usr/bin/supervisord -h</div></pre></td></tr></table></figure>
 <p><strong>错误原因是因为配置文件少了 [supervisrod] 配置项</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[program:djangotest]  </div><div class="line">user=lzz  </div><div class="line">command=/usr/bin/python /var/www/djangotest/manage.py runserver 0.0.0.0:8000  </div><div class="line">autostart=true  </div><div class="line">autorestart=true  </div><div class="line">stderr_logfile=/var/logs/err.log  </div><div class="line">stdout_logfile=/var/logs/out.log  </div><div class="line">stopsignal=INT  </div><div class="line">   </div><div class="line">[supervisord]</div></pre></td></tr></table></figure></p>
 <h4 id="三、常用命令"><a href="#三、常用命令" class="headerlink" title="三、常用命令"></a>三、常用命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">supervisord : supervisor的服务器端部分，用于supervisor启动</div><div class="line">supervisorctl：启动supervisor的命令行窗口，在该命令行中可执行start、stop、status、reload等操作。</div></pre></td></tr></table></figure>
@@ -517,7 +535,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -526,7 +544,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

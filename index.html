@@ -775,8 +775,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -817,8 +817,7 @@
       
         
           
-            <hr>
-<h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
+            <h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">     functions=[</div><div class="line">        query.SF(<span class="string">'random_score'</span>, seed=<span class="number">10</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;function_score&quot;: &#123;</div><div class="line">            &quot;random_score&quot;: &#123;</div><div class="line">                &quot;seed&quot;: 10</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h4 id="decay-functions"><a href="#decay-functions" class="headerlink" title="decay functions"></a>decay functions</h4><p>之前提过的<code>weight</code>，<code>field_value_factor</code>，<code>random_score</code>等函数都是一种线性的影响关系，给出的分数随着距离变大而变低。有时候我们会有范围性质，分数变化缓慢的需求场景。此时上述函数就显得不那么适用。<br><code>Elasticsearch</code>提供了三种<code>decay functions</code>，让我们可以基于一个单值的数值型字段（比如日期、地点或者价格类似标准的数值型字段）来计算分数。</p>
@@ -925,8 +924,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -967,8 +966,7 @@
       
         
           
-            <hr>
-<h3 id="什么是function-score"><a href="#什么是function-score" class="headerlink" title="什么是function_score"></a>什么是function_score</h3><p><code>function_score</code>查询是处理分值计算过程的终极工具。它让你能够对所有匹配了主查询的每份文档调用一个函数来调整甚至是完全替换原来的<code>_score</code>。</p>
+            <h3 id="什么是function-score"><a href="#什么是function-score" class="headerlink" title="什么是function_score"></a>什么是function_score</h3><p><code>function_score</code>查询是处理分值计算过程的终极工具。它让你能够对所有匹配了主查询的每份文档调用一个函数来调整甚至是完全替换原来的<code>_score</code>。</p>
 <p>实际上，你可以通过设置过滤器来将查询得到的结果分成若干个子集，然后对每个子集使用不同的函数。这样你就能够同时得益于：高效的分值计算以及可以缓存的过滤器。</p>
 <p>它拥有几种预先定义好了的函数：</p>
 <ul>
@@ -1184,8 +1182,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -1226,8 +1224,7 @@
       
         
           
-            <hr>
-<h3 id="Suggest搜索"><a href="#Suggest搜索" class="headerlink" title="Suggest搜索"></a>Suggest搜索</h3><p><code>Elasticsearch</code>支持多种<code>suggest</code>类型，也支持模糊搜索。</p>
+            <h3 id="Suggest搜索"><a href="#Suggest搜索" class="headerlink" title="Suggest搜索"></a>Suggest搜索</h3><p><code>Elasticsearch</code>支持多种<code>suggest</code>类型，也支持模糊搜索。</p>
 <p><code>Elasticsearch</code>支持如下4种搜索类型：</p>
 <ul>
 <li>Term。基于编辑距离的搜索，也就是对比两个字串之间，由一个转成另一个所需的最少编辑操作次数，编辑距离越少说明越相近。搜索时需要指定字段，是很基础的一种搜索。</li>
@@ -1313,8 +1310,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -1355,8 +1352,7 @@
       
         
           
-            <hr>
-<p>Python Elasticsearch客户端提供了批量索引的功能，详情请查看<a href="https://github.com/elastic/elasticsearch-py" target="_blank" rel="external">项目主页</a></p>
+            <p>Python Elasticsearch客户端提供了批量索引的功能，详情请查看<a href="https://github.com/elastic/elasticsearch-py" target="_blank" rel="external">项目主页</a></p>
 <p>主要封装了两种方式进行<code>bulk</code>操作：</p>
 <ul>
 <li>streaming_bulk     流式</li>
@@ -1453,8 +1449,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -1495,8 +1491,7 @@
       
         
           
-            <hr>
-<h3 id="一、Elasticsearch-索引别名"><a href="#一、Elasticsearch-索引别名" class="headerlink" title="一、Elasticsearch 索引别名"></a>一、Elasticsearch 索引别名</h3><p>索引别名就像一个快捷方式或软链接，可以指向一个或多个索引，也可以给任何需要索引名的API使用。别名带给我们极大的灵活性，允许我们做到：</p>
+            <h3 id="一、Elasticsearch-索引别名"><a href="#一、Elasticsearch-索引别名" class="headerlink" title="一、Elasticsearch 索引别名"></a>一、Elasticsearch 索引别名</h3><p>索引别名就像一个快捷方式或软链接，可以指向一个或多个索引，也可以给任何需要索引名的API使用。别名带给我们极大的灵活性，允许我们做到：</p>
 <ul>
 <li>在一个运行的集群上无缝的从一个索引切换到另一个</li>
 <li>给多个索引分类</li>
@@ -1610,20 +1605,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -1664,8 +1647,7 @@
       
         
           
-            <hr>
-<h3 id="使用ElasticSearch-DSL进行搜索"><a href="#使用ElasticSearch-DSL进行搜索" class="headerlink" title="使用ElasticSearch DSL进行搜索"></a>使用ElasticSearch DSL进行搜索</h3><p>Search主要包括：</p>
+            <h3 id="使用ElasticSearch-DSL进行搜索"><a href="#使用ElasticSearch-DSL进行搜索" class="headerlink" title="使用ElasticSearch DSL进行搜索"></a>使用ElasticSearch DSL进行搜索</h3><p>Search主要包括：</p>
 <ul>
 <li>查询(queries)</li>
 <li>过滤器(filters)</li>
@@ -1762,20 +1744,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/elasticsearch/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
+                    <span itemprop="name">Elasticsearch</span>
                   </a>
                 </span>
 
@@ -1816,8 +1786,7 @@
       
         
           
-            <hr>
-<p><strong>下载地址</strong>: <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external">https://www.elastic.co/downloads/elasticsearch</a></p>
+            <p><strong>下载地址</strong>: <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external">https://www.elastic.co/downloads/elasticsearch</a></p>
 <p><strong>使用版本</strong>: elasticsearch-5.5.1</p>
 <p><strong>Python Elasticsearch DSL</strong>: <a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="external">https://github.com/elastic/elasticsearch-dsl-py</a></p>
 <p><strong>测试代码</strong>： <a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
@@ -1967,7 +1936,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1976,7 +1945,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
