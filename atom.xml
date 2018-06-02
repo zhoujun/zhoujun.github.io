@@ -195,9 +195,9 @@
       <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
     
     
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
-    
       <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
   </entry>
   
@@ -223,9 +223,9 @@
       <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
     
     
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
-    
       <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
   </entry>
   
@@ -335,11 +335,11 @@
       <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
     
     
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
-    
       <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
     
       <category term="Searchengine" scheme="http://yoursite.com/tags/Searchengine/"/>
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
   </entry>
   
@@ -365,11 +365,11 @@
       <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
     
     
-      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
-    
       <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
     
       <category term="Searchengine" scheme="http://yoursite.com/tags/Searchengine/"/>
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
     
   </entry>
   
