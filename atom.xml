@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Finger&#39;s Blog</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2018-06-02T15:37:29.327Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>Finger Chou</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python中的10个隐藏特性</title>
+    <link href="http://yoursite.com/2018/05/24/python-hidden-feature/"/>
+    <id>http://yoursite.com/2018/05/24/python-hidden-feature/</id>
+    <published>2018-05-24T03:10:00.000Z</published>
+    <updated>2018-06-02T15:37:29.327Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;1、函数参数解包-unpack&quot;&gt;&lt;a href=&quot;#1、函数参数解包-unpack&quot; class=&quot;headerlink&quot; title=&quot;1、函数参数解包(unpack)&quot;&gt;&lt;/a&gt;1、函数参数解包(unpack)&lt;/h4&gt;&lt;figure
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python3.6中那些很酷的特性</title>
+    <link href="http://yoursite.com/2018/05/22/python3.6-cool-feature/"/>
+    <id>http://yoursite.com/2018/05/22/python3.6-cool-feature/</id>
+    <published>2018-05-22T12:40:00.000Z</published>
+    <updated>2018-06-02T15:36:08.517Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;可读性更强的数字字面值&quot;&gt;&lt;a href=&quot;#可读性更强的数字字面值&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python Dictionary and Set comprehensions</title>
+    <link href="http://yoursite.com/2018/05/21/python-dictionary-and-set-comprehensions/"/>
+    <id>http://yoursite.com/2018/05/21/python-dictionary-and-set-comprehensions/</id>
+    <published>2018-05-21T02:40:00.000Z</published>
+    <updated>2018-06-02T15:36:12.894Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;大多数Python程序员都知道并使用列表推导。对于不熟悉这个概念的人来说，列表推导其实是一种更简短、更简洁的创建列表的方式。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python 元类(Metaclasses)</title>
+    <link href="http://yoursite.com/2018/05/19/python-metaclasses/"/>
+    <id>http://yoursite.com/2018/05/19/python-metaclasses/</id>
+    <published>2018-05-19T06:14:00.000Z</published>
+    <updated>2018-05-19T06:16:12.902Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;Python-元类-Metaclasses&quot;&gt;&lt;a href=&quot;#Python-元类-Metaclasses&quot; class=&quot;headerlink&quot; title=&quot;Python 元类(Metaclasses)&quot;&gt;&lt;/a&gt;Python
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python Old-Style Vs. New-Style Classes</title>
+    <link href="http://yoursite.com/2018/05/18/python-old-style-vs-new-style-classes/"/>
+    <id>http://yoursite.com/2018/05/18/python-old-style-vs-new-style-classes/</id>
+    <published>2018-05-18T13:40:00.000Z</published>
+    <updated>2018-05-19T06:13:39.309Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;Python-Old-Style-Vs-New-Style-Classes&quot;&gt;&lt;a href=&quot;#Python-Old-Style-Vs-New-Style-Classes&quot; class=&quot;headerlink&quot; title=&quot;Python Old-Style
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python类的__dict__无法更新</title>
+    <link href="http://yoursite.com/2018/05/17/python-class-dict-cannot-update/"/>
+    <id>http://yoursite.com/2018/05/17/python-class-dict-cannot-update/</id>
+    <published>2018-05-17T12:40:00.000Z</published>
+    <updated>2018-05-19T06:36:26.837Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;Python类的dict无法更新？&quot;&gt;&lt;a href=&quot;#Python类的dict无法更新？&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Python实现Elasticsearch function_score查询(二)</title>
+    <link href="http://yoursite.com/2017/08/26/using-elasticsearch-function-score-with-python-2/"/>
+    <id>http://yoursite.com/2017/08/26/using-elasticsearch-function-score-with-python-2/</id>
+    <published>2017-08-26T02:23:00.000Z</published>
+    <updated>2018-05-19T06:42:40.237Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;random-score&quot;&gt;&lt;a href=&quot;#random-score&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Python实现Elasticsearch function_score查询(一)</title>
+    <link href="http://yoursite.com/2017/08/19/using-elasticsearch-function-score-with-python-1/"/>
+    <id>http://yoursite.com/2017/08/19/using-elasticsearch-function-score-with-python-1/</id>
+    <published>2017-08-19T04:38:00.000Z</published>
+    <updated>2018-05-19T06:42:25.482Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;什么是function-score&quot;&gt;&lt;a href=&quot;#什么是function-score&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Python实现Elasticsearch提供的搜索建议</title>
+    <link href="http://yoursite.com/2017/08/16/elasticsearch-search-suggest-with-python/"/>
+    <id>http://yoursite.com/2017/08/16/elasticsearch-search-suggest-with-python/</id>
+    <published>2017-08-16T15:01:00.000Z</published>
+    <updated>2018-05-19T06:36:01.986Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;Suggest搜索&quot;&gt;&lt;a href=&quot;#Suggest搜索&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
+    
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+      <category term="Searchengine" scheme="http://yoursite.com/tags/Searchengine/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Using Elasticsearch Bulk With Python</title>
+    <link href="http://yoursite.com/2017/08/16/using-elasticsearch-bulk-with-python/"/>
+    <id>http://yoursite.com/2017/08/16/using-elasticsearch-bulk-with-python/</id>
+    <published>2017-08-16T14:02:00.000Z</published>
+    <updated>2018-05-19T06:37:50.643Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;Python Elasticsearch客户端提供了批量索引的功能，详情请查看&lt;a href=&quot;https://github.com/elastic/elasticsearch-py&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
+    
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+      <category term="Searchengine" scheme="http://yoursite.com/tags/Searchengine/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Elasticsearch Documents APIs</title>
+    <link href="http://yoursite.com/2017/08/15/elasticsearch-document-api/"/>
+    <id>http://yoursite.com/2017/08/15/elasticsearch-document-api/</id>
+    <published>2017-08-15T15:24:00.000Z</published>
+    <updated>2018-05-19T06:35:06.238Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;一、Elasticsearch-索引别名&quot;&gt;&lt;a href=&quot;#一、Elasticsearch-索引别名&quot; class=&quot;headerlink&quot; title=&quot;一、Elasticsearch 索引别名&quot;&gt;&lt;/a&gt;一、Elasticsearch
+        
+      
+    
+    </summary>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
+    
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+      <category term="Searchengine" scheme="http://yoursite.com/tags/Searchengine/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python Elasticsearch DSL 使用笔记(二)</title>
+    <link href="http://yoursite.com/2017/08/13/elasticsearch-dsl-with-python-usage-2/"/>
+    <id>http://yoursite.com/2017/08/13/elasticsearch-dsl-with-python-usage-2/</id>
+    <published>2017-08-12T23:56:00.000Z</published>
+    <updated>2018-05-19T06:43:20.367Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;使用ElasticSearch-DSL进行搜索&quot;&gt;&lt;a href=&quot;#使用ElasticSearch-DSL进行搜索&quot; class=&quot;headerlink&quot; title=&quot;使用ElasticSearch DSL进行搜索&quot;&gt;&lt;/a&gt;使用ElasticSearch
+        
+      
+    
+    </summary>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+      <category term="Searchengine" scheme="http://yoursite.com/tags/Searchengine/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python Elasticsearch DSL 使用笔记(一)</title>
+    <link href="http://yoursite.com/2017/08/12/elasticsearch-dsl-with-python-usage-1/"/>
+    <id>http://yoursite.com/2017/08/12/elasticsearch-dsl-with-python-usage-1/</id>
+    <published>2017-08-12T12:39:00.000Z</published>
+    <updated>2018-05-19T06:43:07.102Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;&lt;strong&gt;下载地址&lt;/strong&gt;: &lt;a href=&quot;https://www.elastic.co/downloads/elasticsearch&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/categories/Elasticsearch/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="Elasticsearch" scheme="http://yoursite.com/tags/Elasticsearch/"/>
+    
+      <category term="Searchengine" scheme="http://yoursite.com/tags/Searchengine/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>基于 Python 的开源人脸识别库</title>
+    <link href="http://yoursite.com/2017/07/30/python-face-recognition/"/>
+    <id>http://yoursite.com/2017/07/30/python-face-recognition/</id>
+    <published>2017-07-30T02:41:00.000Z</published>
+    <updated>2018-05-19T06:36:42.904Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;项目说明&quot;&gt;&lt;a href=&quot;#项目说明&quot; class=&quot;headerlink&quot; title=&quot;项目说明&quot;&gt;&lt;/a&gt;项目说明&lt;/h3&gt;&lt;p&gt;该库使用 dlib 顶尖的深度学习人脸识别技术构建，在户外脸部检测数据库基准（Labeled Faces in the
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库分库分表</title>
+    <link href="http://yoursite.com/2017/07/29/database-sharding/"/>
+    <id>http://yoursite.com/2017/07/29/database-sharding/</id>
+    <published>2017-07-29T05:44:00.000Z</published>
+    <updated>2018-05-19T06:34:11.893Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;hr&gt;
+&lt;h3 id=&quot;一、背景&quot;&gt;&lt;a href=&quot;#一、背景&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Database" scheme="http://yoursite.com/categories/Database/"/>
+    
+    
+      <category term="Mysql" scheme="http://yoursite.com/tags/Mysql/"/>
+    
+      <category term="Shard" scheme="http://yoursite.com/tags/Shard/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Scrapy 部署笔记</title>
+    <link href="http://yoursite.com/2017/07/02/scrapy-deploy-usage/"/>
+    <id>http://yoursite.com/2017/07/02/scrapy-deploy-usage/</id>
+    <published>2017-07-02T02:41:00.000Z</published>
+    <updated>2018-05-19T06:41:49.281Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;关键字：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;scrapy&lt;/strong&gt;， &lt;strong&gt;scrapyd&lt;/strong&gt;， &lt;strong&gt;scrapy-client&lt;/strong&gt;， &lt;strong&gt;spiderkeeper&lt;/strong&gt;&lt;/p&gt;
+&lt;h4
+        
+      
+    
+    </summary>
+    
+      <category term="Scrapy" scheme="http://yoursite.com/categories/Scrapy/"/>
+    
+    
+      <category term="Scrapy" scheme="http://yoursite.com/tags/Scrapy/"/>
+    
+      <category term="Scrapyd" scheme="http://yoursite.com/tags/Scrapyd/"/>
+    
+      <category term="SpiderKeeper" scheme="http://yoursite.com/tags/SpiderKeeper/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker 构建第一个App</title>
+    <link href="http://yoursite.com/2017/06/22/docker-build-and-run-your-first-app/"/>
+    <id>http://yoursite.com/2017/06/22/docker-build-and-run-your-first-app/</id>
+    <published>2017-06-22T15:45:00.000Z</published>
+    <updated>2018-05-19T06:34:51.540Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;测试环境：阿里云 ubuntu14.04 &lt;/p&gt;
+&lt;h4 id=&quot;一、新建Dockerfile文件&quot;&gt;&lt;a href=&quot;#一、新建Dockerfile文件&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Flask" scheme="http://yoursite.com/tags/Flask/"/>
+    
+      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+    
+      <category term="Ubuntu" scheme="http://yoursite.com/tags/Ubuntu/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Supervisord 使用笔记</title>
+    <link href="http://yoursite.com/2017/06/22/supervisord-usage/"/>
+    <id>http://yoursite.com/2017/06/22/supervisord-usage/</id>
+    <published>2017-06-22T15:40:00.000Z</published>
+    <updated>2018-05-19T06:37:33.997Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;一、安装&quot;&gt;&lt;a href=&quot;#一、安装&quot; class=&quot;headerlink&quot; title=&quot;一、安装&quot;&gt;&lt;/a&gt;一、安装&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Supervisord" scheme="http://yoursite.com/tags/Supervisord/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Ubuntu 安装svn服务</title>
+    <link href="http://yoursite.com/2017/01/27/ubuntu-install-svn-simple-server/"/>
+    <id>http://yoursite.com/2017/01/27/ubuntu-install-svn-simple-server/</id>
+    <published>2017-01-27T12:56:00.000Z</published>
+    <updated>2018-05-19T06:37:41.077Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;一、安装Subversion-Server&quot;&gt;&lt;a href=&quot;#一、安装Subversion-Server&quot; class=&quot;headerlink&quot; title=&quot;一、安装Subversion Server&quot;&gt;&lt;/a&gt;一、安装Subversion
+        
+      
+    
+    </summary>
+    
+      <category term="Note" scheme="http://yoursite.com/categories/Note/"/>
+    
+    
+      <category term="Ubuntu" scheme="http://yoursite.com/tags/Ubuntu/"/>
+    
+      <category term="SVN" scheme="http://yoursite.com/tags/SVN/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Cocos2dx－上传Google Play遇到的问题</title>
+    <link href="http://yoursite.com/2017/01/27/cocos2dx-upload-google-play/"/>
+    <id>http://yoursite.com/2017/01/27/cocos2dx-upload-google-play/</id>
+    <published>2017-01-27T12:40:00.000Z</published>
+    <updated>2018-05-19T06:34:35.104Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL&quot;&gt;&lt;a href=&quot;#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Cocos2d-x" scheme="http://yoursite.com/categories/Cocos2d-x/"/>
+    
+    
+      <category term="Cocos2d-x" scheme="http://yoursite.com/tags/Cocos2d-x/"/>
+    
+      <category term="Javascript" scheme="http://yoursite.com/tags/Javascript/"/>
+    
+  </entry>
+  
+</feed>

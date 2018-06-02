@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Python中的10个隐藏特性]]></title>
+    <url>%2F2018%2F05%2F24%2Fpython-hidden-feature%2F</url>
+    <content type="text"><![CDATA[1、函数参数解包(unpack)123456789&gt;&gt;&gt; def foo(x, y): print(x, y)... &gt;&gt;&gt; alist = [1,2]&gt;&gt;&gt; adict = &#123;&apos;x&apos;: 1, &apos;y&apos;: 2&#125;&gt;&gt;&gt; foo(*alist)1 2&gt;&gt;&gt; foo(**adict)1 2&gt;&gt;&gt; 2、python3中的元组unpack12345678&gt;&gt;&gt; a, b, *rest = range(10)&gt;&gt;&gt; a0&gt;&gt;&gt; b1&gt;&gt;&gt; rest[2, 3, 4, 5, 6, 7, 8, 9]&gt;&gt;&gt; 也可以取最后一个： 123456789&gt;&gt;&gt; first, second, *rest, last = range(10)&gt;&gt;&gt; first0&gt;&gt;&gt; second1&gt;&gt;&gt; last9&gt;&gt;&gt; rest[2, 3, 4, 5, 6, 7, 8] 3、链式比较操作符12345&gt;&gt;&gt; 1 &lt; x &lt; 2False&gt;&gt;&gt; 4 &gt; x &gt;= 3True&gt;&gt;&gt; 4、列表切片操作1234567891011121314151617181920# 按步长2取列表数据&gt;&gt;&gt; a = [1,2,3,4,5]&gt;&gt;&gt; a[::2] [1, 3, 5]# 用步长-1来反转列表&gt;&gt;&gt; a[::-1][5, 4, 3, 2, 1]# 用切片来删除列表的某一段&gt;&gt;&gt; a = [1,2,3,4,5]&gt;&gt;&gt; a[1:3] = []&gt;&gt;&gt; a[1, 4, 5]# 也可以用 del a[1:3]&gt;&gt;&gt; a = [1,2,3,4,5]&gt;&gt;&gt; del a[1:3]&gt;&gt;&gt; a[1, 4, 5] 5、嵌套的列表推导式12&gt;&gt;&gt; [(i, j) for i in range(3) for j in range(i)][(1, 0), (2, 0), (2, 1)] 6、字典里的无限递归12345&gt;&gt;&gt; a, b = &#123;&#125;, &#123;&#125;&gt;&gt;&gt; a[&apos;b&apos;] = b&gt;&gt;&gt; b[&apos;a&apos;] = a&gt;&gt;&gt; a&#123;&apos;b&apos;: &#123;&apos;a&apos;: &#123;...&#125;&#125;&#125; 当然列表也可以 12345&gt;&gt;&gt; a, b = [], []&gt;&gt;&gt; a.append(b)&gt;&gt;&gt; b.append(a)&gt;&gt;&gt; a[[[...]]] 7、下划线”_”123456# _ 在Python解析器上返回上一次的值&gt;&gt;&gt; 1 + 12&gt;&gt;&gt; _2 另外 Python中的”_”也经常用在未使用的变量命名 12&gt;&gt;&gt; pos = (1, 2)&gt;&gt;&gt; x, _ = pos 8、注意函数的默认参数12345678&gt;&gt;&gt; def foo(x=[]):... x.append(1)... print x...&gt;&gt;&gt; foo()[1]&gt;&gt;&gt; foo()[1, 1] 更安全的做法： 1234567891011&gt;&gt;&gt; def foo(x=None):... if x is None:... x = []... x.append(1)... print x...&gt;&gt;&gt; foo()[1]&gt;&gt;&gt; foo()[1]&gt;&gt;&gt; 9、另一种字符串连接123&gt;&gt;&gt; name = &quot;Hello&quot; &quot;World&quot;&gt;&gt;&gt; name&apos;HelloWorld&apos; 连接多行： 1234&gt;&gt;&gt; name = &quot;Hello&quot; \... &quot;World&quot;&gt;&gt;&gt; name&apos;HelloWorld&apos; 10、不能访问到的属性123456789&gt;&gt;&gt; class Foo(object): pass...&gt;&gt;&gt; obj = Foo()&gt;&gt;&gt; setattr(o, &apos;hello world&apos;, 1)&gt;&gt;&gt; o.hello world File &quot;&lt;stdin&gt;&quot;, line 1 o.hello world ^SyntaxError: invalid syntax 不过，能用 setattr 设置属性，就可以用 getattr 取出 12&gt;&gt;&gt; getattr(o, &apos;hello world&apos;)1]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Python3.6中那些很酷的特性]]></title>
+    <url>%2F2018%2F05%2F22%2Fpython3.6-cool-feature%2F</url>
+    <content type="text"><![CDATA[可读性更强的数字字面值Python代码在可读性上做到了极致，被称为是可执行伪代码。然而，它还在不断地改进，比如这个可读性更好的数字字面值语法，就是方便程序员能以一种 “for humans ” 的方式阅读和理解数字。你现在可以给数字添加下划线，并按照你喜欢的方式对它们进行分组 。这对于二进制或十六进制数字或者是大数来说非常方便： 123456789101112131415&gt;&gt;&gt; six_figures = 100_000&gt;&gt;&gt; six_figures100000&gt;&gt;&gt; a = 10_00_0&gt;&gt;&gt; a10000&gt;&gt;&gt; error = 0xbad_c0ffee&gt;&gt;&gt; error50159747054&gt;&gt;&gt; flags = 0b_0111_0101_0001_0101&gt;&gt;&gt; flags29973 请记住，这种改变只是语法层面上的变化，是一种在源代码中以不同方式表示数字文字的方法而已。在虚拟机编译成字节码的时候不会有任何变化，你可以在 PEP515 中了解到关于它的更多信息。 新的字符串格式化方法对字符串格式化操作有两种常用的方法，第一个是使用 “%” 操作符，第二个是使用 format 函数。 “%” 操作符 123&gt;&gt;&gt; s = &quot;%s is %d&quot; % (&apos;two&apos;, 2)&gt;&gt;&gt; s&apos;two is 2&apos; format 函数 123&gt;&gt;&gt; s = &quot;&#123;fruit&#125; is &#123;color&#125;&quot;.format(fruit=&apos;apple&apos;, color=&apos;red&apos;)&gt;&gt;&gt; s&apos;apple is red&apos; 显然，format 函数要比 % 操作符的可读性要好，在Python 3.6 增加了第三种格式化字符串方法，称为 Formatted String Literals ，简称 f字符串。 123&gt;&gt;&gt; name = &apos;Bob&apos;&gt;&gt;&gt; f&apos;Hello, &#123;name&#125;!&apos;&apos;Hello, Bob!&apos; 你还可以在字符串内使用嵌入式的 Python 表达式，例如： 1234&gt;&gt;&gt; a = 5&gt;&gt;&gt; b = 10&gt;&gt;&gt; f&apos;Five plus ten is &#123;a + b&#125; and not &#123;2 * (a + b)&#125;.&apos;&apos;Five plus ten is 15 and not 30.&apos; 这个看起来很酷，其实这种操作在模版引擎中早就有这样的特性存在，只不过因为用的人多了，就引入到了语言标准中。 除了这些，还可以操作数字 12345678910111213# 精度&gt;&gt;&gt; PI = 3.141592653&gt;&gt;&gt; f&quot;Pi is &#123;PI:.2f&#125;&quot;&gt;&gt;&gt; &apos;Pi is 3.14&apos;&gt;&gt;&gt; error = 50159747054#以16进制格式化&gt;&gt;&gt; f&apos;Programmer Error: &#123;error:#x&#125;&apos;&apos;Programmer Error: 0xbadc0ffee&apos;#以二进制格式化&gt;&gt;&gt; f&apos;Programmer Error: &#123;error:#b&#125;&apos;&apos;Programmer Error: 0b101110101101110000001111111111101110&apos; 你可以在 PEP498 中了解更多信息 变量注释 “动态语言一时爽，代码重构火葬场”，虽有危言耸听嫌疑，但的确因为动态语言的灵活性也带来代码维护困难的麻烦，我们不得不通过文档注释来对参数进行说明，而有时又因为业务需求的变更导致代码修改后没有同步文档注释造成实际代码和文档不一致的情况，如果能像静态语言一样，让程序员在语法层面就是就被限制在规则范围内做事，就不会出问题了。所以，像Java这样的语言做工程项目是有优势的。 从Python 3.5开始，可以将类型注解添加到函数和方法中： 12&gt;&gt;&gt; def my_add(a: int, b: int) -&gt; int:... return a + b 这个函数表示，a 和 b 两个参数必须是 int 类型，函数的返回值也是 int。 在语义方面没有任何改变—CPython解释器只是将类型记录为类型注释，但不做任何方式类型检查。类型检查纯粹是可选的，你需要一个像Mypy这样的工具来帮助你。 可以在PEP 526中了解更多关于这一变化的信息。 当然，这个版本不止这么一点点变化，还有： 异步生成器的语法 异步推导式语法 更快的字典结构，内存减少20％到25％ 英文原文：https://dbader.org/blog/cool-new-features-in-python-3-6]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Python Dictionary and Set comprehensions]]></title>
+    <url>%2F2018%2F05%2F21%2Fpython-dictionary-and-set-comprehensions%2F</url>
+    <content type="text"><![CDATA[大多数Python程序员都知道并使用列表推导。对于不熟悉这个概念的人来说，列表推导其实是一种更简短、更简洁的创建列表的方式。 1234&gt;&gt;&gt; some_list = [1, 2, 3, 4, 5]&gt;&gt;&gt; another_list = [ x + 1 for x in some_list ]&gt;&gt;&gt; another_list[2, 3, 4, 5, 6] 而从Python 3.1开始(也反向地移植到了Python 2.7), 我们可以用同样的方式创建集合(Set)和字典(Dict): 使用推导的方式，创建一个集合 12345&gt;&gt;&gt; # Set Comprehensions&gt;&gt;&gt; some_list = [1, 2, 3, 4, 5, 2, 5, 1, 4, 8]&gt;&gt;&gt; even_set = &#123; x for x in some_list if x % 2 == 0 &#125;&gt;&gt;&gt; even_setset([8, 2, 4]) 使用推导的方式，创建一个Dict 1234&gt;&gt;&gt; # Dict Comprehensions&gt;&gt;&gt; d = &#123; x: x % 2 == 0 for x in range(1, 11) &#125;&gt;&gt;&gt; d&#123;1: False, 2: True, 3: False, 4: True, 5: False, 6: True, 7: False, 8: True, 9: False, 10: True&#125; 另一个创建集合的方式: 123&gt;&gt;&gt; my_set = &#123;1, 2, 1, 2, 3, 4&#125;&gt;&gt;&gt; my_setset([1, 2, 3, 4]) 没有使用到内建的 set方法, 直接用大括号{}创建。]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Python 元类(Metaclasses)]]></title>
     <url>%2F2018%2F05%2F19%2Fpython-metaclasses%2F</url>
     <content type="text"><![CDATA[Python 元类(Metaclasses)1、Type and Class在Python3中，所有类都是新式类(New-Style)。因此，类的类型和它的实例类型是可以互换的。在Python中，所有的东西都是object。类也是一个object。因此类一定有一个type。例如： 1234567&gt;&gt;&gt; class Foo: pass...&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; type(x)&lt;class '__main__.Foo'&gt;&gt;&gt;&gt; type(Foo)&lt;class 'type'&gt; 如上所示：x的类型是Foo，但是Foo的类型，类的本身就是type。我们熟悉的内置类的类型也是type: 12345678&gt;&gt;&gt; for t in int, float, dict, list, tuple:... print(type(t))...&lt;class 'type'&gt;&lt;class 'type'&gt;&lt;class 'type'&gt;&lt;class 'type'&gt;&lt;class 'type'&gt; type本身的类型也是type 123&gt;&gt;&gt; type(type)&lt;class 'type'&gt;&gt;&gt;&gt; type是一个元类，其中类是实例。就像普通对象是类的实例，Python中的任何新式类，以及Python 3中的任何类，都是类的元类实例。 还是上述的例子： 1234567&gt;&gt;&gt; class Foo: pass...&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; type(x)&lt;class '__main__.Foo'&gt;&gt;&gt;&gt; type(Foo)&lt;class 'type'&gt; x是类Foo的实例 Foo 是type元类的实例 type也是元类的一个实例，因此它是它自己的一个实例。 2、如何动态创建类内置类型()函数在传递一个参数时，返回对象的类型。对于新式类，通常与对象的class属性相同: 123456789101112131415&gt;&gt;&gt; type(3)&lt;class 'int'&gt;&gt;&gt;&gt; type(['foo', 'bar', 'baz'])&lt;class 'list'&gt;&gt;&gt;&gt; t = (1, 2, 3, 4, 5)&gt;&gt;&gt; type(t)&lt;class 'tuple'&gt;&gt;&gt;&gt; class Foo:... pass...&gt;&gt;&gt; type(Foo())&lt;class '__main__.Foo'&gt; 我们还可以使用三个参数的type(， ， )方法来动态创建一个新类: 指定了类名。这成为该类的name属性。 指定了类继承的基类的一个元组。这成为该类的bases属性。 指定包含类主体定义的名称空间词典。这成为该类的dict属性。以这种方式调用类型()将创建类型元类的一个新实例。换句话说，它动态创建一个新类。 Example 1 最基本的使用1234&gt;&gt;&gt; Foo = type('Foo', (), &#123;&#125;)&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; x&lt;__main__.Foo object at 0x102b563c8&gt; 上述通过type()动态创建类和下面代码创建类是一样的。 123456&gt;&gt;&gt; class Foo:... pass...&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; x&lt;__main__.Foo object at 0x102b56400&gt; 最佳实战：动态创建类有一个很大好处。比如当你数据库表是采用分表设计。如： 12345table_1table_2table_3...table_N 这个时候你要根据表来创建对应的模型。你会发现table结构是一致，只是表名不同。那么最好的方式就是通过type()元类动态创建模型type(‘table_’+id, (), {})。 Example 2 继承123456789&gt;&gt;&gt; Bar = type('Bar', (Foo,), dict(attr=100))&gt;&gt;&gt; x = Bar()&gt;&gt;&gt; x.attr100&gt;&gt;&gt; x.__class__&lt;class '__main__.Bar'&gt;&gt;&gt;&gt; x.__class__.__bases__(&lt;class '__main__.Foo'&gt;,) 1234567891011&gt;&gt;&gt; class Bar(Foo):... attr = 100...&gt;&gt;&gt; x = Bar()&gt;&gt;&gt; x.attr100&gt;&gt;&gt; x.__class__&lt;class '__main__.Bar'&gt;&gt;&gt;&gt; x.__class__.__bases__(&lt;class '__main__.Foo'&gt;,) Example 3 默认属性1234567891011121314&gt;&gt;&gt; Foo = type(... 'Foo',... (),... &#123;... 'attr': 100,... 'attr_val': lambda x : x.attr... &#125;... )&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; x.attr100&gt;&gt;&gt; x.attr_val()100 1234567891011&gt;&gt;&gt; class Foo:... attr = 100... def attr_val(self):... return self.attr...&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; x.attr100&gt;&gt;&gt; x.attr_val()100 Examle 4 默认属性引用外部函数1234567891011121314151617&gt;&gt;&gt; def f(obj):... print('attr =', obj.attr)...&gt;&gt;&gt; Foo = type(... 'Foo',... (),... &#123;... 'attr': 100,... 'attr_val': f... &#125;... )&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; x.attr100&gt;&gt;&gt; x.attr_val()attr = 100 12345678910111213&gt;&gt;&gt; def f(obj):... print('attr =', obj.attr)...&gt;&gt;&gt; class Foo:... attr = 100... attr_val = f...&gt;&gt;&gt; x = Foo()&gt;&gt;&gt; x.attr100&gt;&gt;&gt; x.attr_val()attr = 100 参考文献1、https://realpython.com/python-metaclasses/#type-and-class]]></content>
@@ -41,8 +74,8 @@
         <category>Elasticsearch</category>
       </categories>
       <tags>
-        <tag>Elasticsearch</tag>
         <tag>Python</tag>
+        <tag>Elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -53,8 +86,8 @@
         <category>Elasticsearch</category>
       </categories>
       <tags>
-        <tag>Elasticsearch</tag>
         <tag>Python</tag>
+        <tag>Elasticsearch</tag>
       </tags>
   </entry>
   <entry>
@@ -101,9 +134,9 @@
         <category>Elasticsearch</category>
       </categories>
       <tags>
+        <tag>Python</tag>
         <tag>Elasticsearch</tag>
         <tag>Searchengine</tag>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -114,9 +147,9 @@
         <category>Elasticsearch</category>
       </categories>
       <tags>
+        <tag>Python</tag>
         <tag>Elasticsearch</tag>
         <tag>Searchengine</tag>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -192,17 +225,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Hexo使用笔记]]></title>
-    <url>%2F2017%2F01%2F27%2Fhexo-usage%2F</url>
-    <content type="text"><![CDATA[中文文档：https://hexo.io/zh-cn/docs/index.html 参考博客：http://blog.csdn.net/poem_of_sunshine/article/details/29369785/http://www.jianshu.com/p/465830080ea9#http://www.jianshu.com/p/a2023a601ceb Github配置：https://help.github.com/articles/generating-an-ssh-key/https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/ 常用命令1234hexo server | s --debughexo cleanhexo generatehexo deploy 绑定阿里云域名：http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html 后端管理插件hexo-admin123npm install --save hexo-adminhexo server -dopen http://localhost:4000/admin/ 设置后台密码修改站点配置文件，就是网站根目录下的 _config.yml文件:1234admin: username: finger password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa secret: a secret something username：后端登录用户名 password_hash：后端登录用户密码对应的md5 hash值 secret：用于保证cookie安全 密码生成hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块1234$ node&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos; 在线生成https://www.bcrypt-generator.com/ Hexo主题： https://hexo.io/themes/ https://github.com/henryhuang/oishi https://github.com/haojen/hexo-theme-Anisina https://github.com/stiekel/hexo-theme-random https://github.com/SuperKieran/TKL https://github.com/iissnan/hexo-theme-next Next 皮肤设置http://theme-next.iissnan.com/theme-settings.html]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Cocos2dx－上传Google Play遇到的问题]]></title>
     <url>%2F2017%2F01%2F27%2Fcocos2dx-upload-google-play%2F</url>
     <content type="text"><![CDATA[一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL 因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下： 12345678910111213141516171819202122Vulnerability-----------------------------------------------------------**OpenSSL**The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;You can find more information and next steps in this Google Help Center article.-----------------------------------------------------------To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.If you feel we have made this determination in error, please reach out to our developer support team.Best,The Google Play Team 解决方案 邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9 具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。 https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin 二、Google Play支付(in-app Billing)注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致 1、错误提示 1231. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效 2、系统异常 123456789101112131415java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)// 解决方法// 1、mHelper.flagEndAsync() 修改成public// 2、在launchPurchaseFlow() 之前调用flagEndAsync()----------------------------------------------------if (mHelper != null) &#123; try &#123; mHelper.flagEndAsync(); mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;); &#125; catch(IllegalStateException ex)&#123; Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show(); &#125;&#125;]]></content>
@@ -212,6 +234,17 @@
       <tags>
         <tag>Cocos2d-x</tag>
         <tag>Javascript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hexo使用笔记]]></title>
+    <url>%2F2017%2F01%2F27%2Fhexo-usage%2F</url>
+    <content type="text"><![CDATA[中文文档：https://hexo.io/zh-cn/docs/index.html 参考博客：http://blog.csdn.net/poem_of_sunshine/article/details/29369785/http://www.jianshu.com/p/465830080ea9#http://www.jianshu.com/p/a2023a601ceb Github配置：https://help.github.com/articles/generating-an-ssh-key/https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/ 常用命令1234hexo server | s --debughexo cleanhexo generatehexo deploy 绑定阿里云域名：http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html 后端管理插件hexo-admin123npm install --save hexo-adminhexo server -dopen http://localhost:4000/admin/ 设置后台密码修改站点配置文件，就是网站根目录下的 _config.yml文件:1234admin: username: finger password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa secret: a secret something username：后端登录用户名 password_hash：后端登录用户密码对应的md5 hash值 secret：用于保证cookie安全 密码生成hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块1234$ node&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos; 在线生成https://www.bcrypt-generator.com/ Hexo主题： https://hexo.io/themes/ https://github.com/henryhuang/oishi https://github.com/haojen/hexo-theme-Anisina https://github.com/stiekel/hexo-theme-random https://github.com/SuperKieran/TKL https://github.com/iissnan/hexo-theme-next Next 皮肤设置http://theme-next.iissnan.com/theme-settings.html]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
