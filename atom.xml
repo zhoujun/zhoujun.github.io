@@ -546,11 +546,11 @@
   </entry>
   
   <entry>
-    <title>Hexo使用笔记</title>
-    <link href="http://fingerchou.com/2017/01/27/hexo-usage/"/>
-    <id>http://fingerchou.com/2017/01/27/hexo-usage/</id>
+    <title>Cocos2dx－上传Google Play遇到的问题</title>
+    <link href="http://fingerchou.com/2017/01/27/cocos2dx-upload-google-play/"/>
+    <id>http://fingerchou.com/2017/01/27/cocos2dx-upload-google-play/</id>
     <published>2017-01-27T12:40:00.000Z</published>
-    <updated>2017-06-22T17:10:58.763Z</updated>
+    <updated>2018-05-19T06:34:35.104Z</updated>
     
     <summary type="html">
     
@@ -558,16 +558,18 @@
       
         
         
-          &lt;h4 id=&quot;中文文档：&quot;&gt;&lt;a href=&quot;#中文文档：&quot; class=&quot;headerlink&quot; title=&quot;中文文档：&quot;&gt;&lt;/a&gt;中文文档：&lt;/h4&gt;&lt;p&gt;&lt;a href=&quot;https://hexo.io/zh-cn/docs/index.html&quot;
+          &lt;h4 id=&quot;一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL&quot;&gt;&lt;a href=&quot;#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL&quot; class=&quot;headerlink&quot;
         
       
     
     </summary>
     
-      <category term="Note" scheme="http://fingerchou.com/categories/Note/"/>
+      <category term="Cocos2d-x" scheme="http://fingerchou.com/categories/Cocos2d-x/"/>
     
     
-      <category term="Hexo" scheme="http://fingerchou.com/tags/Hexo/"/>
+      <category term="Cocos2d-x" scheme="http://fingerchou.com/tags/Cocos2d-x/"/>
+    
+      <category term="Javascript" scheme="http://fingerchou.com/tags/Javascript/"/>
     
   </entry>
   
