@@ -317,6 +317,189 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/16/using-elasticsearch-bulk-with-python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/16/using-elasticsearch-bulk-with-python/" itemprop="url">Using Elasticsearch Bulk With Python</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T22:02:00+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/16/using-elasticsearch-bulk-with-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/16/using-elasticsearch-bulk-with-python/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/16/using-elasticsearch-bulk-with-python/" class="leancloud_visitors" data-flag-title="Using Elasticsearch Bulk With Python">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Python Elasticsearch客户端提供了批量索引的功能，详情请查看<a href="https://github.com/elastic/elasticsearch-py" target="_blank" rel="external">项目主页</a></p>
+<p>主要封装了两种方式进行<code>bulk</code>操作：</p>
+<ul>
+<li>streaming_bulk     流式</li>
+<li>parallel_buck     多线程</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">streaming_bulk</span><span class="params">(</span></span></div><div class="line">	client, </div><div class="line">	actions, </div><div class="line">	chunk_size=<span class="number">500</span>, </div><div class="line">	max_chunk_bytes=<span class="number">104857600</span>, </div><div class="line">	raise_on_error=True, </div><div class="line">	expand_action_callback=&lt;function expand_action&gt;, </div><div class="line">	raise_on_exception=True, </div><div class="line">	max_retries=<span class="number">0</span>, </div><div class="line">	initial_backoff=<span class="number">2</span>, </div><div class="line">	max_backoff=<span class="number">600</span>, </div><div class="line">	yield_ok=True, </div><div class="line">	**kwargs): <span class="keyword">pass</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parallel_bulk</span><span class="params">(</span></span></div><div class="line">	client, </div><div class="line">	actions, </div><div class="line">	thread_count=<span class="number">4</span>, </div><div class="line">	chunk_size=<span class="number">500</span>, </div><div class="line">	max_chunk_bytes=<span class="number">104857600</span>, </div><div class="line">	queue_size=<span class="number">4</span>, </div><div class="line">	expand_action_callback=&lt;function expand_action&gt;, </div><div class="line">	**kwargs): <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p><code>streaming</code>比<code>parallel</code>多了重试的机制。两个方法默认都是每次处理500索引，两个方法都返回迭代器对象，<code>bulk</code>方法默认使用的是<code>streaming_bulk</code>方式。如果要使用<code>parallel_buck</code>需要修改源代码或者自己扩展。</p>
+<p>bulk方法定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bulk</span><span class="params">(client, actions, stats_only=False, **kwargs)</span>:</span></div><div class="line">    success, failed = <span class="number">0</span>, <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="comment"># list of errors to be collected is not stats_only</span></div><div class="line">    errors = []</div><div class="line"></div><div class="line">    <span class="keyword">for</span> ok, item <span class="keyword">in</span> streaming_bulk(client, actions, **kwargs):</div><div class="line">        <span class="comment"># go through request-reponse pairs and detect failures</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ok:</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> stats_only:</div><div class="line">                errors.append(item)</div><div class="line">            failed += <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            success += <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> success, failed <span class="keyword">if</span> stats_only <span class="keyword">else</span> errors</div></pre></td></tr></table></figure></p>
+<ul>
+<li>client     为ElasticSearch实例对象</li>
+<li>actions     索引内容</li>
+<li>stats_only 为True则只返回成功和失败的数量，False则会返回具体的失败内容列表</li>
+</ul>
+<p>actions 内容为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &apos;_op_type&apos;: &apos;delete&apos;,</div><div class="line">    &apos;_index&apos;: &apos;index-name&apos;,</div><div class="line">    &apos;_type&apos;: &apos;type-name&apos;,</div><div class="line">    &apos;_id&apos;: 1,</div><div class="line">&#125;</div><div class="line">&#123;</div><div class="line">    &apos;_op_type&apos;: &apos;update&apos;,</div><div class="line">    &apos;_index&apos;: &apos;index-name&apos;,</div><div class="line">    &apos;_type&apos;: &apos;type-name&apos;,</div><div class="line">    &apos;_id&apos;: 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>_op_type</code> 可以是<code>index</code>, <code>create</code>, <code>delete</code>, <code>update</code>操作，默认使用<code>index</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch</div><div class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> helpers</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_streaming_bulk</span><span class="params">()</span>:</span></div><div class="line">    actions = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>, <span class="number">100000</span>):</div><div class="line">        actions.append(&#123;<span class="string">'_index'</span>: <span class="string">'test_index'</span>, <span class="string">'_type'</span>: <span class="string">'test'</span>, <span class="string">'x'</span>: i&#125;)</div><div class="line"></div><div class="line">    helpers.bulk(es, actions, <span class="keyword">False</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_parallel_bulk</span><span class="params">()</span>:</span></div><div class="line">    actions = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>, <span class="number">100000</span>):</div><div class="line">        actions.append(&#123;<span class="string">'_index'</span>: <span class="string">'test_index'</span>, <span class="string">'_type'</span>: <span class="string">'test'</span>, <span class="string">'x'</span>: i&#125;)</div><div class="line"></div><div class="line">    parallel_bulk(es, actions)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parallel_bulk</span><span class="params">(client, actions, stats_only=False, **kwargs)</span>:</span></div><div class="line"></div><div class="line">    success, failed = <span class="number">0</span>, <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="comment"># list of errors to be collected is not stats_only</span></div><div class="line">    errors = []</div><div class="line"></div><div class="line">    <span class="keyword">for</span> ok, item <span class="keyword">in</span> helpers.parallel_bulk(client, actions, **kwargs):</div><div class="line">        <span class="comment"># print ok, item</span></div><div class="line">        <span class="comment"># go through request-reponse pairs and detect failures</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ok:</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> stats_only:</div><div class="line">                errors.append(item)</div><div class="line">            failed += <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            success += <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> success, failed <span class="keyword">if</span> stats_only <span class="keyword">else</span> errors</div></pre></td></tr></table></figure>
+<p>测试代码： <a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/15/elasticsearch-document-api/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -371,8 +554,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">Elasticsearch</span>
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
                   </a>
                 </span>
 
@@ -571,8 +754,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">Elasticsearch</span>
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
                   </a>
                 </span>
 
@@ -754,8 +937,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">Elasticsearch</span>
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
                   </a>
                 </span>
 
@@ -876,7 +1059,7 @@
 <h4 id="2、创建索引和文档"><a href="#2、创建索引和文档" class="headerlink" title="2、创建索引和文档"></a>2、创建索引和文档</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Date, Integer, Keyword, Text</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections</div><div class="line"></div><div class="line"><span class="comment"># Define a default Elasticsearch client</span></div><div class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(DocType)</span>:</span></div><div class="line">    title = Text(analyzer=<span class="string">'snowball'</span>, fields=&#123;<span class="string">'raw'</span>: Keyword()&#125;)</div><div class="line">    body = Text(analyzer=<span class="string">'snowball'</span>)</div><div class="line">    tags = Keyword()</div><div class="line">    published_from = Date()</div><div class="line">    lines = Integer()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blog'</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, ** kwargs)</span>:</span></div><div class="line">        self.lines = len(self.body.split())</div><div class="line">        <span class="keyword">return</span> super(Article, self).save(** kwargs)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_published</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> datetime.now() &gt;= self.published_from</div><div class="line"></div><div class="line"><span class="comment"># create the mappings in elasticsearch</span></div><div class="line">Article.init()</div></pre></td></tr></table></figure>
 <p>创建了一个索引为blog，文档为article的Elasticsearch数据库和表。<br>必须执行<code>Article.init()</code>方法。 这样Elasticsearch才会根据你的DocType产生对应的Mapping。否则Elasticsearch就会在你第一次创建Index和Type的时候根据你的内容建立对应的Mapping。</p>
 <p>现在我们可以通过Elasticsearch Restful API来检查<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/_mapping/</div><div class="line"></div><div class="line">&#123;&quot;blog&quot;:</div><div class="line">	&#123;&quot;mappings&quot;:</div><div class="line">		&#123;&quot;article&quot;:</div><div class="line">			&#123;&quot;properties&quot;:&#123;</div><div class="line">				&quot;body&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;,</div><div class="line">				&quot;lines&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</div><div class="line">				&quot;published_from&quot;:&#123;&quot;type&quot;:&quot;date&quot;&#125;,</div><div class="line">				&quot;tags&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</div><div class="line">				&quot;title&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;fields&quot;:&#123;&quot;raw&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;&#125;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="三、使用Elasticsearch进行CRUD操作"><a href="#三、使用Elasticsearch进行CRUD操作" class="headerlink" title="三、使用Elasticsearch进行CRUD操作"></a>三、使用Elasticsearch进行CRUD操作</h3><h4 id="1、Create-a-article"><a href="#1、Create-a-article" class="headerlink" title="1、Create a article"></a>1、Create a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># create and save and article</span></div><div class="line">article = Article(meta=&#123;<span class="string">'id'</span>: <span class="number">1</span>&#125;, title=<span class="string">'Hello elasticsearch!'</span>, tags=[<span class="string">'elasticsearch'</span>])</div><div class="line">article.body = <span class="string">''' looong text '''</span></div><div class="line">article.published_from = datetime.now()</div><div class="line">article.save()</div></pre></td></tr></table></figure>
+<h3 id="三、使用Elasticsearch进行CRUD操作"><a href="#三、使用Elasticsearch进行CRUD操作" class="headerlink" title="三、使用Elasticsearch进行CRUD操作"></a>三、使用Elasticsearch进行CRUD操作</h3><h4 id="1、Create-an-article"><a href="#1、Create-an-article" class="headerlink" title="1、Create an article"></a>1、Create an article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># create and save and article</span></div><div class="line">article = Article(meta=&#123;<span class="string">'id'</span>: <span class="number">1</span>&#125;, title=<span class="string">'Hello elasticsearch!'</span>, tags=[<span class="string">'elasticsearch'</span>])</div><div class="line">article.body = <span class="string">''' looong text '''</span></div><div class="line">article.published_from = datetime.now()</div><div class="line">article.save()</div></pre></td></tr></table></figure>
 <p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">http POST http://127.0.0.1:9200/blog/article/1 title=&quot;hello elasticsearch&quot; tags:=&apos;[&quot;elasticsearch&quot;]&apos;</div><div class="line"></div><div class="line">HTTP/1.1 201 Created</div><div class="line">Content-Length: 73</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;created&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h4 id="2、Get-a-article"><a href="#2、Get-a-article" class="headerlink" title="2、Get a article"></a>2、Get a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="comment"># 如果获取一个不存在的文章则返回None</span></div><div class="line">a = Article.get(id=<span class="string">'no-in-es'</span>)</div><div class="line">a <span class="keyword">is</span> <span class="keyword">None</span></div><div class="line"></div><div class="line"><span class="comment"># 还可以获取多个文章</span></div><div class="line">articles = Article.mget([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
 <p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/article/1</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 141</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_source&quot;: &#123;</div><div class="line">        &quot;tags&quot;: [</div><div class="line">            &quot;elasticsearch&quot;</div><div class="line">        ], </div><div class="line">        &quot;title&quot;: &quot;hello elasticsearch&quot;</div><div class="line">    &#125;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;found&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -2015,181 +2198,6 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/01/27/cocos2dx-upload-google-play/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/27/cocos2dx-upload-google-play/" itemprop="url">Cocos2dx－上传Google Play遇到的问题</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-27T20:40:00+08:00">
-                2017-01-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
-                    <span itemprop="name">Cocos2d-x</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/01/27/cocos2dx-upload-google-play/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/01/27/cocos2dx-upload-google-play/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/01/27/cocos2dx-upload-google-play/" class="leancloud_visitors" data-flag-title="Cocos2dx－上传Google Play遇到的问题">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL"><a href="#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL" class="headerlink" title="一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL"></a>一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL</h4><hr>
-<p>因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Vulnerability</div><div class="line">-----------------------------------------------------------</div><div class="line">**OpenSSL**</div><div class="line"></div><div class="line">The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:</div><div class="line"></div><div class="line">\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;</div><div class="line"></div><div class="line">You can find more information and next steps in this Google Help Center article.</div><div class="line">-----------------------------------------------------------</div><div class="line"></div><div class="line">To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.</div><div class="line"></div><div class="line">While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.</div><div class="line"></div><div class="line">Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.</div><div class="line"></div><div class="line">If you feel we have made this determination in error, please reach out to our developer support team.</div><div class="line"></div><div class="line">Best,</div><div class="line"></div><div class="line">The Google Play Team</div></pre></td></tr></table></figure>
-<p><strong>解决方案</strong></p>
-<p>邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：<a href="http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9" target="_blank" rel="external">http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9</a></p>
-<p>具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。</p>
-<p><a href="https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin" target="_blank" rel="external">https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin</a></p>
-<h4 id="二、Google-Play支付-in-app-Billing"><a href="#二、Google-Play支付-in-app-Billing" class="headerlink" title="二、Google Play支付(in-app Billing)"></a>二、Google Play支付(in-app Billing)</h4><p><strong>注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致</strong></p>
-<p>1、错误提示</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本</div><div class="line">2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效</div></pre></td></tr></table></figure>
-<p>2、系统异常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)</div><div class="line"></div><div class="line">// 解决方法</div><div class="line">// 1、mHelper.flagEndAsync() 修改成public</div><div class="line">// 2、在launchPurchaseFlow() 之前调用flagEndAsync()</div><div class="line">----------------------------------------------------</div><div class="line">if (mHelper != null) &#123;</div><div class="line">    try &#123;</div><div class="line">        mHelper.flagEndAsync();</div><div class="line">        mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;);</div><div class="line">    &#125;       </div><div class="line">    catch(IllegalStateException ex)&#123;</div><div class="line">        Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2240,7 +2248,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2251,7 +2259,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2262,7 +2270,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

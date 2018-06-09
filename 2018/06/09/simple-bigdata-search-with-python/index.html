@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SearchEngine,Python,BigData," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Finger's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="本文转自：https://my.oschina.net/taogang/blog/1579204
+搜索是大数据领域里常见的需求。Splunk和ELK分别是该领域在非开源和开源领域里的领导者。本文利用很少的Python代码实现了一个基本的数据搜索功能，试图让大家理解大数据搜索的基本原理。
+1、布隆过滤器（Bloom Filter）第一步我们先要实现一个布隆过滤器
+布隆过滤器是大数据领域的一个常见算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Python实现一个大数据搜索引擎">
+<meta property="og:url" content="http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/index.html">
+<meta property="og:site_name" content="Finger's Blog">
+<meta property="og:description" content="本文转自：https://my.oschina.net/taogang/blog/1579204
+搜索是大数据领域里常见的需求。Splunk和ELK分别是该领域在非开源和开源领域里的领导者。本文利用很少的Python代码实现了一个基本的数据搜索功能，试图让大家理解大数据搜索的基本原理。
+1、布隆过滤器（Bloom Filter）第一步我们先要实现一个布隆过滤器
+布隆过滤器是大数据领域的一个常见算法">
+<meta property="og:image" content="http://fingerchou.com/imgs/20180609/1.png">
+<meta property="og:image" content="http://fingerchou.com/imgs/20180609/2.png">
+<meta property="og:image" content="http://fingerchou.com/imgs/20180609/3.png">
+<meta property="og:image" content="http://fingerchou.com/imgs/20180609/4.png">
+<meta property="og:updated_time" content="2018-06-09T05:45:34.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Python实现一个大数据搜索引擎">
+<meta name="twitter:description" content="本文转自：https://my.oschina.net/taogang/blog/1579204
+搜索是大数据领域里常见的需求。Splunk和ELK分别是该领域在非开源和开源领域里的领导者。本文利用很少的Python代码实现了一个基本的数据搜索功能，试图让大家理解大数据搜索的基本原理。
+1、布隆过滤器（Bloom Filter）第一步我们先要实现一个布隆过滤器
+布隆过滤器是大数据领域的一个常见算法">
+<meta name="twitter:image" content="http://fingerchou.com/imgs/20180609/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/"/>
+
+
+
+
+
+  <title>用Python实现一个大数据搜索引擎 | Finger's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f72f3a882d988aa169cd1c83da94a390";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Finger's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">用Python实现一个大数据搜索引擎</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-09T13:06:00+08:00">
+                2018-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SearchEngine/" itemprop="url" rel="index">
+                    <span itemprop="name">SearchEngine</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/09/simple-bigdata-search-with-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/09/simple-bigdata-search-with-python/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/09/simple-bigdata-search-with-python/" class="leancloud_visitors" data-flag-title="用Python实现一个大数据搜索引擎">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文转自：<a href="https://my.oschina.net/taogang/blog/1579204" target="_blank" rel="external">https://my.oschina.net/taogang/blog/1579204</a></p>
+<p>搜索是大数据领域里常见的需求。Splunk和ELK分别是该领域在非开源和开源领域里的领导者。本文利用很少的Python代码实现了一个基本的数据搜索功能，试图让大家理解大数据搜索的基本原理。</p>
+<h4 id="1、布隆过滤器（Bloom-Filter）"><a href="#1、布隆过滤器（Bloom-Filter）" class="headerlink" title="1、布隆过滤器（Bloom Filter）"></a>1、布隆过滤器（Bloom Filter）</h4><p>第一步我们先要实现一个<a href="https://en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="external">布隆过滤器</a></p>
+<p>布隆过滤器是大数据领域的一个常见算法，它的目的是过滤掉那些不是目标的元素。也就是说如果一个要搜索的词并不存在与我的数据中，那么它可以以很快的速度返回目标不存在。</p>
+<p>让我们看看以下布隆过滤器的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">class Bloomfilter(object):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    A Bloom filter is a probabilistic data-structure that trades space for accuracy</div><div class="line">    when determining if a value is in a set.  It can tell you if a value was possibly</div><div class="line">    added, or if it was definitely not added, but it can&apos;t tell you for certain that</div><div class="line">    it was added.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    def __init__(self, size):</div><div class="line">        &quot;&quot;&quot;Setup the BF with the appropriate size&quot;&quot;&quot;</div><div class="line">        self.values = [False] * size</div><div class="line">        self.size = size</div><div class="line"></div><div class="line">    def hash_value(self, value):</div><div class="line">        &quot;&quot;&quot;Hash the value provided and scale it to fit the BF size&quot;&quot;&quot;</div><div class="line">        return hash(value) % self.size</div><div class="line"></div><div class="line">    def add_value(self, value):</div><div class="line">        &quot;&quot;&quot;Add a value to the BF&quot;&quot;&quot;</div><div class="line">        h = self.hash_value(value)</div><div class="line">        self.values[h] = True</div><div class="line"></div><div class="line">    def might_contain(self, value):</div><div class="line">        &quot;&quot;&quot;Check if the value might be in the BF&quot;&quot;&quot;</div><div class="line">        h = self.hash_value(value)</div><div class="line">        return self.values[h]</div><div class="line"></div><div class="line">    def print_contents(self):</div><div class="line">        &quot;&quot;&quot;Dump the contents of the BF for debugging purposes&quot;&quot;&quot;</div><div class="line">        print(self.values)</div></pre></td></tr></table></figure>
+<ul>
+<li>基本的数据结构是个数组（实际上是个位图，用1/0来记录数据是否存在），初始化是没有任何内容，所以全部置False。实际的使用当中，该数组的长度是非常大的，以保证效率。</li>
+<li>利用哈希算法来决定数据应该存在哪一位，也就是数组的索引</li>
+<li>当一个数据被加入到布隆过滤器的时候，计算它的哈希值然后把相应的位置为True</li>
+<li>当检查一个数据是否已经存在或者说被索引过的时候，只要检查对应的哈希值所在的位的True／Fasle</li>
+</ul>
+<p>看到这里，大家应该可以看出，如果布隆过滤器返回False，那么数据一定是没有索引过的，然而如果返回True，那也不能说数据一定就已经被索引过。在搜索过程中使用布隆过滤器可以使得很多没有命中的搜索提前返回来提高效率。</p>
+<p>我们看看这段 code是如何运行的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">bf = Bloomfilter(10)</div><div class="line">bf.add_value(&apos;dog&apos;)</div><div class="line">bf.add_value(&apos;fish&apos;)</div><div class="line">bf.add_value(&apos;cat&apos;)</div><div class="line">bf.print_contents()</div><div class="line">bf.add_value(&apos;bird&apos;)</div><div class="line">bf.print_contents()</div><div class="line"># Note: contents are unchanged after adding bird - it collides</div><div class="line">for term in [&apos;dog&apos;, &apos;fish&apos;, &apos;cat&apos;, &apos;bird&apos;, &apos;duck&apos;, &apos;emu&apos;]:</div><div class="line">    print(&apos;&#123;&#125;: &#123;&#125; &#123;&#125;&apos;.format(term, bf.hash_value(term), bf.might_contain(term)))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[False, False, False, False, True, True, False, False, False, True]</div><div class="line">[False, False, False, False, True, True, False, False, False, True]</div><div class="line">dog: 5 True</div><div class="line">fish: 4 True</div><div class="line">cat: 9 True</div><div class="line">bird: 9 True</div><div class="line">duck: 5 True</div><div class="line">emu: 8 False</div></pre></td></tr></table></figure>
+<h5 id="1-1、首先创建了一个容量为10的的布隆过滤器"><a href="#1-1、首先创建了一个容量为10的的布隆过滤器" class="headerlink" title="1.1、首先创建了一个容量为10的的布隆过滤器"></a>1.1、首先创建了一个容量为10的的布隆过滤器</h5><p><img src="/imgs/20180609/1.png" alt=""></p>
+<h5 id="1-2、然后分别加入-‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下："><a href="#1-2、然后分别加入-‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下：" class="headerlink" title="1.2、然后分别加入 ‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下："></a>1.2、然后分别加入 ‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下：</h5><p><img src="/imgs/20180609/2.png" alt=""></p>
+<h5 id="1-3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。"><a href="#1-3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。" class="headerlink" title="1.3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。"></a>1.3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。</h5><p><img src="/imgs/20180609/3.png" alt=""></p>
+<h5 id="1-4、最后我们检查一堆对象（’dog’-‘fish’-‘cat’-‘bird’-‘duck’-‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。"><a href="#1-4、最后我们检查一堆对象（’dog’-‘fish’-‘cat’-‘bird’-‘duck’-‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。" class="headerlink" title="1.4、最后我们检查一堆对象（’dog’, ‘fish’, ‘cat’, ‘bird’, ‘duck’, ‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。"></a>1.4、最后我们检查一堆对象（’dog’, ‘fish’, ‘cat’, ‘bird’, ‘duck’, ‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。</h5><p><img src="/imgs/20180609/4.png" alt=""></p>
+<h4 id="2、分词"><a href="#2、分词" class="headerlink" title="2、分词"></a>2、分词</h4><p>下面一步我们要实现分词。 分词的目的是要把我们的文本数据分割成可搜索的最小单元，也就是词。这里我们主要针对英语，因为中文的分词涉及到自然语言处理，比较复杂，而英文基本只要用标点符号就好了。</p>
+<p>下面我们看看分词的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">def major_segments(s):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Perform major segmenting on a string.  Split the string by all of the major</div><div class="line">    breaks, and return the set of everything found.  The breaks in this implementation</div><div class="line">    are single characters, but in Splunk proper they can be multiple characters.</div><div class="line">    A set is used because ordering doesn&apos;t matter, and duplicates are bad.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    major_breaks = &apos; &apos;</div><div class="line">    last = -1</div><div class="line">    results = set()</div><div class="line"></div><div class="line">    # enumerate() will give us (0, s[0]), (1, s[1]), ...</div><div class="line">    for idx, ch in enumerate(s):</div><div class="line">        if ch in major_breaks:</div><div class="line">            segment = s[last+1:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            last = idx</div><div class="line"></div><div class="line">    # The last character may not be a break so always capture</div><div class="line">    # the last segment (which may end up being &quot;&quot;, but yolo)</div><div class="line">    segment = s[last+1:]</div><div class="line">    results.add(segment)</div><div class="line"></div><div class="line">    return results</div></pre></td></tr></table></figure>
+<h5 id="2-1、主要分割"><a href="#2-1、主要分割" class="headerlink" title="2.1、主要分割"></a>2.1、主要分割</h5><p>主要分割使用空格来分词，实际的分词逻辑中，还会有其它的分隔符。例如Splunk的缺省分割符包括以下这些，用户也可以定义自己的分割符。</p>
+<p>] &lt; &gt; ( ) { } | ! ; , ‘ “ * \n \r \s \t &amp; ? + %21 %26 %2526 %3B %7C %20 %2B %3D – %2520 %5D %5B %3A %0A %2C %28 %29</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">def minor_segments(s):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Perform minor segmenting on a string.  This is like major</div><div class="line">    segmenting, except it also captures from the start of the</div><div class="line">    input to each break.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    minor_breaks = &apos;_.&apos;</div><div class="line">    last = -1</div><div class="line">    results = set()</div><div class="line"></div><div class="line">    for idx, ch in enumerate(s):</div><div class="line">        if ch in minor_breaks:</div><div class="line">            segment = s[last+1:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            segment = s[:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            last = idx</div><div class="line"></div><div class="line">    segment = s[last+1:]</div><div class="line">    results.add(segment)</div><div class="line">    results.add(s)</div><div class="line"></div><div class="line">    return results</div></pre></td></tr></table></figure>
+<h5 id="2-2、次要分割"><a href="#2-2、次要分割" class="headerlink" title="2.2、次要分割"></a>2.2、次要分割</h5><p>次要分割和主要分割的逻辑类似，只是还会把从开始部分到当前分割的结果加入。例如“1.2.3.4”的次要分割会有1，2，3，4，1.2，1.2.3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def segments(event):</div><div class="line">    &quot;&quot;&quot;Simple wrapper around major_segments / minor_segments&quot;&quot;&quot;</div><div class="line">    results = set()</div><div class="line">    for major in major_segments(event):</div><div class="line">        for minor in minor_segments(major):</div><div class="line">            results.add(minor)</div><div class="line">    return results</div></pre></td></tr></table></figure>
+<p>分词的逻辑就是对文本先进行主要分割，对每一个主要分割在进行次要分割。然后把所有分出来的词返回。</p>
+<p>我们看看这段 code是如何运行的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for term in segments(&apos;src_ip = 1.2.3.4&apos;):</div><div class="line">	print(term)</div></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line">1.2</div><div class="line">1.2.3.4</div><div class="line">src_ip</div><div class="line">3</div><div class="line">1</div><div class="line">1.2.3</div><div class="line">ip</div><div class="line">2</div><div class="line">=</div><div class="line">4</div></pre></td></tr></table></figure>
+<h4 id="3、搜索"><a href="#3、搜索" class="headerlink" title="3、搜索"></a>3、搜索</h4><p>好了，有个分词和布隆过滤器这两个利器的支撑后，我们就可以来实现搜索的功能了。</p>
+<p>上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class Splunk(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.bf = Bloomfilter(64)</div><div class="line">        self.terms = &#123;&#125;  # Dictionary of term to set of events</div><div class="line">        self.events = []</div><div class="line"></div><div class="line">    def add_event(self, event):</div><div class="line">        &quot;&quot;&quot;Adds an event to this object&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Generate a unique ID for the event, and save it</div><div class="line">        event_id = len(self.events)</div><div class="line">        self.events.append(event)</div><div class="line"></div><div class="line">        # Add each term to the bloomfilter, and track the event by each term</div><div class="line">        for term in segments(event):</div><div class="line">            self.bf.add_value(term)</div><div class="line"></div><div class="line">            if term not in self.terms:</div><div class="line">                self.terms[term] = set()</div><div class="line">            self.terms[term].add(event_id)</div><div class="line"></div><div class="line">    def search(self, term):</div><div class="line">        &quot;&quot;&quot;Search for a single term, and yield all the events that contain it&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # In Splunk this runs in O(1), and is likely to be in filesystem cache (memory)</div><div class="line">        if not self.bf.might_contain(term):</div><div class="line">            return</div><div class="line"></div><div class="line">        # In Splunk this probably runs in O(log N) where N is the number of terms in the tsidx</div><div class="line">        if term not in self.terms:</div><div class="line">            return</div><div class="line"></div><div class="line">        for event_id in sorted(self.terms[term]):</div><div class="line">            yield self.events[event_id]</div></pre></td></tr></table></figure>
+<ul>
+<li>Splunk代表一个拥有搜索功能的索引集合</li>
+<li>每一个集合中包含一个布隆过滤器，一个倒排词表（字典），和一个存储所有事件的数组</li>
+<li>当一个事件被加入到索引的时候，会做以下的逻辑<ul>
+<li>为每一个事件生成一个unqie id，这里就是序号</li>
+<li>对事件进行分词，把每一个词加入到倒排词表，也就是每一个词对应的事件的id的映射结构，注意，一个词可能对应多个事件，所以倒排表的的值是一个Set。倒排表是绝大部分搜索引擎的核心功能。</li>
+</ul>
+</li>
+<li>当一个词被搜索的时候，会做以下的逻辑<ul>
+<li>检查布隆过滤器，如果为假，直接返回</li>
+<li>检查词表，如果被搜索单词不在词表中，直接返回</li>
+<li>在倒排表中找到所有对应的事件id，然后返回事件的内容</li>
+</ul>
+</li>
+</ul>
+<p>我们运行下看看吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">s = Splunk()</div><div class="line">s.add_event(&apos;src_ip = 1.2.3.4&apos;)</div><div class="line">s.add_event(&apos;src_ip = 5.6.7.8&apos;)</div><div class="line">s.add_event(&apos;dst_ip = 1.2.3.4&apos;)</div><div class="line"></div><div class="line">for event in s.search(&apos;1.2.3.4&apos;):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search(&apos;src_ip&apos;):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search(&apos;ip&apos;):</div><div class="line">    print(event)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">src_ip = 1.2.3.4</div><div class="line">dst_ip = 1.2.3.4</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">dst_ip = 1.2.3.4</div></pre></td></tr></table></figure>
+<p>是不是很赞！</p>
+<h4 id="4、更复杂的搜索"><a href="#4、更复杂的搜索" class="headerlink" title="4、更复杂的搜索"></a>4、更复杂的搜索</h4><p>更进一步，在搜索过程中，我们想用And和Or来实现更复杂的搜索逻辑。</p>
+<p>上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">class SplunkM(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.bf = Bloomfilter(64)</div><div class="line">        self.terms = &#123;&#125;  # Dictionary of term to set of events</div><div class="line">        self.events = []</div><div class="line"></div><div class="line">    def add_event(self, event):</div><div class="line">        &quot;&quot;&quot;Adds an event to this object&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Generate a unique ID for the event, and save it</div><div class="line">        event_id = len(self.events)</div><div class="line">        self.events.append(event)</div><div class="line"></div><div class="line">        # Add each term to the bloomfilter, and track the event by each term</div><div class="line">        for term in segments(event):</div><div class="line">            self.bf.add_value(term)</div><div class="line">            if term not in self.terms:</div><div class="line">                self.terms[term] = set()</div><div class="line"></div><div class="line">            self.terms[term].add(event_id)</div><div class="line"></div><div class="line">    def search_all(self, terms):</div><div class="line">        &quot;&quot;&quot;Search for an AND of all terms&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Start with the universe of all events...</div><div class="line">        results = set(range(len(self.events)))</div><div class="line"></div><div class="line">        for term in terms:</div><div class="line">            # If a term isn&apos;t present at all then we can stop looking</div><div class="line">            if not self.bf.might_contain(term):</div><div class="line">                return</div><div class="line">            if term not in self.terms:</div><div class="line">                return</div><div class="line"></div><div class="line">            # Drop events that don&apos;t match from our results</div><div class="line">            results = results.intersection(self.terms[term])</div><div class="line"></div><div class="line">        for event_id in sorted(results):</div><div class="line">            yield self.events[event_id]</div><div class="line"></div><div class="line"></div><div class="line">    def search_any(self, terms):</div><div class="line">        &quot;&quot;&quot;Search for an OR of all terms&quot;&quot;&quot;</div><div class="line">        results = set()</div><div class="line"></div><div class="line">        for term in terms:</div><div class="line">            # If a term isn&apos;t present, we skip it, but don&apos;t stop</div><div class="line">            if not self.bf.might_contain(term):</div><div class="line">                continue</div><div class="line">            if term not in self.terms:</div><div class="line">                continue</div><div class="line"></div><div class="line">            # Add these events to our results</div><div class="line">            results = results.union(self.terms[term])</div><div class="line"></div><div class="line">        for event_id in sorted(results):</div><div class="line">            yield self.events[event_id]</div></pre></td></tr></table></figure>
+<p>利用Python集合的intersection和union操作，可以很方便的支持And（求交集）和Or（求合集）的操作。</p>
+<p>运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">s = SplunkM()</div><div class="line">s.add_event(&apos;src_ip = 1.2.3.4&apos;)</div><div class="line">s.add_event(&apos;src_ip = 5.6.7.8&apos;)</div><div class="line">s.add_event(&apos;dst_ip = 1.2.3.4&apos;)</div><div class="line"></div><div class="line">for event in s.search_all([&apos;src_ip&apos;, &apos;5.6&apos;]):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search_any([&apos;src_ip&apos;, &apos;dst_ip&apos;]):</div><div class="line">    print(event)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">src_ip = 5.6.7.8</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">dst_ip = 1.2.3.4</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/zhoujun/mydemos/tree/master/simple-bigdata-seach" target="_blank" rel="external">完整源码地址</a></p>
+<h4 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h4><p>以上的代码只是为了说明大数据搜索的基本原理，包括布隆过滤器，分词和倒排表。如果大家真的想要利用这代码来实现真正的搜索功能，还差的太远。所有的内容来自于Splunk Conf2017。大家如果有兴趣可以去看网上的视频。</p>
+<ul>
+<li><a href="https://conf.splunk.com/files/2017/slides/a-trip-through-the-splunk-data-ingestion-and-retrieval-pipeline.pdf" target="_blank" rel="external">文档</a></li>
+<li><a href="http://conf.splunk.com/files/2017/recordings/a-trip-through-the-splunk-data-ingestion-and-retrieval-pipeline.mp4" target="_blank" rel="external">视频</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/imgs/wechat-reward-image.jpg" alt="Finger Chou 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/imgs/alipay-reward-image.jpg" alt="Finger Chou 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SearchEngine/" rel="tag"># SearchEngine</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+            <a href="/tags/BigData/" rel="tag"># BigData</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/24/python-hidden-feature/" rel="next" title="Python中的10个隐藏特性">
+                <i class="fa fa-chevron-left"></i> Python中的10个隐藏特性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Finger Chou</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zhoujun" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:finger.zhou@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、布隆过滤器（Bloom-Filter）"><span class="nav-number">1.</span> <span class="nav-text">1、布隆过滤器（Bloom Filter）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1、首先创建了一个容量为10的的布隆过滤器"><span class="nav-number">1.1.</span> <span class="nav-text">1.1、首先创建了一个容量为10的的布隆过滤器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2、然后分别加入-‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下："><span class="nav-number">1.2.</span> <span class="nav-text">1.2、然后分别加入 ‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。"><span class="nav-number">1.3.</span> <span class="nav-text">1.3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4、最后我们检查一堆对象（’dog’-‘fish’-‘cat’-‘bird’-‘duck’-‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。"><span class="nav-number">1.4.</span> <span class="nav-text">1.4、最后我们检查一堆对象（’dog’, ‘fish’, ‘cat’, ‘bird’, ‘duck’, ‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、分词"><span class="nav-number">2.</span> <span class="nav-text">2、分词</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1、主要分割"><span class="nav-number">2.1.</span> <span class="nav-text">2.1、主要分割</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2、次要分割"><span class="nav-number">2.2.</span> <span class="nav-text">2.2、次要分割</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、搜索"><span class="nav-number">3.</span> <span class="nav-text">3、搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、更复杂的搜索"><span class="nav-number">4.</span> <span class="nav-text">4、更复杂的搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、总结"><span class="nav-number">5.</span> <span class="nav-text">5、总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fingerchou.com</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/';
+          this.page.identifier = '2018/06/09/simple-bigdata-search-with-python/';
+          this.page.title = '用Python实现一个大数据搜索引擎';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("MQheTKqTvNfaqOGpfvs7Aj1E-gzGzoHsz", "x1apPei1gmHTmq15yF9AXo2F");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

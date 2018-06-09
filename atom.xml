@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-06-02T15:37:29.327Z</updated>
+  <updated>2018-06-09T05:45:34.423Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用Python实现一个大数据搜索引擎</title>
+    <link href="http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/"/>
+    <id>http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/</id>
+    <published>2018-06-09T05:06:00.000Z</published>
+    <updated>2018-06-09T05:45:34.423Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;本文转自：&lt;a href=&quot;https://my.oschina.net/taogang/blog/1579204&quot; target=&quot;_blank&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="SearchEngine" scheme="http://fingerchou.com/categories/SearchEngine/"/>
+    
+    
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="BigData" scheme="http://fingerchou.com/tags/BigData/"/>
+    
+  </entry>
   
   <entry>
     <title>Python中的10个隐藏特性</title>
@@ -178,7 +208,7 @@
     <link href="http://fingerchou.com/2017/08/26/using-elasticsearch-function-score-with-python-2/"/>
     <id>http://fingerchou.com/2017/08/26/using-elasticsearch-function-score-with-python-2/</id>
     <published>2017-08-26T02:23:00.000Z</published>
-    <updated>2018-05-19T06:42:40.237Z</updated>
+    <updated>2018-06-09T05:48:27.195Z</updated>
     
     <summary type="html">
     
@@ -192,10 +222,10 @@
     
     </summary>
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/categories/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/tags/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
@@ -206,7 +236,7 @@
     <link href="http://fingerchou.com/2017/08/19/using-elasticsearch-function-score-with-python-1/"/>
     <id>http://fingerchou.com/2017/08/19/using-elasticsearch-function-score-with-python-1/</id>
     <published>2017-08-19T04:38:00.000Z</published>
-    <updated>2018-05-19T06:42:25.482Z</updated>
+    <updated>2018-06-09T05:48:15.482Z</updated>
     
     <summary type="html">
     
@@ -220,10 +250,10 @@
     
     </summary>
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/categories/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/tags/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
@@ -234,7 +264,7 @@
     <link href="http://fingerchou.com/2017/08/16/elasticsearch-search-suggest-with-python/"/>
     <id>http://fingerchou.com/2017/08/16/elasticsearch-search-suggest-with-python/</id>
     <published>2017-08-16T15:01:00.000Z</published>
-    <updated>2018-05-19T06:36:01.986Z</updated>
+    <updated>2018-06-09T05:47:08.820Z</updated>
     
     <summary type="html">
     
@@ -248,12 +278,12 @@
     
     </summary>
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/categories/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/tags/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
-      <category term="Searchengine" scheme="http://fingerchou.com/tags/Searchengine/"/>
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
   </entry>
   
@@ -262,7 +292,7 @@
     <link href="http://fingerchou.com/2017/08/16/using-elasticsearch-bulk-with-python/"/>
     <id>http://fingerchou.com/2017/08/16/using-elasticsearch-bulk-with-python/</id>
     <published>2017-08-16T14:02:00.000Z</published>
-    <updated>2018-05-19T06:37:50.643Z</updated>
+    <updated>2018-06-09T05:48:02.937Z</updated>
     
     <summary type="html">
     
@@ -276,12 +306,12 @@
     
     </summary>
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/categories/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/tags/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
-      <category term="Searchengine" scheme="http://fingerchou.com/tags/Searchengine/"/>
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
   </entry>
   
@@ -290,7 +320,7 @@
     <link href="http://fingerchou.com/2017/08/15/elasticsearch-document-api/"/>
     <id>http://fingerchou.com/2017/08/15/elasticsearch-document-api/</id>
     <published>2017-08-15T15:24:00.000Z</published>
-    <updated>2018-05-19T06:35:06.238Z</updated>
+    <updated>2018-06-09T05:47:45.592Z</updated>
     
     <summary type="html">
     
@@ -304,12 +334,12 @@
     
     </summary>
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/categories/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/tags/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
-      <category term="Searchengine" scheme="http://fingerchou.com/tags/Searchengine/"/>
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
   </entry>
   
@@ -318,7 +348,7 @@
     <link href="http://fingerchou.com/2017/08/13/elasticsearch-dsl-with-python-usage-2/"/>
     <id>http://fingerchou.com/2017/08/13/elasticsearch-dsl-with-python-usage-2/</id>
     <published>2017-08-12T23:56:00.000Z</published>
-    <updated>2018-05-19T06:43:20.367Z</updated>
+    <updated>2018-06-09T05:47:18.866Z</updated>
     
     <summary type="html">
     
@@ -332,12 +362,12 @@
     
     </summary>
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/categories/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/tags/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
-      <category term="Searchengine" scheme="http://fingerchou.com/tags/Searchengine/"/>
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
@@ -348,7 +378,7 @@
     <link href="http://fingerchou.com/2017/08/12/elasticsearch-dsl-with-python-usage-1/"/>
     <id>http://fingerchou.com/2017/08/12/elasticsearch-dsl-with-python-usage-1/</id>
     <published>2017-08-12T12:39:00.000Z</published>
-    <updated>2018-05-19T06:43:07.102Z</updated>
+    <updated>2018-06-09T05:47:32.279Z</updated>
     
     <summary type="html">
     
@@ -362,12 +392,12 @@
     
     </summary>
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/categories/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Elasticsearch" scheme="http://fingerchou.com/tags/Elasticsearch/"/>
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
-      <category term="Searchengine" scheme="http://fingerchou.com/tags/Searchengine/"/>
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
@@ -542,34 +572,6 @@
       <category term="Ubuntu" scheme="http://fingerchou.com/tags/Ubuntu/"/>
     
       <category term="SVN" scheme="http://fingerchou.com/tags/SVN/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Cocos2dx－上传Google Play遇到的问题</title>
-    <link href="http://fingerchou.com/2017/01/27/cocos2dx-upload-google-play/"/>
-    <id>http://fingerchou.com/2017/01/27/cocos2dx-upload-google-play/</id>
-    <published>2017-01-27T12:40:00.000Z</published>
-    <updated>2018-05-19T06:34:35.104Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h4 id=&quot;一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL&quot;&gt;&lt;a href=&quot;#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Cocos2d-x" scheme="http://fingerchou.com/categories/Cocos2d-x/"/>
-    
-    
-      <category term="Cocos2d-x" scheme="http://fingerchou.com/tags/Cocos2d-x/"/>
-    
-      <category term="Javascript" scheme="http://fingerchou.com/tags/Javascript/"/>
     
   </entry>
   
