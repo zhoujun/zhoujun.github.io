@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-06-10T02:34:33.492Z</updated>
+  <updated>2018-06-10T04:24:58.613Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://fingerchou.com/2018/06/10/matrix-with-numpy/"/>
     <id>http://fingerchou.com/2018/06/10/matrix-with-numpy/</id>
     <published>2018-06-10T01:51:00.000Z</published>
-    <updated>2018-06-10T02:34:33.492Z</updated>
+    <updated>2018-06-10T04:24:58.613Z</updated>
     
     <summary type="html">
     
@@ -69,9 +69,9 @@
       <category term="SearchEngine" scheme="http://fingerchou.com/categories/SearchEngine/"/>
     
     
-      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
       <category term="BigData" scheme="http://fingerchou.com/tags/BigData/"/>
     
@@ -256,9 +256,9 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
   </entry>
   
@@ -284,9 +284,9 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
   </entry>
   
@@ -396,11 +396,11 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
@@ -426,11 +426,11 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
