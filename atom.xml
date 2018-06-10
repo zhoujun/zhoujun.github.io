@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-06-09T05:45:34.423Z</updated>
+  <updated>2018-06-10T02:34:33.492Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深度学习矩阵运算的概念和代码实现(Numpy)</title>
+    <link href="http://fingerchou.com/2018/06/10/matrix-with-numpy/"/>
+    <id>http://fingerchou.com/2018/06/10/matrix-with-numpy/</id>
+    <published>2018-06-10T01:51:00.000Z</published>
+    <updated>2018-06-10T02:34:33.492Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;blockquote&gt;
+&lt;p&gt;本文从向量的概念与运算扩展到矩阵运算的概念与代码实现，对机器学习或者是深度学习的入门者提供最基础，也是最实用的教程指导，为以后的机器学习模型开发打下基础。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在我们学习机器学习时，常常遇到需要使用矩阵提高计算
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="Numpy" scheme="http://fingerchou.com/tags/Numpy/"/>
+    
+  </entry>
   
   <entry>
     <title>用Python实现一个大数据搜索引擎</title>
@@ -544,34 +575,6 @@
     
     
       <category term="Supervisord" scheme="http://fingerchou.com/tags/Supervisord/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Ubuntu 安装svn服务</title>
-    <link href="http://fingerchou.com/2017/01/27/ubuntu-install-svn-simple-server/"/>
-    <id>http://fingerchou.com/2017/01/27/ubuntu-install-svn-simple-server/</id>
-    <published>2017-01-27T12:56:00.000Z</published>
-    <updated>2018-05-19T06:37:41.077Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;一、安装Subversion-Server&quot;&gt;&lt;a href=&quot;#一、安装Subversion-Server&quot; class=&quot;headerlink&quot; title=&quot;一、安装Subversion Server&quot;&gt;&lt;/a&gt;一、安装Subversion
-        
-      
-    
-    </summary>
-    
-      <category term="Note" scheme="http://fingerchou.com/categories/Note/"/>
-    
-    
-      <category term="Ubuntu" scheme="http://fingerchou.com/tags/Ubuntu/"/>
-    
-      <category term="SVN" scheme="http://fingerchou.com/tags/SVN/"/>
     
   </entry>
   
