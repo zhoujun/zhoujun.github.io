@@ -113,7 +113,7 @@
 <meta property="og:image" content="http://fingerchou.com/imgs/20180610/18.png">
 <meta property="og:image" content="http://fingerchou.com/imgs/20180610/19.png">
 <meta property="og:image" content="http://fingerchou.com/imgs/20180610/20.png">
-<meta property="og:updated_time" content="2018-06-10T04:24:58.613Z">
+<meta property="og:updated_time" content="2018-06-10T04:45:53.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习矩阵运算的概念和代码实现(Numpy)">
 <meta name="twitter:description" content="本文从向量的概念与运算扩展到矩阵运算的概念与代码实现，对机器学习或者是深度学习的入门者提供最基础，也是最实用的教程指导，为以后的机器学习模型开发打下基础。
@@ -504,7 +504,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">a = np.array([</div><div class="line"> [1,2],</div><div class="line"> [3,4]</div><div class="line">])</div><div class="line">b = np.array([</div><div class="line"> [1,2],</div><div class="line"> [3,4]</div><div class="line">])</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a + b</div><div class="line">[[2, 4],</div><div class="line"> [6, 8]]</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a — b</div><div class="line">[[0, 0],</div><div class="line"> [0, 0]]</div></pre></td></tr></table></figure>
-<p>在Numpy的中，矩阵之间运算所需要的阶相等可以通过一个称之为广播的机制变得不那么严格。如果两个矩阵相应的阶（行数×列数）满足下面两个要求，那么它们就是可以进行运算的：</p>
+<p>在Numpy中，矩阵之间运算所需要的阶相等可以通过一个称之为广播的机制变得不那么严格。如果两个矩阵相应的阶（行数×列数）满足下面两个要求，那么它们就是可以进行运算的：</p>
 <ul>
 <li>两个矩阵的阶相等</li>
 <li>矩阵的阶有一个维度是1</li>
@@ -636,6 +636,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/06/24/solution-of-linear-equations-with-numpy/" rel="prev" title="用Numpy解线性方程组">
+                用Numpy解线性方程组 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -759,7 +763,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -770,7 +774,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1055,6 +1059,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 

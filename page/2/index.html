@@ -317,6 +317,501 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/26/using-elasticsearch-function-score-with-python-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/26/using-elasticsearch-function-score-with-python-2/" itemprop="url">用Python实现Elasticsearch function_score查询(二)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-26T10:23:00+08:00">
+                2017-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/26/using-elasticsearch-function-score-with-python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/26/using-elasticsearch-function-score-with-python-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/26/using-elasticsearch-function-score-with-python-2/" class="leancloud_visitors" data-flag-title="用Python实现Elasticsearch function_score查询(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">     functions=[</div><div class="line">        query.SF(<span class="string">'random_score'</span>, seed=<span class="number">10</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;function_score&quot;: &#123;</div><div class="line">            &quot;random_score&quot;: &#123;</div><div class="line">                &quot;seed&quot;: 10</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="decay-functions"><a href="#decay-functions" class="headerlink" title="decay functions"></a>decay functions</h4><p>之前提过的<code>weight</code>，<code>field_value_factor</code>，<code>random_score</code>等函数都是一种线性的影响关系，给出的分数随着距离变大而变低。有时候我们会有范围性质，分数变化缓慢的需求场景。此时上述函数就显得不那么适用。<br><code>Elasticsearch</code>提供了三种<code>decay functions</code>，让我们可以基于一个单值的数值型字段（比如日期、地点或者价格类似标准的数值型字段）来计算分数。</p>
+<p>这三个衰减函数分别为：</p>
+<ul>
+<li>线性衰减(linear)</li>
+<li>指数衰减(exp)</li>
+<li>高斯衰减(gauss)</li>
+</ul>
+<p>它们可以操作数值，时间以及经纬度地理坐标点这样的字段，这三个函数都有以下参数：</p>
+<ul>
+<li>origin: 中心点或字段可能的最佳值，落在原点<code>origin</code>上的文档评分 _score 为满分1.0 。</li>
+<li>scale:  衰减率，即一个文档从原点origin下落时，评分<code>_score</code>改变的速度(例如每 £10 欧元或每 100 米)。</li>
+<li>decay:  从原点<code>origin</code>衰减到<code>scale</code>所得的评分<code>_score</code>，默认值为 0.5。</li>
+<li>offset: 以原点<code>origin</code>为中心点，为其设置一个非零的偏移量offset 覆盖一个范围，而不只是单个原点。在范围 -offset &lt;= origin &lt;= +offset 内的所有评分<code>_score</code>都是 1.0。</li>
+</ul>
+<p><code>origin</code>和<code>scale</code>参数是必须的。<code>origin</code>是中心点，计算是从这点开始。<code>scale</code>是衰变率。默认情况下，<code>offset</code>参数设置为0；如果定义了该参数，<code>decay</code>函数将只计算文档值比此参数的值大的文档得分。<code>decay</code>参数告诉Elasticsearch应该降低多少分数，默认设置为0.5。</p>
+<p>下面我们举一个例子：假设用户希望租一个离伦敦市中心({‘lat’:51.50, ‘lon’:0.12})且每晚不超过 £100 英镑的度假屋而且与距离相比，用户对价格更为敏感，这样查询可以写成：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">'match'</span>, properties=<span class="string">"balcony"</span>),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'gauss'</span>, price=&#123;<span class="string">'origin'</span>: <span class="string">'0'</span>, <span class="string">'scale'</span>: <span class="string">'20'</span>&#125;),</div><div class="line">        query.SF(<span class="string">'gauss'</span>, location=&#123;<span class="string">'origin'</span>: <span class="string">'51.50, 0.12'</span>, <span class="string">'scale'</span>: <span class="string">'2km'</span>&#125;)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"multiply"</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&#123;  </div><div class="line">    &quot;query&quot;: &#123;  </div><div class="line">        &quot;function_score&quot;: &#123;  </div><div class="line">          &quot;functions&quot;: [  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;price&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;0&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;20&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;,  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;location&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;11, 12&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;2km&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;  </div><div class="line">          ],  </div><div class="line">          &quot;query&quot;: &#123;  </div><div class="line">            &quot;match&quot;: &#123;  </div><div class="line">              &quot;properties&quot;: &quot;balcony&quot;  </div><div class="line">            &#125;  </div><div class="line">          &#125;,  </div><div class="line">          &quot;score_mode&quot;: &quot;multiply&quot;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于decay functions的衰减曲线性：如下图：<br><img src="/imgs/20170826/decay_2d.png" alt=""></p>
+<p>图中所有曲线的原点<code>origin</code>（即中心点）的值都是40，<code>offset</code>是5，也就是在范围 40 - 5 &lt;= value &lt;= 40 + 5 内的所有值都会被当作原点<code>origin</code>处理所有这些点的评分都是满分1.0 。<br>在此范围之外，评分开始衰减，衰减率由<code>scale</code>值（此例中的值为 5 ）和 衰减值<code>decay</code>此例中为默认值 0.5 ）共同决定。结果是所有三个曲线在 origin +/- (offset + scale) 处的评分都是 0.5，即点30和50处。</p>
+<p><code>linear</code> 、 <code>exp</code> 和 <code>gauss</code>函数三者之间的区别在于范围（ origin +/- (offset + scale) ）之外的曲线形状：</p>
+<ul>
+<li>linear 线性函数是条直线，一旦直线与横轴 0 相交，所有其他值的评分都是 0.0 。</li>
+<li>exp 指数函数是先剧烈衰减然后变缓。</li>
+<li>gauss 高斯函数是钟形的——它的衰减速率是先缓慢，然后变快，最后又放缓。</li>
+</ul>
+<p><strong>选择曲线的依据完全由期望评分<code>_score</code>的衰减速率来决定，即距原点<code>origin</code>的值。</strong></p>
+<p>Demo地址：<a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/19/using-elasticsearch-function-score-with-python-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/19/using-elasticsearch-function-score-with-python-1/" itemprop="url">用Python实现Elasticsearch function_score查询(一)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:38:00+08:00">
+                2017-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/19/using-elasticsearch-function-score-with-python-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/19/using-elasticsearch-function-score-with-python-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/19/using-elasticsearch-function-score-with-python-1/" class="leancloud_visitors" data-flag-title="用Python实现Elasticsearch function_score查询(一)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="什么是function-score"><a href="#什么是function-score" class="headerlink" title="什么是function_score"></a>什么是function_score</h3><p><code>function_score</code>查询是处理分值计算过程的终极工具。它让你能够对所有匹配了主查询的每份文档调用一个函数来调整甚至是完全替换原来的<code>_score</code>。</p>
+<p>实际上，你可以通过设置过滤器来将查询得到的结果分成若干个子集，然后对每个子集使用不同的函数。这样你就能够同时得益于：高效的分值计算以及可以缓存的过滤器。</p>
+<p>它拥有几种预先定义好了的函数：</p>
+<ul>
+<li><code>weight</code> 对每份文档适用一个简单的提升，且该提升不会被归约：当<code>weight</code>为2时，结果为2 * <code>_score</code>。</li>
+<li><code>field_value_factor</code> 使用文档中某个字段的值来改变<code>_score</code>，比如将受欢迎程度或者投票数量考虑在内。</li>
+<li><code>random_score</code> 使用一致性随机分值计算来对每个用户采用不同的结果排序方式，对相同用户仍然使用相同的排序方式。</li>
+<li>衰减函数(Decay Function)-(<code>linear</code>，<code>exp</code>，<code>gauss</code>) 将像<code>publish_date</code>，<code>geo_location</code>或者<code>price</code>这类浮动值考虑到<code>_score</code>中，偏好最近发布的文档，邻近于某个地理位置(译注：其中的某个字段)的文档或者价格(译注：其中的某个字段)靠近某一点的文档。</li>
+<li><code>script_score</code> 使用自定义的脚本来完全控制分值计算逻辑。如果你需要以上预定义函数之外的功能，可以根据需要通过脚本进行实现。</li>
+</ul>
+<p>没有<code>function_score</code>查询的话，我们也许就不能将全文搜索得到分值和近因进行结合了。我们将不得不根据<code>_score</code>或者<code>date</code>进行排序；无论采用哪一种都会抹去另一种的影响。<code>function_score</code>查询让我们能够将两者融合在一起：仍然通过全文相关度排序，但是给新近发布的文档，或者流行的文档，或者符合用户价格期望的文档额外的权重。你可以想象，一个拥有所有这些功能的查询看起来会相当复杂。我们从一个简单的例子开始，循序渐进地对它进行介绍。</p>
+<h3 id="如何使用function-score"><a href="#如何使用function-score" class="headerlink" title="如何使用function_score"></a>如何使用function_score</h3><p>假设我们有一个博客网站让用户投票选择他们喜欢的文章。我们希望让人气高的文章出现在结果列表的头部，但是主要的排序依据仍然是全文搜索分值。我们可以通过保存每篇文章的投票数量来实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 1、新建一个索引映射：</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Post</span><span class="params">(DocType)</span>:</span></div><div class="line">    title = String()</div><div class="line">    content = Text()</div><div class="line">    votes = Integer()</div><div class="line">    created_at = Date()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blogposts'</span></div><div class="line">        type = <span class="string">'post'</span></div><div class="line"></div><div class="line">Post.init()</div><div class="line"></div><div class="line"><span class="comment"># 2、添加测试数据</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_post</span><span class="params">(id_, title, content)</span>:</span></div><div class="line">    post = Post(meta=&#123;<span class="string">'id'</span>: id_&#125;)</div><div class="line">    post.title = title</div><div class="line">    post.content = content</div><div class="line">    post.votes = random.randint(<span class="number">0</span>, <span class="number">100</span>)</div><div class="line">    post.save()</div><div class="line"></div><div class="line"><span class="comment"># 3、初始化数据</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_data</span><span class="params">()</span>:</span></div><div class="line">    add_post(<span class="number">1</span>, <span class="string">'Python is good'</span>, <span class="string">'Python is good'</span>)</div><div class="line">    add_post(<span class="number">2</span>, <span class="string">'Python is beautiful'</span>, <span class="string">'Python is beautiful'</span>)</div><div class="line">    add_post(<span class="number">3</span>, <span class="string">'Python is nice'</span>, <span class="string">'Python is nice'</span>)</div><div class="line">    add_post(<span class="number">4</span>, <span class="string">'Today is good day'</span>, <span class="string">'Today is good day'</span>)</div><div class="line">    add_post(<span class="number">5</span>, <span class="string">'Today is nice day'</span>, <span class="string">'Today is nice day'</span>)</div><div class="line">    add_post(<span class="number">6</span>, <span class="string">'The key aspect in promoting'</span>, <span class="string">'The key aspect in promoting'</span>)</div><div class="line">    add_post(<span class="number">7</span>, <span class="string">'Just a month after we started'</span>, <span class="string">'Just a month after we started working on reddit'</span>)</div><div class="line">    add_post(<span class="number">8</span>, <span class="string">"If I can't hear your heartbeat"</span>, <span class="string">"If I can't hear your heartbeat, you're too far away."</span>)</div><div class="line">    add_post(<span class="number">9</span>, <span class="string">'No Country for Old Men'</span>, <span class="string">'No Country for Old Men'</span>)</div><div class="line">    add_post(<span class="number">10</span>, <span class="string">'Django is web framework'</span>, <span class="string">'Django is python lib'</span>)</div></pre></td></tr></table></figure>
+<h4 id="field-value-factor"><a href="#field-value-factor" class="headerlink" title="field_value_factor"></a>field_value_factor</h4><p>使用<code>field_value_factor</code>函数的<code>function_score</code>查询将投票数和全文相关度分值结合起来：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>)</div><div class="line">    ]</div><div class="line">)</div><div class="line">s = Post.search()</div><div class="line">s = s.query(q)</div><div class="line">response = s.execute()</div><div class="line"><span class="keyword">for</span> h <span class="keyword">in</span> response:</div><div class="line">    print(h.title)</div><div class="line"></div><div class="line"><span class="string">"""</span></div><div class="line">Out:</div><div class="line">Python is nice</div><div class="line">Python is good</div><div class="line">Python is beautiful</div><div class="line">Django is web framework</div><div class="line">"""</div></pre></td></tr></table></figure></p>
+<p><img src="/imgs/20170819/20170819125817.png" alt=""></p>
+<p><code>function_score</code>查询会包含主查询(Main Query)和希望使用的函数。先会执行主查询，然后再为匹配的文档调用相应的函数。每份文档中都必须有一个<code>votes</code>字段用来保证<code>function_score</code>能够起作用。</p>
+<p>在前面的例子中，每份文档的最终<code>_score</code>会通过下面的方式改变：</p>
+<blockquote>
+<p>new_score = old_score * number_of_votes</p>
+</blockquote>
+<p>它得到的结果并不好。全文搜索的<code>_score</code>通常会在0到10之间。而从下图我们可以发现，拥有10票以上的文章的分值大大超过了这个范围，而没有被投票的文章的分值会被重置为0。<br><img src="/imgs/20170819/20170819125818.png" alt=""><br><img src="/imgs/20170819/20170819133637.png" alt=""></p>
+<h4 id="modifier"><a href="#modifier" class="headerlink" title="modifier"></a>modifier</h4><p>为了让<code>votes</code>值对最终分值的影响更缓和，我们可以使用modifier。换言之，我们需要让头几票的效果更明显，其后的票的影响逐渐减小。0票和1票的区别应该比10票和11票的区别要大的多。</p>
+<p>一个用于此场景的典型modifier是log1p，它将公式改成这样：</p>
+<blockquote>
+<p>new_score = old_score * log(1 + number_of_votes)</p>
+</blockquote>
+<p><code>log</code>函数将<code>votes</code>字段的效果减缓了，其效果类似下面的曲线：<br><img src="/imgs/20170819/20170819125819.png" alt=""><br>使用了<code>modifier</code>参数的请求如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p><img src="/imgs/20170819/20170819131048.png" alt=""><br>可用的<code>modifiers</code>有：none(默认值)，log，log1p，log2p，ln，ln1p，ln2p，square，sqrt以及reciprocal。</p>
+<table>
+<thead>
+<tr>
+<th>Modifier</th>
+<th>Meaning </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>Do not apply any multiplier to the field value</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Take the logarithm of the field value </td>
+</tr>
+<tr>
+<td>log1p</td>
+<td>Add 1 to the field value and take the logarithm</td>
+</tr>
+<tr>
+<td>log2p</td>
+<td>Add 2 to the field value and take the logarithm</td>
+</tr>
+<tr>
+<td>ln</td>
+<td>Take the natural logarithm of the field value</td>
+</tr>
+<tr>
+<td>ln1p</td>
+<td>Add 1 to the field value and take the natural logarithm</td>
+</tr>
+<tr>
+<td>ln2p</td>
+<td>Add 2 to the field value and take the natural logarithm</td>
+</tr>
+<tr>
+<td>square</td>
+<td>Square the field value (multiply it by itself)</td>
+</tr>
+<tr>
+<td>sqrt</td>
+<td>Take the square root of the field value</td>
+</tr>
+<tr>
+<td>reciprocal</td>
+<td>Reciprocate the field value, same as 1/x where x is the field’s value</td>
+</tr>
+</tbody>
+</table>
+<p>具体详情请查阅<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html#function-field-value-factor" target="_blank" rel="external">官网介绍</a></p>
+<h4 id="factor"><a href="#factor" class="headerlink" title="factor"></a>factor</h4><p>可以通过将<code>votes</code>字段的值乘以某个数值来增加该字段的影响力，这个数值被称为<code>factor</code>：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>, factor=<span class="number">2</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>添加了<code>factor</code>将公式修改成这样：</p>
+<blockquote>
+<p>new_score = old_score <em> log(1 + factor </em> number_of_votes)<br>当<code>factor</code>大于1时，会增加其影响力，而小于1的<code>factor</code>则相应减小了其影响力，如下图所示：</p>
+</blockquote>
+<p><img src="/imgs/20170819/20170819131049.png" alt=""><br><img src="/imgs/20170819/20170819132115.png" alt=""></p>
+<h4 id="boost-mode"><a href="#boost-mode" class="headerlink" title="boost_mode"></a>boost_mode</h4><p>将全文搜索的相关度分值乘以<code>field_value_factor</code>函数的结果，对最终分值的影响可能太大了。通过<code>boost_mode</code>参数，我们可以控制函数的结果应该如何与<code>_score</code>结合在一起，该参数接受下面的值：</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>描述 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>multiply</td>
+<td>_score 与函数值的积（默认）</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>_score 与函数值的和  </td>
+</tr>
+<tr>
+<td>avg</td>
+<td>_score 平均值  </td>
+</tr>
+<tr>
+<td>first</td>
+<td>应用filter匹配上的第一个函数值</td>
+</tr>
+<tr>
+<td>min</td>
+<td>_score 与函数值间的较小值</td>
+</tr>
+<tr>
+<td>max</td>
+<td>_score 与函数值间的较大值</td>
+</tr>
+<tr>
+<td>replace</td>
+<td>将_score替换成函数结果</td>
+</tr>
+</tbody>
+</table>
+<p>如果我们是通过将函数结果累加来得到<code>_score</code>，其影响会小的多，特别是当我们使用了一个较低的<code>factor</code>时：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>, factor=<span class="number">0.1</span>)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"sum"</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>上述请求的公式如下所示：</p>
+<blockquote>
+<p>new_score = old_score + log(1 + 0.1 * number_of_votes)</p>
+</blockquote>
+<p><img src="/imgs/20170819/20170819131050.png" alt=""><br><img src="/imgs/20170819/20170819133115.png" alt=""></p>
+<h4 id="max-boost"><a href="#max-boost" class="headerlink" title="max_boost"></a>max_boost</h4><p>最后，我们能够通过制定<code>max_boost</code>参数来限制函数的最大影响：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>, factor=<span class="number">0.1</span>)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"sum"</span>,</div><div class="line">    max_boost=<span class="number">1.5</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p>无论<code>field_value_factor</code>函数的结果是多少，它绝不会大于1.5。</p>
+<p>NOTE</p>
+<blockquote>
+<p>max_boost只是对函数的结果有所限制，并不是最终的_score。</p>
+</blockquote>
+<p><img src="/imgs/20170819/20170819134205.png" alt=""></p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html" target="_blank" rel="external">https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html</a></p>
+<p><a href="http://itindex.net/detail/57059-elasticsearch-%E6%8E%A7%E5%88%B6-%E7%9B%B8%E5%85%B3" target="_blank" rel="external">http://itindex.net/detail/57059-elasticsearch-%E6%8E%A7%E5%88%B6-%E7%9B%B8%E5%85%B3</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/16/elasticsearch-search-suggest-with-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1825,376 +2320,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/06/22/docker-build-and-run-your-first-app/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/22/docker-build-and-run-your-first-app/" itemprop="url">Docker 构建第一个App</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T23:45:00+08:00">
-                2017-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/22/docker-build-and-run-your-first-app/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/22/docker-build-and-run-your-first-app/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/06/22/docker-build-and-run-your-first-app/" class="leancloud_visitors" data-flag-title="Docker 构建第一个App">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>测试环境：阿里云 ubuntu14.04 </p>
-<h4 id="一、新建Dockerfile文件"><a href="#一、新建Dockerfile文件" class="headerlink" title="一、新建Dockerfile文件"></a>一、新建Dockerfile文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># Use an official Python runtime as a base image</div><div class="line">FROM python:2.7-slim</div><div class="line"></div><div class="line"># Set the working directory to /app</div><div class="line">WORKDIR /app</div><div class="line"></div><div class="line"># Copy the current directory contents into the container at /app</div><div class="line">ADD . /app</div><div class="line"></div><div class="line"># Install any needed packages specified in requirements.txt</div><div class="line">RUN pip install -r requirements.txt</div><div class="line"></div><div class="line"># Make port 80 available to the world outside this container</div><div class="line">EXPOSE 80</div><div class="line"></div><div class="line"># Define environment variable</div><div class="line">ENV NAME World</div><div class="line"></div><div class="line"># Run app.py when the container launches</div><div class="line">CMD [&quot;python&quot;, &quot;app.py&quot;]</div></pre></td></tr></table></figure>
-<h4 id="二、新建requirements-txt"><a href="#二、新建requirements-txt" class="headerlink" title="二、新建requirements.txt"></a>二、新建requirements.txt</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Flask</div><div class="line">Redis</div></pre></td></tr></table></figure>
-<h4 id="三、新建app-py"><a href="#三、新建app-py" class="headerlink" title="三、新建app.py"></a>三、新建app.py</h4><pre><code>from flask import Flask
-from redis import Redis, RedisError
-import os
-import socket
-
-# Connect to Redis
-redis = Redis(host=&quot;redis&quot;, db=0, socket_connect_timeout=2, socket_timeout=2)
-
-app = Flask(__name__)
-
-@app.route(&quot;/&quot;)
-def hello():
-    try:
-        visits = redis.incr(&quot;counter&quot;)
-    except RedisError:
-        visits = &quot;&lt;i&gt;cannot connect to Redis, counter disabled&lt;/i&gt;&quot;
-
-    html = &quot;&lt;h3&gt;Hello {name}!&lt;/h3&gt;&quot; \
-           &quot;&lt;b&gt;Hostname:&lt;/b&gt; {hostname}&lt;br/&gt;&quot; \
-           &quot;&lt;b&gt;Visits:&lt;/b&gt; {visits}&quot;
-    return html.format(name=os.getenv(&quot;NAME&quot;, &quot;world&quot;), hostname=socket.gethostname(), visits=visits)
-
-if __name__ == &quot;__main__&quot;:
-    app.run(host=&apos;0.0.0.0&apos;, port=80)
-</code></pre><h4 id="四、编译"><a href="#四、编译" class="headerlink" title="四、编译"></a>四、编译</h4><blockquote>
-<p>ls  </p>
-<p>docker build -t friendlyhello . (当前目录)</p>
-<p>docker images</p>
-</blockquote>
-<h4 id="五、运行"><a href="#五、运行" class="headerlink" title="五、运行"></a>五、运行</h4><blockquote>
-<p>docker run -p 4000:80 friendlyhello</p>
-</blockquote>
-<h4 id="六、测试"><a href="#六、测试" class="headerlink" title="六、测试"></a>六、测试</h4><blockquote>
-<p>curl <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a></p>
-</blockquote>
-<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a href="https://docs.docker.com/get-started/part2/#run-the-app" target="_blank" rel="external">https://docs.docker.com/get-started/part2/#run-the-app</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/06/22/supervisord-usage/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/22/supervisord-usage/" itemprop="url">Supervisord 使用笔记</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T23:40:00+08:00">
-                2017-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/22/supervisord-usage/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/22/supervisord-usage/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/06/22/supervisord-usage/" class="leancloud_visitors" data-flag-title="Supervisord 使用笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- pip install supervisor  </div><div class="line">- echo_supervisord_conf  #或者  </div><div class="line">- echo_supervisord_conf &gt; supervisord.conf  </div><div class="line">- supervisord -c ./supervisord.conf</div></pre></td></tr></table></figure>
-<h4 id="二、遇到错误"><a href="#二、遇到错误" class="headerlink" title="二、遇到错误"></a>二、遇到错误</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# supervisord -c ./supervisord.conf   </div><div class="line">Error: .ini file does not include supervisord section  </div><div class="line">For help, use /usr/bin/supervisord -h</div></pre></td></tr></table></figure>
-<p><strong>错误原因是因为配置文件少了 [supervisrod] 配置项</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[program:djangotest]  </div><div class="line">user=lzz  </div><div class="line">command=/usr/bin/python /var/www/djangotest/manage.py runserver 0.0.0.0:8000  </div><div class="line">autostart=true  </div><div class="line">autorestart=true  </div><div class="line">stderr_logfile=/var/logs/err.log  </div><div class="line">stdout_logfile=/var/logs/out.log  </div><div class="line">stopsignal=INT  </div><div class="line">   </div><div class="line">[supervisord]</div></pre></td></tr></table></figure></p>
-<h4 id="三、常用命令"><a href="#三、常用命令" class="headerlink" title="三、常用命令"></a>三、常用命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">supervisord : supervisor的服务器端部分，用于supervisor启动</div><div class="line">supervisorctl：启动supervisor的命令行窗口，在该命令行中可执行start、stop、status、reload等操作。</div></pre></td></tr></table></figure>
-<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a href="http://www.jianshu.com/p/9abffc905645" target="_blank" rel="external">http://www.jianshu.com/p/9abffc905645</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2245,7 +2370,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2256,7 +2381,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-06-10T04:24:58.613Z</updated>
+  <updated>2018-06-24T11:56:14.508Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -17,11 +17,68 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>用Numpy求矩阵的逆</title>
+    <link href="http://fingerchou.com/2018/06/24/inverse-matrix-with-numpy/"/>
+    <id>http://fingerchou.com/2018/06/24/inverse-matrix-with-numpy/</id>
+    <published>2018-06-24T11:02:00.000Z</published>
+    <updated>2018-06-24T11:56:14.508Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;定义&quot;&gt;&lt;a href=&quot;#定义&quot; class=&quot;headerlink&quot; title=&quot;定义&quot;&gt;&lt;/a&gt;定义&lt;/h3&gt;&lt;p&gt;一个n阶方阵A称为可逆的，或非奇异的，如果存在一个n阶方阵B，使得&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;AB = BA =
+        
+      
+    
+    </summary>
+    
+      <category term="Numpy" scheme="http://fingerchou.com/categories/Numpy/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="Numpy" scheme="http://fingerchou.com/tags/Numpy/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>用Numpy解线性方程组</title>
+    <link href="http://fingerchou.com/2018/06/24/solution-of-linear-equations-with-numpy/"/>
+    <id>http://fingerchou.com/2018/06/24/solution-of-linear-equations-with-numpy/</id>
+    <published>2018-06-24T02:02:00.000Z</published>
+    <updated>2018-06-24T11:57:09.431Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;矩阵可以通过线性方式把一个向量变换成另一个向量，因此从数值计算的角度看，&lt;br&gt;这种操作对应于一个线性方程组。Numpy.linalg中的 &lt;code&gt;solve()&lt;/code&gt; 子例程可以求解类似 &lt;code&gt;Ax=b&lt;/code&gt;
+        
+      
+    
+    </summary>
+    
+      <category term="Numpy" scheme="http://fingerchou.com/categories/Numpy/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="Numpy" scheme="http://fingerchou.com/tags/Numpy/"/>
+    
+  </entry>
+  
+  <entry>
     <title>深度学习矩阵运算的概念和代码实现(Numpy)</title>
     <link href="http://fingerchou.com/2018/06/10/matrix-with-numpy/"/>
     <id>http://fingerchou.com/2018/06/10/matrix-with-numpy/</id>
     <published>2018-06-10T01:51:00.000Z</published>
-    <updated>2018-06-10T04:24:58.613Z</updated>
+    <updated>2018-06-10T04:45:53.305Z</updated>
     
     <summary type="html">
     
@@ -518,63 +575,6 @@
       <category term="Scrapyd" scheme="http://fingerchou.com/tags/Scrapyd/"/>
     
       <category term="SpiderKeeper" scheme="http://fingerchou.com/tags/SpiderKeeper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker 构建第一个App</title>
-    <link href="http://fingerchou.com/2017/06/22/docker-build-and-run-your-first-app/"/>
-    <id>http://fingerchou.com/2017/06/22/docker-build-and-run-your-first-app/</id>
-    <published>2017-06-22T15:45:00.000Z</published>
-    <updated>2018-05-19T06:34:51.540Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;测试环境：阿里云 ubuntu14.04 &lt;/p&gt;
-&lt;h4 id=&quot;一、新建Dockerfile文件&quot;&gt;&lt;a href=&quot;#一、新建Dockerfile文件&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
-    
-    
-      <category term="Flask" scheme="http://fingerchou.com/tags/Flask/"/>
-    
-      <category term="Docker" scheme="http://fingerchou.com/tags/Docker/"/>
-    
-      <category term="Ubuntu" scheme="http://fingerchou.com/tags/Ubuntu/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Supervisord 使用笔记</title>
-    <link href="http://fingerchou.com/2017/06/22/supervisord-usage/"/>
-    <id>http://fingerchou.com/2017/06/22/supervisord-usage/</id>
-    <published>2017-06-22T15:40:00.000Z</published>
-    <updated>2018-05-19T06:37:33.997Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h4 id=&quot;一、安装&quot;&gt;&lt;a href=&quot;#一、安装&quot; class=&quot;headerlink&quot; title=&quot;一、安装&quot;&gt;&lt;/a&gt;一、安装&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
-        
-      
-    
-    </summary>
-    
-      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
-    
-    
-      <category term="Supervisord" scheme="http://fingerchou.com/tags/Supervisord/"/>
     
   </entry>
   
