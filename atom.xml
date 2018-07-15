@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-06-24T11:56:14.508Z</updated>
+  <updated>2018-07-15T03:12:50.523Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用斐波拉契数列来做加密解密</title>
+    <link href="http://fingerchou.com/2018/07/15/using-fibonacci-sequence-to-encrypt/"/>
+    <id>http://fingerchou.com/2018/07/15/using-fibonacci-sequence-to-encrypt/</id>
+    <published>2018-07-15T14:23:00.000Z</published>
+    <updated>2018-07-15T03:12:50.523Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;一、斐波那契数列定义&quot;&gt;&lt;a href=&quot;#一、斐波那契数列定义&quot; class=&quot;headerlink&quot; title=&quot;一、斐波那契数列定义&quot;&gt;&lt;/a&gt;一、斐波那契数列定义&lt;/h4&gt;&lt;p&gt;斐波那契数列（Fibonacci
+        
+      
+    
+    </summary>
+    
+      <category term="Pythons" scheme="http://fingerchou.com/categories/Pythons/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>用Numpy求矩阵的逆</title>
@@ -126,9 +152,9 @@
       <category term="SearchEngine" scheme="http://fingerchou.com/categories/SearchEngine/"/>
     
     
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
       <category term="BigData" scheme="http://fingerchou.com/tags/BigData/"/>
     
@@ -313,9 +339,9 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
@@ -341,9 +367,9 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
@@ -453,11 +479,11 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
@@ -483,11 +509,11 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
@@ -543,38 +569,6 @@
       <category term="Mysql" scheme="http://fingerchou.com/tags/Mysql/"/>
     
       <category term="Shard" scheme="http://fingerchou.com/tags/Shard/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Scrapy 部署笔记</title>
-    <link href="http://fingerchou.com/2017/07/02/scrapy-deploy-usage/"/>
-    <id>http://fingerchou.com/2017/07/02/scrapy-deploy-usage/</id>
-    <published>2017-07-02T02:41:00.000Z</published>
-    <updated>2018-05-19T06:41:49.281Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;关键字：&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;scrapy&lt;/strong&gt;， &lt;strong&gt;scrapyd&lt;/strong&gt;， &lt;strong&gt;scrapy-client&lt;/strong&gt;， &lt;strong&gt;spiderkeeper&lt;/strong&gt;&lt;/p&gt;
-&lt;h4
-        
-      
-    
-    </summary>
-    
-      <category term="Scrapy" scheme="http://fingerchou.com/categories/Scrapy/"/>
-    
-    
-      <category term="Scrapy" scheme="http://fingerchou.com/tags/Scrapy/"/>
-    
-      <category term="Scrapyd" scheme="http://fingerchou.com/tags/Scrapyd/"/>
-    
-      <category term="SpiderKeeper" scheme="http://fingerchou.com/tags/SpiderKeeper/"/>
     
   </entry>
   
