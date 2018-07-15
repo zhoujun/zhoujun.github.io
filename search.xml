@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[位运算的最佳实践]]></title>
+    <url>%2F2018%2F07%2F15%2Fa-best-practice-of-bitwise-operation%2F</url>
+    <content type="text"><![CDATA[问：假设 S由a, b, c三个数值组成, S的大小为2个字节(Byte)。已知S的值。求解a, b, c分别是多少？其中a = 4 Bit, b = 4 Bit, c = 8 Bit。(a &gt;= 0, b &gt;= 0, c &gt;= 0) 解： 如图所示： a 为前4 Bit，则a = S &gt;&gt; 12 b 为a后4 Bit，则b = S &gt;&gt; 8 &amp; 0b1111 c 为最后8 Bit, 则c = S &amp; 0b11111111 假定S = 10086，则： 123456&gt;&gt;&gt; S = 10086&gt;&gt;&gt; a = S &gt;&gt; 12&gt;&gt;&gt; b = S &gt;&gt; 8 &amp; 0b1111&gt;&gt;&gt; c = S &amp; 0b11111111&gt;&gt;&gt; print(a, b, c)2 7 102 验证一下： 123456&gt;&gt;&gt; a = 2&gt;&gt;&gt; b = 7&gt;&gt;&gt; c = 102&gt;&gt;&gt; S = (a &lt;&lt; 12) + (b &lt;&lt; 8) + c&gt;&gt;&gt; S10086]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[使用斐波拉契数列来做加密解密]]></title>
-    <url>%2F2018%2F07%2F15%2Fusing-fibonacci-sequence-to-encrypt%2F</url>
+    <url>%2F2018%2F07%2F14%2Fusing-fibonacci-sequence-to-encrypt%2F</url>
     <content type="text"><![CDATA[一、斐波那契数列定义斐波那契数列（Fibonacci sequence），又称黄金分割数列、因数学家列昂纳多·斐波那契（Leonardoda Fibonacci）以兔子繁殖为例子而引入，故又称为“兔子数列”，指的是这样一个数列：1、1、2、3、5、8、13、21、34、…… 数学表达式：F(1)=1，F(2)=1, F(n)=F(n-1)+F(n-2)（n&gt;=2，n∈N*） 1fib = lambda n: n if n &lt;= 2 else fib(n - 1) + fib(n - 2) 二、异或运算规则：如果a、b两个值不相同，则异或结果为1。如果a、b两个值相同，异或结果为0。特性：同一变量与另一变量和其异或值异或等于另一个数，如（a ^ b）^ b = a。 12345&gt;&gt;&gt; a = 2&gt;&gt;&gt; b = 3&gt;&gt;&gt; c = a ^ b&gt;&gt;&gt; c ^ b2 三、加密解密逻辑 1、定义斐波那契数列，用来做密码表。 2、将秘钥字符串与斐波拉契数列做关联，进行加密计算得到新的密码表。 3、加密，需要加密的原始字符串与加密计算后的新密码表进行异或，得到加密之后的字符串。 4、解密，把加密后的字符串与加密计算后的新密码表再进行异或就得到原始字符串 四、代码实现1234567891011121314151617181920212223242526272829303132333435363738# [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144...]_fib = [1] * 64# 初始化斐波拉契数列，本例定义数列大小为64def __init_fib(): for i in range(2, 64): _fib[i] = _fib[i-1] + _fib[i-2]__init_fib()def encrypt(source, secret): if not source or not secret: return source # 将字符串转成对应字符的ascii码数值 src_list = list(map(ord, source)) key_list = list(map(ord, secret)) key_len = len(key_list) # 32 &lt;= N &lt;= 64 N = max(sum(key_list) &amp; 0x3F, 32) # 将秘钥字符串与斐波拉契数列做加密计算，生成新的列表 # 保证计算后的数值小于255 tmp = [(key_list[_fib[i] % key_len] + _fib[i]) &amp; 0xFF for i in range(N)] # 将原始字符串与新生成的列表做异或 dst_list = [src_list[i] ^ tmp[i % N] for i in range(len(src_list))] # chr 将范围[0-255]之间的数字转换成ascii码字符 return &apos;&apos;.join(list(map(chr, dst_list)))# 对称加密，加密即是解密decrypt = encryptif __name__ == &apos;__main__&apos;: secret_key = &apos;have a nice day&apos; dst_string = encrypt(&apos;FingerChou&apos;, secret_key) print(dst_string) print(decrypt(dst_string, secret_key)) 五、综述上述只是利用斐波拉契数列进行了简单的加密计算。如果知道数列也就知道密码了。虽然我们还增加了秘钥字符串。增加了复杂性。但是实际应用中，还是要把生成密码表的算法设计的更复杂一点。]]></content>
       <categories>
-        <category>Pythons</category>
+        <category>Python</category>
       </categories>
       <tags>
         <tag>Python</tag>
@@ -55,8 +66,8 @@
         <category>SearchEngine</category>
       </categories>
       <tags>
-        <tag>SearchEngine</tag>
         <tag>Python</tag>
+        <tag>SearchEngine</tag>
         <tag>BigData</tag>
       </tags>
   </entry>
@@ -134,8 +145,8 @@
         <category>ElasticSearch</category>
       </categories>
       <tags>
-        <tag>ElasticSearch</tag>
         <tag>Python</tag>
+        <tag>ElasticSearch</tag>
       </tags>
   </entry>
   <entry>
@@ -146,8 +157,8 @@
         <category>ElasticSearch</category>
       </categories>
       <tags>
-        <tag>ElasticSearch</tag>
         <tag>Python</tag>
+        <tag>ElasticSearch</tag>
       </tags>
   </entry>
   <entry>
@@ -194,9 +205,9 @@
         <category>ElasticSearch</category>
       </categories>
       <tags>
+        <tag>Python</tag>
         <tag>ElasticSearch</tag>
         <tag>SearchEngine</tag>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -207,9 +218,9 @@
         <category>ElasticSearch</category>
       </categories>
       <tags>
+        <tag>Python</tag>
         <tag>ElasticSearch</tag>
         <tag>SearchEngine</tag>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -285,17 +296,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Hexo使用笔记]]></title>
-    <url>%2F2017%2F01%2F27%2Fhexo-usage%2F</url>
-    <content type="text"><![CDATA[中文文档：https://hexo.io/zh-cn/docs/index.html 参考博客：http://blog.csdn.net/poem_of_sunshine/article/details/29369785/http://www.jianshu.com/p/465830080ea9#http://www.jianshu.com/p/a2023a601ceb Github配置：https://help.github.com/articles/generating-an-ssh-key/https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/ 常用命令1234hexo server | s --debughexo cleanhexo generatehexo deploy 绑定阿里云域名：http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html 后端管理插件hexo-admin123npm install --save hexo-adminhexo server -dopen http://localhost:4000/admin/ 设置后台密码修改站点配置文件，就是网站根目录下的 _config.yml文件:1234admin: username: finger password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa secret: a secret something username：后端登录用户名 password_hash：后端登录用户密码对应的md5 hash值 secret：用于保证cookie安全 密码生成hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块1234$ node&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos; 在线生成https://www.bcrypt-generator.com/ Hexo主题： https://hexo.io/themes/ https://github.com/henryhuang/oishi https://github.com/haojen/hexo-theme-Anisina https://github.com/stiekel/hexo-theme-random https://github.com/SuperKieran/TKL https://github.com/iissnan/hexo-theme-next Next 皮肤设置http://theme-next.iissnan.com/theme-settings.html]]></content>
-      <categories>
-        <category>Note</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Cocos2dx－上传Google Play遇到的问题]]></title>
     <url>%2F2017%2F01%2F27%2Fcocos2dx-upload-google-play%2F</url>
     <content type="text"><![CDATA[一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL 因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下： 12345678910111213141516171819202122Vulnerability-----------------------------------------------------------**OpenSSL**The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;You can find more information and next steps in this Google Help Center article.-----------------------------------------------------------To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.If you feel we have made this determination in error, please reach out to our developer support team.Best,The Google Play Team 解决方案 邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9 具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。 https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin 二、Google Play支付(in-app Billing)注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致 1、错误提示 1231. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效 2、系统异常 123456789101112131415java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)// 解决方法// 1、mHelper.flagEndAsync() 修改成public// 2、在launchPurchaseFlow() 之前调用flagEndAsync()----------------------------------------------------if (mHelper != null) &#123; try &#123; mHelper.flagEndAsync(); mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;); &#125; catch(IllegalStateException ex)&#123; Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show(); &#125;&#125;]]></content>
@@ -305,6 +305,17 @@
       <tags>
         <tag>Cocos2d-x</tag>
         <tag>Javascript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hexo使用笔记]]></title>
+    <url>%2F2017%2F01%2F27%2Fhexo-usage%2F</url>
+    <content type="text"><![CDATA[中文文档：https://hexo.io/zh-cn/docs/index.html 参考博客：http://blog.csdn.net/poem_of_sunshine/article/details/29369785/http://www.jianshu.com/p/465830080ea9#http://www.jianshu.com/p/a2023a601ceb Github配置：https://help.github.com/articles/generating-an-ssh-key/https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/ 常用命令1234hexo server | s --debughexo cleanhexo generatehexo deploy 绑定阿里云域名：http://quantumman.me/blog/setting-up-a-domain-with-gitHub-pages.html 后端管理插件hexo-admin123npm install --save hexo-adminhexo server -dopen http://localhost:4000/admin/ 设置后台密码修改站点配置文件，就是网站根目录下的 _config.yml文件:1234admin: username: finger password_hash: $2a$1$Cof3VuvY8nKKIUjeCNBSE.HjcrCKQ1P80GEegP//SLDFWZoGzm4pa secret: a secret something username：后端登录用户名 password_hash：后端登录用户密码对应的md5 hash值 secret：用于保证cookie安全 密码生成hexo-admin密码是bcrypt编码。因此需要安装bcrypt-nodejs模块1234$ node&gt; const bcrypt = require(&apos;bcrypt-nodejs&apos;)&gt; bcrypt.hashSync(&apos;your password secret here!&apos;)//=&gt; &apos;$2a$10$8f0CO288aEgpb0BQk0mAEOIDwPS.s6nl703xL6PLTVzM.758x8xsi&apos; 在线生成https://www.bcrypt-generator.com/ Hexo主题： https://hexo.io/themes/ https://github.com/henryhuang/oishi https://github.com/haojen/hexo-theme-Anisina https://github.com/stiekel/hexo-theme-random https://github.com/SuperKieran/TKL https://github.com/iissnan/hexo-theme-next Next 皮肤设置http://theme-next.iissnan.com/theme-settings.html]]></content>
+      <categories>
+        <category>Note</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>

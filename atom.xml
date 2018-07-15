@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-07-15T03:12:50.523Z</updated>
+  <updated>2018-07-15T06:38:43.099Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>位运算的最佳实践</title>
+    <link href="http://fingerchou.com/2018/07/15/a-best-practice-of-bitwise-operation/"/>
+    <id>http://fingerchou.com/2018/07/15/a-best-practice-of-bitwise-operation/</id>
+    <published>2018-07-15T06:30:00.000Z</published>
+    <updated>2018-07-15T06:38:43.099Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;问：假设 S由a, b, c三个数值组成, S的大小为2个字节(Byte)。已知S的值。求解a, b, c分别是多少？&lt;br&gt;其中a = 4 Bit, b = 4 Bit, c = 8 Bit。(a &amp;gt;= 0, b &amp;gt;= 0, c &amp;gt;=
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
     <title>使用斐波拉契数列来做加密解密</title>
-    <link href="http://fingerchou.com/2018/07/15/using-fibonacci-sequence-to-encrypt/"/>
-    <id>http://fingerchou.com/2018/07/15/using-fibonacci-sequence-to-encrypt/</id>
-    <published>2018-07-15T14:23:00.000Z</published>
-    <updated>2018-07-15T03:12:50.523Z</updated>
+    <link href="http://fingerchou.com/2018/07/14/using-fibonacci-sequence-to-encrypt/"/>
+    <id>http://fingerchou.com/2018/07/14/using-fibonacci-sequence-to-encrypt/</id>
+    <published>2018-07-14T14:23:00.000Z</published>
+    <updated>2018-07-15T06:32:32.461Z</updated>
     
     <summary type="html">
     
@@ -35,7 +61,7 @@
     
     </summary>
     
-      <category term="Pythons" scheme="http://fingerchou.com/categories/Pythons/"/>
+      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
     
     
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
@@ -152,9 +178,9 @@
       <category term="SearchEngine" scheme="http://fingerchou.com/categories/SearchEngine/"/>
     
     
-      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
       <category term="BigData" scheme="http://fingerchou.com/tags/BigData/"/>
     
@@ -339,9 +365,9 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
   </entry>
   
@@ -367,9 +393,9 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
   </entry>
   
@@ -479,11 +505,11 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
@@ -509,11 +535,11 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
     
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   
@@ -540,35 +566,6 @@
     
     
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据库分库分表</title>
-    <link href="http://fingerchou.com/2017/07/29/database-sharding/"/>
-    <id>http://fingerchou.com/2017/07/29/database-sharding/</id>
-    <published>2017-07-29T05:44:00.000Z</published>
-    <updated>2018-05-19T06:34:11.893Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;hr&gt;
-&lt;h3 id=&quot;一、背景&quot;&gt;&lt;a href=&quot;#一、背景&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="Database" scheme="http://fingerchou.com/categories/Database/"/>
-    
-    
-      <category term="Mysql" scheme="http://fingerchou.com/tags/Mysql/"/>
-    
-      <category term="Shard" scheme="http://fingerchou.com/tags/Shard/"/>
     
   </entry>
   
