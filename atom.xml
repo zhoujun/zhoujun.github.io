@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-07-15T06:38:43.099Z</updated>
+  <updated>2018-08-23T15:02:17.837Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>数据分析之numpy基础</title>
+    <link href="http://fingerchou.com/2018/08/23/numpy-basis/"/>
+    <id>http://fingerchou.com/2018/08/23/numpy-basis/</id>
+    <published>2018-08-23T14:19:00.000Z</published>
+    <updated>2018-08-23T15:02:17.837Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h4&gt;&lt;p&gt;numpy是专门为科学计算设计的一个python扩展包，为python提供高效率的多维数组，也被称为面向阵列计算（array
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+      <category term="Numpy" scheme="http://fingerchou.com/tags/Numpy/"/>
+    
+  </entry>
   
   <entry>
     <title>位运算的最佳实践</title>
@@ -540,32 +568,6 @@
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
       <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>基于 Python 的开源人脸识别库</title>
-    <link href="http://fingerchou.com/2017/07/30/python-face-recognition/"/>
-    <id>http://fingerchou.com/2017/07/30/python-face-recognition/</id>
-    <published>2017-07-30T02:41:00.000Z</published>
-    <updated>2018-05-19T06:36:42.904Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;项目说明&quot;&gt;&lt;a href=&quot;#项目说明&quot; class=&quot;headerlink&quot; title=&quot;项目说明&quot;&gt;&lt;/a&gt;项目说明&lt;/h3&gt;&lt;p&gt;该库使用 dlib 顶尖的深度学习人脸识别技术构建，在户外脸部检测数据库基准（Labeled Faces in the
-        
-      
-    
-    </summary>
-    
-      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
-    
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
   </entry>
   

@@ -317,6 +317,204 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/19/python-metaclasses/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/19/python-metaclasses/" itemprop="url">Python 元类(Metaclasses)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-19T14:14:00+08:00">
+                2018-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/19/python-metaclasses/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/19/python-metaclasses/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/05/19/python-metaclasses/" class="leancloud_visitors" data-flag-title="Python 元类(Metaclasses)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Python-元类-Metaclasses"><a href="#Python-元类-Metaclasses" class="headerlink" title="Python 元类(Metaclasses)"></a>Python 元类(Metaclasses)</h3><h4 id="1、Type-and-Class"><a href="#1、Type-and-Class" class="headerlink" title="1、Type and Class"></a>1、Type and Class</h4><p>在Python3中，所有类都是新式类(New-Style)。因此，类的类型和它的实例类型是可以互换的。在Python中，所有的东西都是object。类也是一个object。因此类一定有一个type。<br>例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Foo: pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; x = Foo()</div><div class="line">&gt;&gt;&gt; type(x)</div><div class="line">&lt;class '__main__.Foo'&gt;</div><div class="line">&gt;&gt;&gt; type(Foo)</div><div class="line">&lt;class 'type'&gt;</div></pre></td></tr></table></figure>
+<p>如上所示：x的类型是Foo，但是Foo的类型，类的本身就是type。<br>我们熟悉的内置类的类型也是type:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; for t in int, float, dict, list, tuple:</div><div class="line">...     print(type(t))</div><div class="line">...</div><div class="line">&lt;class 'type'&gt;</div><div class="line">&lt;class 'type'&gt;</div><div class="line">&lt;class 'type'&gt;</div><div class="line">&lt;class 'type'&gt;</div><div class="line">&lt;class 'type'&gt;</div></pre></td></tr></table></figure>
+<p>type本身的类型也是type</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; type(type)</div><div class="line">&lt;class 'type'&gt;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>type是一个元类，其中类是实例。就像普通对象是类的实例，Python中的任何新式类，以及Python 3中的任何类，都是类的元类实例。</p>
+<p>还是上述的例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Foo: pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; x = Foo()</div><div class="line">&gt;&gt;&gt; type(x)</div><div class="line">&lt;class '__main__.Foo'&gt;</div><div class="line">&gt;&gt;&gt; type(Foo)</div><div class="line">&lt;class 'type'&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>x是类Foo的实例</li>
+<li>Foo 是type元类的实例</li>
+<li>type也是元类的一个实例，因此它是它自己的一个实例。</li>
+</ul>
+<h4 id="2、如何动态创建类"><a href="#2、如何动态创建类" class="headerlink" title="2、如何动态创建类"></a>2、如何动态创建类</h4><p>内置类型()函数在传递一个参数时，返回对象的类型。对于新式类，通常与对象的<strong>class</strong>属性相同:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; type(3)</div><div class="line">&lt;class 'int'&gt;</div><div class="line"></div><div class="line">&gt;&gt;&gt; type(['foo', 'bar', 'baz'])</div><div class="line">&lt;class 'list'&gt;</div><div class="line"></div><div class="line">&gt;&gt;&gt; t = (1, 2, 3, 4, 5)</div><div class="line">&gt;&gt;&gt; type(t)</div><div class="line">&lt;class 'tuple'&gt;</div><div class="line"></div><div class="line">&gt;&gt;&gt; class Foo:</div><div class="line">...     pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; type(Foo())</div><div class="line">&lt;class '__main__.Foo'&gt;</div></pre></td></tr></table></figure>
+<p>我们还可以使用三个参数的type(<name>， <base>， <dct>)方法来动态创建一个新类:</dct></name></p>
+<ul>
+<li><name> 指定了类名。这成为该类的<strong>name</strong>属性。</name></li>
+<li><base> 指定了类继承的基类的一个元组。这成为该类的<strong>bases</strong>属性。</li>
+<li><dct> 指定包含类主体定义的名称空间词典。这成为该类的<strong>dict</strong>属性。<br>以这种方式调用类型()将创建类型元类的一个新实例。换句话说，它动态创建一个新类。</dct></li>
+</ul>
+<h5 id="Example-1-最基本的使用"><a href="#Example-1-最基本的使用" class="headerlink" title="Example 1 最基本的使用"></a>Example 1 最基本的使用</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>Foo = type(<span class="string">'Foo'</span>, (), &#123;&#125;)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x</div><div class="line">&lt;__main__.Foo object at <span class="number">0x102b563c8</span>&gt;</div></pre></td></tr></table></figure>
+<p>上述通过type()动态创建类和下面代码创建类是一样的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">pass</span></div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x</div><div class="line">&lt;__main__.Foo object at <span class="number">0x102b56400</span>&gt;</div></pre></td></tr></table></figure>
+<p>最佳实战：动态创建类有一个很大好处。比如当你数据库表是采用分表设计。<br>如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">table_1</div><div class="line">table_2</div><div class="line">table_3</div><div class="line">...</div><div class="line">table_N</div></pre></td></tr></table></figure>
+<p>这个时候你要根据表来创建对应的模型。你会发现table结构是一致，只是表名不同。<br>那么最好的方式就是通过type()元类动态创建模型type(‘table_’+id, (), {})。</p>
+<h5 id="Example-2-继承"><a href="#Example-2-继承" class="headerlink" title="Example 2 继承"></a>Example 2 继承</h5><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; Bar = type('Bar', (Foo,), dict(attr=100))</div><div class="line"></div><div class="line">&gt;&gt;&gt; x = Bar()</div><div class="line">&gt;&gt;&gt; x.attr</div><div class="line">100</div><div class="line">&gt;&gt;&gt; x.__class__</div><div class="line">&lt;class '__main__.Bar'&gt;</div><div class="line">&gt;&gt;&gt; x.__class__.__bases__</div><div class="line">(&lt;class '__main__.Foo'&gt;,)</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Bar(Foo):</div><div class="line">...     attr = 100</div><div class="line">...</div><div class="line"></div><div class="line">&gt;&gt;&gt; x = Bar()</div><div class="line">&gt;&gt;&gt; x.attr</div><div class="line">100</div><div class="line">&gt;&gt;&gt; x.__class__</div><div class="line">&lt;class '__main__.Bar'&gt;</div><div class="line">&gt;&gt;&gt; x.__class__.__bases__</div><div class="line">(&lt;class '__main__.Foo'&gt;,)</div></pre></td></tr></table></figure>
+<h5 id="Example-3-默认属性"><a href="#Example-3-默认属性" class="headerlink" title="Example 3 默认属性"></a>Example 3 默认属性</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>Foo = type(</div><div class="line"><span class="meta">... </span>    <span class="string">'Foo'</span>,</div><div class="line"><span class="meta">... </span>    (),</div><div class="line"><span class="meta">... </span>    &#123;</div><div class="line"><span class="meta">... </span>        <span class="string">'attr'</span>: <span class="number">100</span>,</div><div class="line"><span class="meta">... </span>        <span class="string">'attr_val'</span>: <span class="keyword">lambda</span> x : x.attr</div><div class="line"><span class="meta">... </span>    &#125;</div><div class="line"><span class="meta">... </span>)</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</div><div class="line"><span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr_val()</div><div class="line"><span class="number">100</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></div><div class="line"><span class="meta">... </span>    attr = <span class="number">100</span></div><div class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">attr_val</span><span class="params">(self)</span>:</span></div><div class="line"><span class="meta">... </span>        <span class="keyword">return</span> self.attr</div><div class="line">...</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</div><div class="line"><span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr_val()</div><div class="line"><span class="number">100</span></div></pre></td></tr></table></figure>
+<h4 id="Examle-4-默认属性引用外部函数"><a href="#Examle-4-默认属性引用外部函数" class="headerlink" title="Examle 4 默认属性引用外部函数"></a>Examle 4 默认属性引用外部函数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(obj)</span>:</span></div><div class="line"><span class="meta">... </span>    print(<span class="string">'attr ='</span>, obj.attr)</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Foo = type(</div><div class="line"><span class="meta">... </span>    <span class="string">'Foo'</span>,</div><div class="line"><span class="meta">... </span>    (),</div><div class="line"><span class="meta">... </span>    &#123;</div><div class="line"><span class="meta">... </span>        <span class="string">'attr'</span>: <span class="number">100</span>,</div><div class="line"><span class="meta">... </span>        <span class="string">'attr_val'</span>: f</div><div class="line"><span class="meta">... </span>    &#125;</div><div class="line"><span class="meta">... </span>)</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</div><div class="line"><span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr_val()</div><div class="line">attr = <span class="number">100</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(obj)</span>:</span></div><div class="line"><span class="meta">... </span>    print(<span class="string">'attr ='</span>, obj.attr)</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></div><div class="line"><span class="meta">... </span>    attr = <span class="number">100</span></div><div class="line"><span class="meta">... </span>    attr_val = f</div><div class="line">...</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x = Foo()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr</div><div class="line"><span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>x.attr_val()</div><div class="line">attr = <span class="number">100</span></div></pre></td></tr></table></figure>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><p>1、<a href="https://realpython.com/python-metaclasses/#type-and-class" target="_blank" rel="external">https://realpython.com/python-metaclasses/#type-and-class</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/18/python-old-style-vs-new-style-classes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2131,178 +2329,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/07/30/python-face-recognition/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/30/python-face-recognition/" itemprop="url">基于 Python 的开源人脸识别库</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T10:41:00+08:00">
-                2017-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/30/python-face-recognition/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/30/python-face-recognition/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/07/30/python-face-recognition/" class="leancloud_visitors" data-flag-title="基于 Python 的开源人脸识别库">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="项目说明"><a href="#项目说明" class="headerlink" title="项目说明"></a>项目说明</h3><p>该库使用 dlib 顶尖的深度学习人脸识别技术构建，在户外脸部检测数据库基准（Labeled Faces in the Wild benchmark）上的准确率高达 99.38%。<br>该项目是要构建一款免费、开源、实时、离线的网络 app，支持组织者使用人脸识别技术或二维码识别所有受邀人员。有了世界上最简单的人脸识别库，使用 Python 或命令行，即可识别和控制人脸。</p>
-<p>项目地址：<br><a href="https://github.com/ageitgey/face_recognition#face-recognition" target="_blank" rel="external">https://github.com/ageitgey/face_recognition#face-recognition</a></p>
-<h3 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h3><h4 id="1、从图片中识别出人脸"><a href="#1、从图片中识别出人脸" class="headerlink" title="1、从图片中识别出人脸"></a>1、从图片中识别出人脸</h4><p><img src="/imgs/20170729/42c65360-025d-11e7-94ea-b12f28cb34b4.png" alt=""></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">image = face_recognition.load_image_file(<span class="string">"your_file.jpg"</span>)</div><div class="line">face_locations = face_recognition.face_locations(image)</div></pre></td></tr></table></figure>
-<h4 id="2、从图片中识别面部特征，比如：眼睛-鼻子-嘴和下巴。"><a href="#2、从图片中识别面部特征，比如：眼睛-鼻子-嘴和下巴。" class="headerlink" title="2、从图片中识别面部特征，比如：眼睛, 鼻子, 嘴和下巴。"></a>2、从图片中识别面部特征，比如：眼睛, 鼻子, 嘴和下巴。</h4><p><img src="/imgs/20170729/7f2d79dc-025d-11e7-8728-d8924596f8fa.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">image = face_recognition.load_image_file(<span class="string">"your_file.jpg"</span>)</div><div class="line">face_landmarks_list = face_recognition.face_landmarks(image)</div></pre></td></tr></table></figure></p>
-<h4 id="3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能"><a href="#3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能" class="headerlink" title="3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能"></a>3、可以对识别的面部特征进行处理，比如类似美图秀秀的功能</h4><p><img src="/imgs/20170729/80638760-025d-11e7-80a2-1d2779f7ccab.png" alt=""></p>
-<h4 id="4、从图片中识别出某个具体的人"><a href="#4、从图片中识别出某个具体的人" class="headerlink" title="4、从图片中识别出某个具体的人"></a>4、从图片中识别出某个具体的人</h4><p><img src="/imgs/20170729/45e049b6-025d-11e7-89cc-8a71cf89e713.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> face_recognition</div><div class="line">known_image = face_recognition.load_image_file(<span class="string">"biden.jpg"</span>)</div><div class="line">unknown_image = face_recognition.load_image_file(<span class="string">"unknown.jpg"</span>)</div><div class="line"></div><div class="line">biden_encoding = face_recognition.face_encodings(known_image)[<span class="number">0</span>]</div><div class="line">unknown_encoding = face_recognition.face_encodings(unknown_image)[<span class="number">0</span>]</div><div class="line"></div><div class="line">results = face_recognition.compare_faces([biden_encoding], unknown_encoding)</div></pre></td></tr></table></figure></p>
-<p>更多请查看项目主页：</p>
-<p><a href="https://github.com/ageitgey/face_recognition#face-recognition" target="_blank" rel="external">https://github.com/ageitgey/face_recognition#face-recognition</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2353,7 +2379,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
