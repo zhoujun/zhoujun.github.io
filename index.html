@@ -317,6 +317,265 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/08/23/pandas-basis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/23/pandas-basis/" itemprop="url">Pandas基础</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T22:19:00+08:00">
+                2018-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/23/pandas-basis/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/08/23/pandas-basis/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/08/23/pandas-basis/" class="leancloud_visitors" data-flag-title="Pandas基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>原文地址：<a href="https://www.jiqizhixin.com/articles/2018-07-18-3" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2018-07-18-3</a></p>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>Pandas是基于Numpy构建的库，在数据处理方面可以把它理解为numpy加强版。不同于numpy的是，pandas拥有种数据结构：<code>Series</code>和<code>DataFrame</code>：</p>
+<p>用代码生成一个简单的Series对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from pandas import Series, DataFrame</div><div class="line">&gt;&gt;&gt; import pandas as pd</div><div class="line">&gt;&gt;&gt; data = Series([1,2,3,4],index = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;])</div><div class="line">&gt;&gt;&gt; data</div><div class="line">a    1</div><div class="line">b    2</div><div class="line">c    3</div><div class="line">d    4</div><div class="line">dtype: int64</div><div class="line">``` </div><div class="line"></div><div class="line">Series是一种类似一维数组的数据结构，由一组数据和与之相关的index组成，这个结构一看似乎与dict字典差不多，我们知道字典是一种无序的数据结构，而pandas中的Series的数据结构不一样，它相当于定长有序的字典，并且它的index和value之间是独立的，两者的索引还是有区别的，Series的index是可变的，而dict字典的key值是不可变的。</div><div class="line"></div><div class="line">用代码生成一个简单的DataFrame对象</div></pre></td></tr></table></figure></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>data = {‘a’:[1,2,3],’b’:[‘we’,’you’,’they’],’c’:[‘btc’,’eos’,’ae’]}<br>df = DataFrame(data)<br>df<br>   a     b    c<br>0  1    we  btc<br>1  2   you  eos<br>2  3  they   ae<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DataFrame这种数据结构我们可以把它看作是一张二维表，DataFrame长得跟我们平时使用的Excel表格差不多，DataFrame的横行称为columns，竖列和Series一样称为index，DataFrame每一列可以是不同类型的值集合，所以DataFrame你也可以把它视为不同数据类型同一index的Series集合。</div><div class="line"></div><div class="line"></div><div class="line">#### Series</div><div class="line"></div><div class="line">##### Series的两种生成方式</div></pre></td></tr></table></figure></p>
+<p>data = Series([222,’btc’,234,’eos’])<br>data<br>0    222<br>1    btc<br>2    234<br>3    eos<br>dtype: object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">虽然我们在生成的时候没有设置index值，但Series还是会自动帮我们生成index，这种方式生成的Series结构跟list列表差不多，可以把这种形式的Series理解为竖起来的list列表。</div></pre></td></tr></table></figure></p>
+<p>data = Series([1,2,3,4],index = [‘a’,’b’,’c’,’d’])<br>data<br>a    1<br>b    2<br>c    3<br>d    4<br>dtype: int64<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">这种形式的Series可以理解为numpy的array外面披了一件index的马甲，所以array的相关操作，Series同样也是支持的。结构非常相似的dict字典同样也是可以转化为Series格式的：</div></pre></td></tr></table></figure></p>
+<p>dic = {‘a’:1,’b’:2,’c’:’as’}<br>dicSeries = Series(dic)<br>dicSeries<br>a     1<br>b     2<br>c    as<br>dtype: object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">##### 查看Series的相关信息</div></pre></td></tr></table></figure></p>
+<p>data.index<br>Index([‘a’, ‘b’, ‘c’, ‘d’], dtype=’object’)<br>data.values<br>array([1, 2, 3, 4], dtype=int64)</p>
+<h1 id="in方法默认判断的是index值"><a href="#in方法默认判断的是index值" class="headerlink" title="in方法默认判断的是index值"></a>in方法默认判断的是index值</h1><p>‘a’ in data<br>True<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">##### Series的NaN生成</div></pre></td></tr></table></figure></p>
+<p>index1 = [ ‘a’,’b’,’c’,’d’]<br>dic = {‘b’:1,’c’:1,’d’:1}<br>data2 = Series(dic,index=index1)<br>data2<br>a    NaN<br>b    1.0<br>c    1.0<br>d    1.0<br>dtype: float64<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">从这里我们可以看出Series的生成依据的是index值，index‘a’在字典dic的key中并不存在，Series自然也找不到’a’的对应value值，这种情况下Pandas就会自动生成NaN(not a number)来填补缺失值，这里还有个有趣的现象，原本dtype是int类型，生成NaN后就变成了float类型了，因为NaN的官方定义就是float类型。</div><div class="line"></div><div class="line">##### NaN的相关查询</div></pre></td></tr></table></figure></p>
+<p>data2.isnull()<br>a     True<br>b    False<br>c    False<br>d    False<br>dtype: bool<br>data2.notnull()<br>a    False<br>b     True<br>c     True<br>d     True<br>dtype: bool</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="嵌套查询NaN"><a href="#嵌套查询NaN" class="headerlink" title="嵌套查询NaN"></a>嵌套查询NaN</h1><blockquote>
+<blockquote>
+<blockquote>
+<p>data2[data2.isnull()==True]<br>a   NaN<br>dtype: float64</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="统计非NaN个数"><a href="#统计非NaN个数" class="headerlink" title="统计非NaN个数"></a>统计非NaN个数</h1><blockquote>
+<blockquote>
+<blockquote>
+<p>data2.count()<br>3</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">切记切记，查询NaN值切记不要使用np.nan==np.nan这种形式来作为判断条件，结果永远是False，==是用作值判断的，而NaN并没有值，如果你不想使用上方的判断方法，你可以使用is作为判断方法，is是对象引用判断，np.nan is np.nan，结果就是你要的True。</div><div class="line"></div><div class="line">##### Series的name属性</div></pre></td></tr></table></figure>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>data.index.name = ‘abc’<br>data.name = ‘test’<br>data<br>abc<br>a    1<br>b    2<br>c    3<br>d    4<br>Name: test, dtype: int64<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Series对象本身及其索引index都有一个name属性，name属性主要发挥作用是在DataFrame中，当我们把一个Series对象放进DataFrame中，新的列将根据我们的name属性对该列进行命名，如果我们没有给Series命名，DataFrame则会自动帮我们命名为0。</div><div class="line"></div><div class="line">#### DataFrame</div></pre></td></tr></table></figure></p>
+<p>data = {‘name’: [‘BTC’, ‘ETH’, ‘EOS’], ‘price’:[50000, 4000, 150]}<br>data = DataFrame(data)<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2  EOS    150<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DataFrame的生成与Series差不多，你可以自己指定index，也可不指定，DataFrame会自动帮你补上。</div><div class="line"></div><div class="line">##### 查看DataFrame的相关信息</div></pre></td></tr></table></figure></p>
+<p>data.index<br>RangeIndex(start=0, stop=3, step=1)<br>data.values<br>array([[‘BTC’, 50000],<br>       [‘ETH’, 4000],<br>       [‘EOS’, 150]], dtype=object)<br>data.columns<br>Index([‘name’, ‘price’], dtype=’object’)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">##### DataFrame索引</div></pre></td></tr></table></figure></p>
+<p>data.name<br>0    BTC<br>1    ETH<br>2    EOS<br>Name: name, dtype: object</p>
+<p>data[‘name’]<br>0    BTC<br>1    ETH<br>2    EOS<br>Name: name, dtype: object</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="loc-‘name’-查询的是行标签"><a href="#loc-‘name’-查询的是行标签" class="headerlink" title="loc[‘name’]查询的是行标签"></a>loc[‘name’]查询的是行标签</h1><blockquote>
+<blockquote>
+<blockquote>
+<p>data.iloc[1]<br>name      ETH<br>price    4000<br>Name: 1, dtype: object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">其实行索引，除了iloc，loc还有个ix，ix既可以进行行标签索引，也可以进行行号索引，但这也大大增加了它的不确定性，有时会出现一些奇怪的问题，所以pandas在0.20.0版本的时候就把ix给弃用了。</div><div class="line"></div><div class="line">##### DataFrame的常用操作</div><div class="line"></div><div class="line">###### 简单地增加行、列</div></pre></td></tr></table></figure></p>
+<p>data[‘type’] = ‘token’<br>data<br>  name  price   type<br>0  BTC  50000  token<br>1  ETH   4000  token<br>2  EOS    150  token</p>
+<p>data.loc[‘3’] = [‘ae’,200,’token’]<br>data<br>  name  price   type<br>0  BTC  50000  token<br>1  ETH   4000  token<br>2  EOS    150  token<br>3   ae    200  token<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 删除行、列操作</div></pre></td></tr></table></figure></p>
+<p>del data[‘type’]<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2  EOS    150<br>3   ae    200</p>
+<p>data.drop([2])<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>3   ae    200</p>
+<p>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2  EOS    150<br>3   ae    200<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">这里需要注意的是，使用drop（）方法返回的是Copy而不是视图，要想真正在原数据里删除行，就要设置inplace=True</div></pre></td></tr></table></figure></p>
+<p>data.drop([2],inplace=True)<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>3   ae    200<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 设置某一列为index</div></pre></td></tr></table></figure></p>
+<p>data.set_index([‘name’],inplace=True)<br>data<br>      price<br>name<br>BTC   50000<br>ETH    4000<br>ae      200</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="将index返回回dataframe中"><a href="#将index返回回dataframe中" class="headerlink" title="将index返回回dataframe中"></a>将index返回回dataframe中</h1><blockquote>
+<blockquote>
+<blockquote>
+<p>data.reset_index(inplace=True)<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2   ae    200<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 处理缺失值</div></pre></td></tr></table></figure></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>data.dropna()    # 丢弃含有缺失值的行<br>data.fillna(0)    # 填充缺失值数据为0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">还是需要注意：这些方法返回的是copy而不是视图，如果想在原数据上改变，别忘了inplace=True。</div><div class="line"></div><div class="line">###### 数据合并</div></pre></td></tr></table></figure></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2   ae    200<br>3  eos    eos</p>
+<p>data1<br>  name other<br>0  BTC     a<br>1  ETH     b</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="以name为key进行左连接"><a href="#以name为key进行左连接" class="headerlink" title="以name为key进行左连接"></a>以name为key进行左连接</h1><blockquote>
+<blockquote>
+<blockquote>
+<p>pd.merge(data,data1,on=’name’,how=’left’)<br>  name  price other<br>0  BTC  50000     a<br>1  ETH   4000     b<br>2   ae    200   NaN<br>3  eos    eos   NaN<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">平时进行数据合并操作，更多的会出一种情况，那就是出现重复值，DataFrame也为我们提供了简便的方法：</div></pre></td></tr></table></figure></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>data.drop_duplicates(inplace=True)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 数据的简单保存与读取</div></pre></td></tr></table></figure></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>data.to_csv(‘test.csv’)<br>pd.read_csv(‘test.csv’)<br>   Unnamed: 0 name  price<br>0           0  BTC  50000<br>1           1  ETH   4000<br>2           2   ae    200<br>3           3  eos    eos<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">为什么会出现这种情况呢，从头看到尾的同学可能就看出来了，增加第三行时，我用的是loc[‘3’]行标签来增加的，而read_csv方法是默认index是从0开始增长的，此时只需要我们设置下index参数就ok了</div></pre></td></tr></table></figure></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="不保存行索引"><a href="#不保存行索引" class="headerlink" title="不保存行索引"></a>不保存行索引</h1><blockquote>
+<blockquote>
+<blockquote>
+<p>data.to_csv(‘test.csv’,index=None)<br>pd.read_csv(‘test.csv’)<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2   ae    200<br>3  eos    eos<br>```</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>其他的还有header参数，这些参数都是我们在保存数据时需要注意的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/08/23/numpy-basis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -336,7 +595,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/08/23/numpy-basis/" itemprop="url">数据分析之numpy基础</a></h2>
+                <a class="post-title-link" href="/2018/08/23/numpy-basis/" itemprop="url">Numpy基础</a></h2>
         
 
         <div class="post-meta">
@@ -399,7 +658,7 @@
 
           
           
-             <span id="/2018/08/23/numpy-basis/" class="leancloud_visitors" data-flag-title="数据分析之numpy基础">
+             <span id="/2018/08/23/numpy-basis/" class="leancloud_visitors" data-flag-title="Numpy基础">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -432,7 +691,8 @@
       
         
           
-            <h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>numpy是专门为科学计算设计的一个python扩展包，为python提供高效率的多维数组，也被称为面向阵列计算（array oriented computing），同时numpy也是github上的一个开源项目：numpy，numpy是基于c语言开发，所以这使得numpy的运行速度很快，高效率运行就是numpy的一大优势。</p>
+            <p>原文地址：<a href="https://www.jiqizhixin.com/articles/2018-07-18-2" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2018-07-18-2</a></p>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>numpy是专门为科学计算设计的一个python扩展包，为python提供高效率的多维数组，也被称为面向阵列计算（array oriented computing），同时numpy也是github上的一个开源项目：numpy，numpy是基于c语言开发，所以这使得numpy的运行速度很快，高效率运行就是numpy的一大优势。</p>
 <p>用numpy生成一维数组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import numpy as np</div><div class="line">&gt;&gt;&gt; a = np.array([[1,2,3]], dtype=np.int32)</div><div class="line">&gt;&gt;&gt; a</div><div class="line">array([[1, 2, 3]])</div></pre></td></tr></table></figure></p>
 <p>numpy中定义的最重要的数据结构是称为ndarray的n维数组类型，这个结构引用了两个对象，一块用于<strong>保存数据的存储区域</strong>和一个<strong>用于描述元素类型的dtype对象</strong>： </p>
 <p><img src="/imgs/20180823/20180516210240962.jpg" alt=""></p>
@@ -453,7 +713,6 @@
 <h5 id="数组的排序操作"><a href="#数组的排序操作" class="headerlink" title="数组的排序操作"></a>数组的排序操作</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data = np.random.randn(4,4)</div><div class="line">&gt;&gt;&gt; data</div><div class="line">array([[-2.09150248, -0.07758111, -1.30427684, -0.79387749],</div><div class="line">       [-0.10272387, -0.89728241, -0.54607326,  0.87435473],</div><div class="line">       [ 1.83972061, -0.81256093, -1.21652558,  0.51171488],</div><div class="line">       [-0.40912271,  0.21529186,  0.66593734, -0.54275447]])</div><div class="line"></div><div class="line"># 沿着行(axis=0)进行索引，并进行升序排序</div><div class="line">&gt;&gt;&gt; data.sort(0)</div><div class="line">&gt;&gt;&gt; data</div><div class="line">array([[-2.09150248, -0.89728241, -1.30427684, -0.79387749],</div><div class="line">       [-0.40912271, -0.81256093, -1.21652558, -0.54275447],</div><div class="line">       [-0.10272387, -0.07758111, -0.54607326,  0.51171488],</div><div class="line">       [ 1.83972061,  0.21529186,  0.66593734,  0.87435473]])</div><div class="line"></div><div class="line"># 降序操作</div><div class="line">&gt;&gt;&gt; data[::-1]</div><div class="line">array([[ 1.83972061,  0.21529186,  0.66593734,  0.87435473],</div><div class="line">       [-0.10272387, -0.07758111, -0.54607326,  0.51171488],</div><div class="line">       [-0.40912271, -0.81256093, -1.21652558, -0.54275447],</div><div class="line">       [-2.09150248, -0.89728241, -1.30427684, -0.79387749]])</div></pre></td></tr></table></figure>
 <p><strong>注意：直接调用数组的方法的排序将直接改变数组而不会产生新的拷贝。</strong></p>
 <h5 id="矩阵运算"><a href="#矩阵运算" class="headerlink" title="矩阵运算"></a>矩阵运算</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x=np.arange(9).reshape(3,3)</div><div class="line">&gt;&gt;&gt; x</div><div class="line">array([[0, 1, 2],</div><div class="line">       [3, 4, 5],</div><div class="line">       [6, 7, 8]])</div><div class="line"># 矩阵相乘</div><div class="line">&gt;&gt;&gt; np.dot(x, x)</div><div class="line">array([[ 15,  18,  21],</div><div class="line">       [ 42,  54,  66],</div><div class="line">       [ 69,  90, 111]])</div><div class="line"># 矩阵转置</div><div class="line">&gt;&gt;&gt; x.T</div><div class="line">array([[0, 3, 6],</div><div class="line">       [1, 4, 7],</div><div class="line">       [2, 5, 8]])</div></pre></td></tr></table></figure>
-<h4 id="原文地址"><a href="#原文地址" class="headerlink" title="原文地址"></a>原文地址</h4><p><a href="https://www.jiqizhixin.com/articles/2018-07-18-2" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2018-07-18-2</a></p>
 
           
         
@@ -2066,184 +2325,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/21/python-dictionary-and-set-comprehensions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/21/python-dictionary-and-set-comprehensions/" itemprop="url">Python Dictionary and Set comprehensions</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-21T10:40:00+08:00">
-                2018-05-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/21/python-dictionary-and-set-comprehensions/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/21/python-dictionary-and-set-comprehensions/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/05/21/python-dictionary-and-set-comprehensions/" class="leancloud_visitors" data-flag-title="Python Dictionary and Set comprehensions">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>大多数Python程序员都知道并使用列表推导。对于不熟悉这个概念的人来说，列表推导其实是一种更简短、更简洁的创建列表的方式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; some_list = [1, 2, 3, 4, 5]</div><div class="line">&gt;&gt;&gt; another_list = [ x + 1 for x in some_list ]</div><div class="line">&gt;&gt;&gt; another_list</div><div class="line">[2, 3, 4, 5, 6]</div></pre></td></tr></table></figure>
-<p>而从Python 3.1开始(也反向地移植到了Python 2.7), 我们可以用同样的方式创建集合(Set)和字典(Dict):</p>
-<p>使用推导的方式，创建一个集合</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; # Set Comprehensions</div><div class="line">&gt;&gt;&gt; some_list = [1, 2, 3, 4, 5, 2, 5, 1, 4, 8]</div><div class="line">&gt;&gt;&gt; even_set = &#123; x for x in some_list if x % 2 == 0 &#125;</div><div class="line">&gt;&gt;&gt; even_set</div><div class="line">set([8, 2, 4])</div></pre></td></tr></table></figure>
-<p>使用推导的方式，创建一个Dict</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; # Dict Comprehensions</div><div class="line">&gt;&gt;&gt; d = &#123; x: x % 2 == 0 for x in range(1, 11) &#125;</div><div class="line">&gt;&gt;&gt; d</div><div class="line">&#123;1: False, 2: True, 3: False, 4: True, 5: False, 6: True, 7: False, 8: True, 9: False, 10: True&#125;</div></pre></td></tr></table></figure>
-<p>另一个创建集合的方式:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; my_set = &#123;1, 2, 1, 2, 3, 4&#125;</div><div class="line">&gt;&gt;&gt; my_set</div><div class="line">set([1, 2, 3, 4])</div></pre></td></tr></table></figure>
-<p>没有使用到内建的 <code>set</code>方法, 直接用大括号{}创建。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2289,7 +2375,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2311,7 +2397,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

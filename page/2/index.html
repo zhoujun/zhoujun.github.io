@@ -317,6 +317,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/21/python-dictionary-and-set-comprehensions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/21/python-dictionary-and-set-comprehensions/" itemprop="url">Python Dictionary and Set comprehensions</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-21T10:40:00+08:00">
+                2018-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/21/python-dictionary-and-set-comprehensions/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/21/python-dictionary-and-set-comprehensions/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/05/21/python-dictionary-and-set-comprehensions/" class="leancloud_visitors" data-flag-title="Python Dictionary and Set comprehensions">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>大多数Python程序员都知道并使用列表推导。对于不熟悉这个概念的人来说，列表推导其实是一种更简短、更简洁的创建列表的方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; some_list = [1, 2, 3, 4, 5]</div><div class="line">&gt;&gt;&gt; another_list = [ x + 1 for x in some_list ]</div><div class="line">&gt;&gt;&gt; another_list</div><div class="line">[2, 3, 4, 5, 6]</div></pre></td></tr></table></figure>
+<p>而从Python 3.1开始(也反向地移植到了Python 2.7), 我们可以用同样的方式创建集合(Set)和字典(Dict):</p>
+<p>使用推导的方式，创建一个集合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; # Set Comprehensions</div><div class="line">&gt;&gt;&gt; some_list = [1, 2, 3, 4, 5, 2, 5, 1, 4, 8]</div><div class="line">&gt;&gt;&gt; even_set = &#123; x for x in some_list if x % 2 == 0 &#125;</div><div class="line">&gt;&gt;&gt; even_set</div><div class="line">set([8, 2, 4])</div></pre></td></tr></table></figure>
+<p>使用推导的方式，创建一个Dict</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; # Dict Comprehensions</div><div class="line">&gt;&gt;&gt; d = &#123; x: x % 2 == 0 for x in range(1, 11) &#125;</div><div class="line">&gt;&gt;&gt; d</div><div class="line">&#123;1: False, 2: True, 3: False, 4: True, 5: False, 6: True, 7: False, 8: True, 9: False, 10: True&#125;</div></pre></td></tr></table></figure>
+<p>另一个创建集合的方式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; my_set = &#123;1, 2, 1, 2, 3, 4&#125;</div><div class="line">&gt;&gt;&gt; my_set</div><div class="line">set([1, 2, 3, 4])</div></pre></td></tr></table></figure>
+<p>没有使用到内建的 <code>set</code>方法, 直接用大括号{}创建。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/19/python-metaclasses/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2097,243 +2270,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/12/elasticsearch-dsl-with-python-usage-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/12/elasticsearch-dsl-with-python-usage-1/" itemprop="url">Python Elasticsearch DSL 使用笔记(一)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T20:39:00+08:00">
-                2017-08-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
-                    <span itemprop="name">ElasticSearch</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/12/elasticsearch-dsl-with-python-usage-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/12/elasticsearch-dsl-with-python-usage-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/08/12/elasticsearch-dsl-with-python-usage-1/" class="leancloud_visitors" data-flag-title="Python Elasticsearch DSL 使用笔记(一)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><strong>下载地址</strong>: <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external">https://www.elastic.co/downloads/elasticsearch</a></p>
-<p><strong>使用版本</strong>: elasticsearch-5.5.1</p>
-<p><strong>Python Elasticsearch DSL</strong>: <a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="external">https://github.com/elastic/elasticsearch-dsl-py</a></p>
-<p><strong>测试代码</strong>： <a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
-<h3 id="一、Elasticsearch的基本概念"><a href="#一、Elasticsearch的基本概念" class="headerlink" title="一、Elasticsearch的基本概念"></a>一、Elasticsearch的基本概念</h3><ul>
-<li>Index：Elasticsearch用来存储数据的逻辑区域，它类似于关系型数据库中的database 概念。一个index可以在一个或者多个shard上面，同时一个shard也可能会有多个replicas。</li>
-<li>Document：Elasticsearch里面存储的实体数据，类似于关系数据中一个table里面的一行数据。 document由多个field组成，不同的document里面同名的field一定具有相同的类型。document里面field可以重复出现，也就是一个field会有多个值，即multivalued。</li>
-<li>Document type：为了查询需要，一个index可能会有多种document，也就是document type. 它类似于关系型数据库中的 table 概念。但需要注意，不同document里面同名的field一定要是相同类型的。</li>
-<li>Mapping：它类似于关系型数据库中的 schema 定义概念。存储field的相关映射信息，不同document type会有不同的mapping。</li>
-</ul>
-<p>下图是ElasticSearch和关系型数据库的一些术语比较：</p>
-<table>
-<thead>
-<tr>
-<th>Relationnal database</th>
-<th style="text-align:left">Elasticsearch           </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Database</td>
-<td style="text-align:left">Index          </td>
-</tr>
-<tr>
-<td>Table</td>
-<td style="text-align:left">Type             </td>
-</tr>
-<tr>
-<td>Row</td>
-<td style="text-align:left">Document          </td>
-</tr>
-<tr>
-<td>Column</td>
-<td style="text-align:left">Field            </td>
-</tr>
-<tr>
-<td>Schema</td>
-<td style="text-align:left">Mapping        </td>
-</tr>
-<tr>
-<td>Index</td>
-<td style="text-align:left">Everything is indexed       </td>
-</tr>
-<tr>
-<td>SQL</td>
-<td style="text-align:left">Query DSL       </td>
-</tr>
-<tr>
-<td>SELECT * FROM table…</td>
-<td style="text-align:left">GET http://…  </td>
-</tr>
-<tr>
-<td>UPDATE table SET</td>
-<td style="text-align:left">PUT http://…   </td>
-</tr>
-</tbody>
-</table>
-<h3 id="二、Python-Elasticsearch-DSL使用简介"><a href="#二、Python-Elasticsearch-DSL使用简介" class="headerlink" title="二、Python Elasticsearch DSL使用简介"></a>二、Python Elasticsearch DSL使用简介</h3><h4 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a>1、安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install elasticsearch-dsl</div></pre></td></tr></table></figure>
-<h4 id="2、创建索引和文档"><a href="#2、创建索引和文档" class="headerlink" title="2、创建索引和文档"></a>2、创建索引和文档</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Date, Integer, Keyword, Text</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections</div><div class="line"></div><div class="line"><span class="comment"># Define a default Elasticsearch client</span></div><div class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(DocType)</span>:</span></div><div class="line">    title = Text(analyzer=<span class="string">'snowball'</span>, fields=&#123;<span class="string">'raw'</span>: Keyword()&#125;)</div><div class="line">    body = Text(analyzer=<span class="string">'snowball'</span>)</div><div class="line">    tags = Keyword()</div><div class="line">    published_from = Date()</div><div class="line">    lines = Integer()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blog'</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, ** kwargs)</span>:</span></div><div class="line">        self.lines = len(self.body.split())</div><div class="line">        <span class="keyword">return</span> super(Article, self).save(** kwargs)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_published</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> datetime.now() &gt;= self.published_from</div><div class="line"></div><div class="line"><span class="comment"># create the mappings in elasticsearch</span></div><div class="line">Article.init()</div></pre></td></tr></table></figure>
-<p>创建了一个索引为blog，文档为article的Elasticsearch数据库和表。<br>必须执行<code>Article.init()</code>方法。 这样Elasticsearch才会根据你的DocType产生对应的Mapping。否则Elasticsearch就会在你第一次创建Index和Type的时候根据你的内容建立对应的Mapping。</p>
-<p>现在我们可以通过Elasticsearch Restful API来检查<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/_mapping/</div><div class="line"></div><div class="line">&#123;&quot;blog&quot;:</div><div class="line">	&#123;&quot;mappings&quot;:</div><div class="line">		&#123;&quot;article&quot;:</div><div class="line">			&#123;&quot;properties&quot;:&#123;</div><div class="line">				&quot;body&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;,</div><div class="line">				&quot;lines&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</div><div class="line">				&quot;published_from&quot;:&#123;&quot;type&quot;:&quot;date&quot;&#125;,</div><div class="line">				&quot;tags&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</div><div class="line">				&quot;title&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;fields&quot;:&#123;&quot;raw&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;&#125;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="三、使用Elasticsearch进行CRUD操作"><a href="#三、使用Elasticsearch进行CRUD操作" class="headerlink" title="三、使用Elasticsearch进行CRUD操作"></a>三、使用Elasticsearch进行CRUD操作</h3><h4 id="1、Create-an-article"><a href="#1、Create-an-article" class="headerlink" title="1、Create an article"></a>1、Create an article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># create and save and article</span></div><div class="line">article = Article(meta=&#123;<span class="string">'id'</span>: <span class="number">1</span>&#125;, title=<span class="string">'Hello elasticsearch!'</span>, tags=[<span class="string">'elasticsearch'</span>])</div><div class="line">article.body = <span class="string">''' looong text '''</span></div><div class="line">article.published_from = datetime.now()</div><div class="line">article.save()</div></pre></td></tr></table></figure>
-<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">http POST http://127.0.0.1:9200/blog/article/1 title=&quot;hello elasticsearch&quot; tags:=&apos;[&quot;elasticsearch&quot;]&apos;</div><div class="line"></div><div class="line">HTTP/1.1 201 Created</div><div class="line">Content-Length: 73</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;created&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="2、Get-a-article"><a href="#2、Get-a-article" class="headerlink" title="2、Get a article"></a>2、Get a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="comment"># 如果获取一个不存在的文章则返回None</span></div><div class="line">a = Article.get(id=<span class="string">'no-in-es'</span>)</div><div class="line">a <span class="keyword">is</span> <span class="keyword">None</span></div><div class="line"></div><div class="line"><span class="comment"># 还可以获取多个文章</span></div><div class="line">articles = Article.mget([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
-<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/article/1</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 141</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_source&quot;: &#123;</div><div class="line">        &quot;tags&quot;: [</div><div class="line">            &quot;elasticsearch&quot;</div><div class="line">        ], </div><div class="line">        &quot;title&quot;: &quot;hello elasticsearch&quot;</div><div class="line">    &#125;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;found&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="3、Update-a-article"><a href="#3、Update-a-article" class="headerlink" title="3、Update a article"></a>3、Update a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line">article.tags = [<span class="string">'elasticsearch'</span>, <span class="string">'hello'</span>]</div><div class="line">article.save()</div><div class="line"></div><div class="line"><span class="comment"># 或者</span></div><div class="line">article.update(body=<span class="string">'Today is good day!'</span>, published_by=<span class="string">'me'</span>)</div></pre></td></tr></table></figure>
-<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">http PUT http://127.0.0.1:9200/blog/article/1 title=&quot;hello elasticsearch&quot; tags:=&apos;[&quot;elasticsearch&quot;, &quot;hello&quot;]&apos;</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 74</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 2, </div><div class="line">    &quot;created&quot;: false</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="4、Delete-a-article"><a href="#4、Delete-a-article" class="headerlink" title="4、Delete a article"></a>4、Delete a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line">article.delete()</div></pre></td></tr></table></figure>
-<p>=&gt; Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">http DELETE http://127.0.0.1:9200/blog/article/1</div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 71</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 4, </div><div class="line">    &quot;found&quot;: true</div><div class="line">&#125;</div><div class="line"></div><div class="line">http HEAD  http://127.0.0.1:9200/blog/article/1</div><div class="line">HTTP/1.1 404 Not Found</div><div class="line">Content-Length: 0</div><div class="line">Content-Type: text/plain; charset=UTF-8</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2379,7 +2320,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2401,7 +2342,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

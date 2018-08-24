@@ -84,7 +84,7 @@
 <meta name="description" content="If we dream, everything is possible.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Finger's Blog">
-<meta property="og:url" content="http://fingerchou.com/categories/Numpy/index.html">
+<meta property="og:url" content="http://fingerchou.com/page/4/index.html">
 <meta property="og:site_name" content="Finger's Blog">
 <meta property="og:description" content="If we dream, everything is possible.">
 <meta name="twitter:card" content="summary">
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://fingerchou.com/categories/Numpy/"/>
+  <link rel="canonical" href="http://fingerchou.com/page/4/"/>
 
 
 
 
 
-  <title>分类: Numpy | Finger's Blog</title>
+  <title>Finger's Blog</title>
   
 
 
@@ -154,7 +154,8 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -301,83 +302,190 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
 
   
   
   
-  <div class="post-block category">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>Numpy<small>分类</small>
-        </h2>
-      </div>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/01/02/python-different-directories-execute/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/02/python-different-directories-execute/" itemprop="url">Python不同目录下的调用情况</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-02T10:40:00+08:00">
+                2017-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/02/python-different-directories-execute/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/01/02/python-different-directories-execute/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/01/02/python-different-directories-execute/" class="leancloud_visitors" data-flag-title="Python不同目录下的调用情况">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
 
       
         
+          
+            <p>Python包含子目录中的模块方法比较简单，关键是能够在sys.path里面找到通向模块文件的路径。</p>
+<p>下面将具体介绍几种常用情况:</p>
+<p>（1）主程序与模块程序在同一目录下:<br>如下面程序结构:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">`-- src</div><div class="line">    |-- mod1.py</div><div class="line">    `-- test1.py</div></pre></td></tr></table></figure>
+<p>若在程序test1.py中导入模块mod1, 则直接使用import mod1或from mod1 import *;</p>
+<p>（2）主程序所在目录是模块所在目录的父(或祖辈)目录<br>如下面程序结构:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">`-- src</div><div class="line">    |-- mod1.py</div><div class="line">    |-- mod2</div><div class="line">    |   `-- mod2.py</div><div class="line">    `-- test1.py</div></pre></td></tr></table></figure>
+<p>若在程序test1.py中导入模块mod2, 需要在mod2文件夹中建立空文件<strong>init</strong>.py文件(也可以在该文件中自定义输出模块接口);<br>    然后使用 from mod2.mod2 import * 或import mod2.mod2.</p>
+<p>（3）主程序导入上层目录中模块或其他目录(平级)下的模块<br>如下面程序结构:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">`-- src</div><div class="line">    |-- mod1.py</div><div class="line">    |-- mod2</div><div class="line">    |   `-- mod2.py</div><div class="line">    |-- sub</div><div class="line">    |   `-- test2.py</div><div class="line">    `-- test1.py</div></pre></td></tr></table></figure>
+<p>若在程序test2.py中导入模块mod1和mod2。首先需要在mod2下建立<strong>init</strong>.py文件(同(2))，src下不必建立该文件。然后调用方式如下:<br>下面程序执行方式均在程序文件所在目录下执行，如test2.py是在cd sub;<br>之后执行python test2.py<br>而test1.py是在cd src;之后执行python test1.py; 不保证在src目录下执行python sub/test2.py成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">import sys</div><div class="line">sys.path.append(&quot;..&quot;)</div><div class="line">import mod1</div><div class="line">import mod2.mod2</div></pre></td></tr></table></figure>
+<p>（4）从(3)可以看出，导入模块关键是能够根据sys.path环境变量的值，找到具体模块的路径。这里仅介绍上面三种简单情况</p>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
+          
         
-            <a class="post-title-link" href="/2018/06/24/inverse-matrix-with-numpy/" itemprop="url">
-              
-                <span itemprop="name">用Numpy求矩阵的逆</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-24T19:02:00+08:00"
-              content="2018-06-24" >
-          06-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2018/06/24/solution-of-linear-equations-with-numpy/" itemprop="url">
-              
-                <span itemprop="name">用Numpy解线性方程组</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-24T10:02:00+08:00"
-              content="2018-06-24" >
-          06-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
   
   
   
+  </article>
+
+
+    
+  </section>
 
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+  </nav>
 
 
 

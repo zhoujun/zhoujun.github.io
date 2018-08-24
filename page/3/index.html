@@ -317,6 +317,238 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/12/elasticsearch-dsl-with-python-usage-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/12/elasticsearch-dsl-with-python-usage-1/" itemprop="url">Python Elasticsearch DSL 使用笔记(一)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T20:39:00+08:00">
+                2017-08-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/12/elasticsearch-dsl-with-python-usage-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/12/elasticsearch-dsl-with-python-usage-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/12/elasticsearch-dsl-with-python-usage-1/" class="leancloud_visitors" data-flag-title="Python Elasticsearch DSL 使用笔记(一)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>下载地址</strong>: <a href="https://www.elastic.co/downloads/elasticsearch" target="_blank" rel="external">https://www.elastic.co/downloads/elasticsearch</a></p>
+<p><strong>使用版本</strong>: elasticsearch-5.5.1</p>
+<p><strong>Python Elasticsearch DSL</strong>: <a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="external">https://github.com/elastic/elasticsearch-dsl-py</a></p>
+<p><strong>测试代码</strong>： <a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
+<h3 id="一、Elasticsearch的基本概念"><a href="#一、Elasticsearch的基本概念" class="headerlink" title="一、Elasticsearch的基本概念"></a>一、Elasticsearch的基本概念</h3><ul>
+<li>Index：Elasticsearch用来存储数据的逻辑区域，它类似于关系型数据库中的database 概念。一个index可以在一个或者多个shard上面，同时一个shard也可能会有多个replicas。</li>
+<li>Document：Elasticsearch里面存储的实体数据，类似于关系数据中一个table里面的一行数据。 document由多个field组成，不同的document里面同名的field一定具有相同的类型。document里面field可以重复出现，也就是一个field会有多个值，即multivalued。</li>
+<li>Document type：为了查询需要，一个index可能会有多种document，也就是document type. 它类似于关系型数据库中的 table 概念。但需要注意，不同document里面同名的field一定要是相同类型的。</li>
+<li>Mapping：它类似于关系型数据库中的 schema 定义概念。存储field的相关映射信息，不同document type会有不同的mapping。</li>
+</ul>
+<p>下图是ElasticSearch和关系型数据库的一些术语比较：</p>
+<table>
+<thead>
+<tr>
+<th>Relationnal database</th>
+<th style="text-align:left">Elasticsearch           </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Database</td>
+<td style="text-align:left">Index          </td>
+</tr>
+<tr>
+<td>Table</td>
+<td style="text-align:left">Type             </td>
+</tr>
+<tr>
+<td>Row</td>
+<td style="text-align:left">Document          </td>
+</tr>
+<tr>
+<td>Column</td>
+<td style="text-align:left">Field            </td>
+</tr>
+<tr>
+<td>Schema</td>
+<td style="text-align:left">Mapping        </td>
+</tr>
+<tr>
+<td>Index</td>
+<td style="text-align:left">Everything is indexed       </td>
+</tr>
+<tr>
+<td>SQL</td>
+<td style="text-align:left">Query DSL       </td>
+</tr>
+<tr>
+<td>SELECT * FROM table…</td>
+<td style="text-align:left">GET http://…  </td>
+</tr>
+<tr>
+<td>UPDATE table SET</td>
+<td style="text-align:left">PUT http://…   </td>
+</tr>
+</tbody>
+</table>
+<h3 id="二、Python-Elasticsearch-DSL使用简介"><a href="#二、Python-Elasticsearch-DSL使用简介" class="headerlink" title="二、Python Elasticsearch DSL使用简介"></a>二、Python Elasticsearch DSL使用简介</h3><h4 id="1、安装"><a href="#1、安装" class="headerlink" title="1、安装"></a>1、安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install elasticsearch-dsl</div></pre></td></tr></table></figure>
+<h4 id="2、创建索引和文档"><a href="#2、创建索引和文档" class="headerlink" title="2、创建索引和文档"></a>2、创建索引和文档</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Date, Integer, Keyword, Text</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections</div><div class="line"></div><div class="line"><span class="comment"># Define a default Elasticsearch client</span></div><div class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(DocType)</span>:</span></div><div class="line">    title = Text(analyzer=<span class="string">'snowball'</span>, fields=&#123;<span class="string">'raw'</span>: Keyword()&#125;)</div><div class="line">    body = Text(analyzer=<span class="string">'snowball'</span>)</div><div class="line">    tags = Keyword()</div><div class="line">    published_from = Date()</div><div class="line">    lines = Integer()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blog'</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, ** kwargs)</span>:</span></div><div class="line">        self.lines = len(self.body.split())</div><div class="line">        <span class="keyword">return</span> super(Article, self).save(** kwargs)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_published</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> datetime.now() &gt;= self.published_from</div><div class="line"></div><div class="line"><span class="comment"># create the mappings in elasticsearch</span></div><div class="line">Article.init()</div></pre></td></tr></table></figure>
+<p>创建了一个索引为blog，文档为article的Elasticsearch数据库和表。<br>必须执行<code>Article.init()</code>方法。 这样Elasticsearch才会根据你的DocType产生对应的Mapping。否则Elasticsearch就会在你第一次创建Index和Type的时候根据你的内容建立对应的Mapping。</p>
+<p>现在我们可以通过Elasticsearch Restful API来检查<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/_mapping/</div><div class="line"></div><div class="line">&#123;&quot;blog&quot;:</div><div class="line">	&#123;&quot;mappings&quot;:</div><div class="line">		&#123;&quot;article&quot;:</div><div class="line">			&#123;&quot;properties&quot;:&#123;</div><div class="line">				&quot;body&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;,</div><div class="line">				&quot;lines&quot;:&#123;&quot;type&quot;:&quot;integer&quot;&#125;,</div><div class="line">				&quot;published_from&quot;:&#123;&quot;type&quot;:&quot;date&quot;&#125;,</div><div class="line">				&quot;tags&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;,</div><div class="line">				&quot;title&quot;:&#123;&quot;type&quot;:&quot;text&quot;,&quot;fields&quot;:&#123;&quot;raw&quot;:&#123;&quot;type&quot;:&quot;keyword&quot;&#125;&#125;,&quot;analyzer&quot;:&quot;snowball&quot;&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="三、使用Elasticsearch进行CRUD操作"><a href="#三、使用Elasticsearch进行CRUD操作" class="headerlink" title="三、使用Elasticsearch进行CRUD操作"></a>三、使用Elasticsearch进行CRUD操作</h3><h4 id="1、Create-an-article"><a href="#1、Create-an-article" class="headerlink" title="1、Create an article"></a>1、Create an article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># create and save and article</span></div><div class="line">article = Article(meta=&#123;<span class="string">'id'</span>: <span class="number">1</span>&#125;, title=<span class="string">'Hello elasticsearch!'</span>, tags=[<span class="string">'elasticsearch'</span>])</div><div class="line">article.body = <span class="string">''' looong text '''</span></div><div class="line">article.published_from = datetime.now()</div><div class="line">article.save()</div></pre></td></tr></table></figure>
+<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">http POST http://127.0.0.1:9200/blog/article/1 title=&quot;hello elasticsearch&quot; tags:=&apos;[&quot;elasticsearch&quot;]&apos;</div><div class="line"></div><div class="line">HTTP/1.1 201 Created</div><div class="line">Content-Length: 73</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;created&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="2、Get-a-article"><a href="#2、Get-a-article" class="headerlink" title="2、Get a article"></a>2、Get a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line"></div><div class="line"><span class="comment"># 如果获取一个不存在的文章则返回None</span></div><div class="line">a = Article.get(id=<span class="string">'no-in-es'</span>)</div><div class="line">a <span class="keyword">is</span> <span class="keyword">None</span></div><div class="line"></div><div class="line"><span class="comment"># 还可以获取多个文章</span></div><div class="line">articles = Article.mget([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div></pre></td></tr></table></figure>
+<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">http GET http://127.0.0.1:9200/blog/article/1</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 141</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_source&quot;: &#123;</div><div class="line">        &quot;tags&quot;: [</div><div class="line">            &quot;elasticsearch&quot;</div><div class="line">        ], </div><div class="line">        &quot;title&quot;: &quot;hello elasticsearch&quot;</div><div class="line">    &#125;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 1, </div><div class="line">    &quot;found&quot;: true</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="3、Update-a-article"><a href="#3、Update-a-article" class="headerlink" title="3、Update a article"></a>3、Update a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line">article.tags = [<span class="string">'elasticsearch'</span>, <span class="string">'hello'</span>]</div><div class="line">article.save()</div><div class="line"></div><div class="line"><span class="comment"># 或者</span></div><div class="line">article.update(body=<span class="string">'Today is good day!'</span>, published_by=<span class="string">'me'</span>)</div></pre></td></tr></table></figure>
+<p>=&gt;Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">http PUT http://127.0.0.1:9200/blog/article/1 title=&quot;hello elasticsearch&quot; tags:=&apos;[&quot;elasticsearch&quot;, &quot;hello&quot;]&apos;</div><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 74</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 2, </div><div class="line">    &quot;created&quot;: false</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="4、Delete-a-article"><a href="#4、Delete-a-article" class="headerlink" title="4、Delete a article"></a>4、Delete a article</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">article = Article.get(id=<span class="number">1</span>)</div><div class="line">article.delete()</div></pre></td></tr></table></figure>
+<p>=&gt; Restful API<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">http DELETE http://127.0.0.1:9200/blog/article/1</div><div class="line">HTTP/1.1 200 OK</div><div class="line">Content-Length: 71</div><div class="line">Content-Type: application/json; charset=UTF-8</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_id&quot;: &quot;1&quot;, </div><div class="line">    &quot;_index&quot;: &quot;blog&quot;, </div><div class="line">    &quot;_type&quot;: &quot;article&quot;, </div><div class="line">    &quot;_version&quot;: 4, </div><div class="line">    &quot;found&quot;: true</div><div class="line">&#125;</div><div class="line"></div><div class="line">http HEAD  http://127.0.0.1:9200/blog/article/1</div><div class="line">HTTP/1.1 404 Not Found</div><div class="line">Content-Length: 0</div><div class="line">Content-Type: text/plain; charset=UTF-8</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/07/30/python-face-recognition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1413,6 +1645,181 @@ if __name__ == &quot;__main__&quot;:
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/01/27/cocos2dx-upload-google-play/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/27/cocos2dx-upload-google-play/" itemprop="url">Cocos2dx－上传Google Play遇到的问题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-27T20:40:00+08:00">
+                2017-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
+                    <span itemprop="name">Cocos2d-x</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/27/cocos2dx-upload-google-play/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/01/27/cocos2dx-upload-google-play/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/01/27/cocos2dx-upload-google-play/" class="leancloud_visitors" data-flag-title="Cocos2dx－上传Google Play遇到的问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL"><a href="#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL" class="headerlink" title="一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL"></a>一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL</h4><hr>
+<p>因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Vulnerability</div><div class="line">-----------------------------------------------------------</div><div class="line">**OpenSSL**</div><div class="line"></div><div class="line">The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:</div><div class="line"></div><div class="line">\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;</div><div class="line"></div><div class="line">You can find more information and next steps in this Google Help Center article.</div><div class="line">-----------------------------------------------------------</div><div class="line"></div><div class="line">To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.</div><div class="line"></div><div class="line">While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.</div><div class="line"></div><div class="line">Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.</div><div class="line"></div><div class="line">If you feel we have made this determination in error, please reach out to our developer support team.</div><div class="line"></div><div class="line">Best,</div><div class="line"></div><div class="line">The Google Play Team</div></pre></td></tr></table></figure>
+<p><strong>解决方案</strong></p>
+<p>邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：<a href="http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9" target="_blank" rel="external">http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9</a></p>
+<p>具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。</p>
+<p><a href="https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin" target="_blank" rel="external">https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin</a></p>
+<h4 id="二、Google-Play支付-in-app-Billing"><a href="#二、Google-Play支付-in-app-Billing" class="headerlink" title="二、Google Play支付(in-app Billing)"></a>二、Google Play支付(in-app Billing)</h4><p><strong>注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致</strong></p>
+<p>1、错误提示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本</div><div class="line">2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效</div></pre></td></tr></table></figure>
+<p>2、系统异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)</div><div class="line"></div><div class="line">// 解决方法</div><div class="line">// 1、mHelper.flagEndAsync() 修改成public</div><div class="line">// 2、在launchPurchaseFlow() 之前调用flagEndAsync()</div><div class="line">----------------------------------------------------</div><div class="line">if (mHelper != null) &#123;</div><div class="line">    try &#123;</div><div class="line">        mHelper.flagEndAsync();</div><div class="line">        mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;);</div><div class="line">    &#125;       </div><div class="line">    catch(IllegalStateException ex)&#123;</div><div class="line">        Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/01/27/hexo-usage/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1551,181 +1958,6 @@ if __name__ == &quot;__main__&quot;:
 <li><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="external">https://github.com/iissnan/hexo-theme-next</a></li>
 </ul>
 <h4 id="Next-皮肤设置"><a href="#Next-皮肤设置" class="headerlink" title="Next 皮肤设置"></a>Next 皮肤设置</h4><p><a href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="external">http://theme-next.iissnan.com/theme-settings.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/01/27/cocos2dx-upload-google-play/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/27/cocos2dx-upload-google-play/" itemprop="url">Cocos2dx－上传Google Play遇到的问题</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-27T20:40:00+08:00">
-                2017-01-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Cocos2d-x/" itemprop="url" rel="index">
-                    <span itemprop="name">Cocos2d-x</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/01/27/cocos2dx-upload-google-play/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/01/27/cocos2dx-upload-google-play/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/01/27/cocos2dx-upload-google-play/" class="leancloud_visitors" data-flag-title="Cocos2dx－上传Google Play遇到的问题">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL"><a href="#一、OpenSSL版本有多个安全漏洞，建议您尽快更新-OpenSSL" class="headerlink" title="一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL"></a>一、OpenSSL版本有多个安全漏洞，建议您尽快更新 OpenSSL</h4><hr>
-<p>因为项目使用的是cocos2d-x 3.3版本。因此cocos2d-x第三方库比较旧。上传Google Play 后台时被rejected。邮件原文如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Vulnerability</div><div class="line">-----------------------------------------------------------</div><div class="line">**OpenSSL**</div><div class="line"></div><div class="line">The vulnerabilities were addressed in OpenSSL 1.0.2f/1.0.1r. To confirm your OpenSSL version, you can do a grep search for:</div><div class="line"></div><div class="line">\$ unzip -p YourApp.apk | strings | grep &quot;OpenSSL&quot;</div><div class="line"></div><div class="line">You can find more information and next steps in this Google Help Center article.</div><div class="line">-----------------------------------------------------------</div><div class="line"></div><div class="line">To confirm you’ve upgraded correctly, submit the updated version of your app to the Play Console and check back after five hours to make sure the warning is gone.</div><div class="line"></div><div class="line">While these vulnerabilities may not affect every app that uses this software, it’s best to stay up to date on all security patches. Make sure to update any libraries in your app that have known security issues, even if you&apos;re not sure the issues are relevant to your app.</div><div class="line"></div><div class="line">Apps must also comply with the Developer Distribution Agreement and Developer Program Policies.</div><div class="line"></div><div class="line">If you feel we have made this determination in error, please reach out to our developer support team.</div><div class="line"></div><div class="line">Best,</div><div class="line"></div><div class="line">The Google Play Team</div></pre></td></tr></table></figure>
-<p><strong>解决方案</strong></p>
-<p>邮件写的很清楚，主要是OpenSSL的库版本太低，存在漏洞。cocos论坛上也有很多同学遇到类似的问题，传送门：<a href="http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9" target="_blank" rel="external">http://discuss.cocos2d-x.org/t/the-vulnerabilities-were-addressed-in-openssl-1-0-2f-1-0-1r/35766/9</a></p>
-<p>具体做法，就是从cocos的第三方库下载最新的curl库替换当前项目的curl。</p>
-<p><a href="https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin" target="_blank" rel="external">https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin</a></p>
-<h4 id="二、Google-Play支付-in-app-Billing"><a href="#二、Google-Play支付-in-app-Billing" class="headerlink" title="二、Google Play支付(in-app Billing)"></a>二、Google Play支付(in-app Billing)</h4><p><strong>注意：在测试之前一定要注意后台APK版本号、签名，一定要与测试用的APK版本号签名一致</strong></p>
-<p>1、错误提示</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">1. &quot;需要验证身份，您需要登录自己google账号&quot; // 没有成功发布apk测试(Alpha)版本</div><div class="line">2. &quot;无法购买您要买的商品&quot; // 已成功发布Alpah版本。需要等待生效</div></pre></td></tr></table></figure>
-<p>2、系统异常</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">java.lang.IllegalStateException: Can&apos;t start async operation (launchPurchaseFlow)</div><div class="line"></div><div class="line">// 解决方法</div><div class="line">// 1、mHelper.flagEndAsync() 修改成public</div><div class="line">// 2、在launchPurchaseFlow() 之前调用flagEndAsync()</div><div class="line">----------------------------------------------------</div><div class="line">if (mHelper != null) &#123;</div><div class="line">    try &#123;</div><div class="line">        mHelper.flagEndAsync();</div><div class="line">        mHelper.launchPurchaseFlow(this, item, RC_REQUEST, mPurchaseFinishedListener, &quot;&quot;);</div><div class="line">    &#125;       </div><div class="line">    catch(IllegalStateException ex)&#123;</div><div class="line">        Toast.makeText(this, &quot;Please retry in a few seconds.&quot;, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
           
         
@@ -1929,187 +2161,11 @@ if __name__ == &quot;__main__&quot;:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/01/02/python-different-directories-execute/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/02/python-different-directories-execute/" itemprop="url">Python不同目录下的调用情况</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-02T10:40:00+08:00">
-                2017-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/01/02/python-different-directories-execute/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/01/02/python-different-directories-execute/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/01/02/python-different-directories-execute/" class="leancloud_visitors" data-flag-title="Python不同目录下的调用情况">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Python包含子目录中的模块方法比较简单，关键是能够在sys.path里面找到通向模块文件的路径。</p>
-<p>下面将具体介绍几种常用情况:</p>
-<p>（1）主程序与模块程序在同一目录下:<br>如下面程序结构:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">`-- src</div><div class="line">    |-- mod1.py</div><div class="line">    `-- test1.py</div></pre></td></tr></table></figure>
-<p>若在程序test1.py中导入模块mod1, 则直接使用import mod1或from mod1 import *;</p>
-<p>（2）主程序所在目录是模块所在目录的父(或祖辈)目录<br>如下面程序结构:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">`-- src</div><div class="line">    |-- mod1.py</div><div class="line">    |-- mod2</div><div class="line">    |   `-- mod2.py</div><div class="line">    `-- test1.py</div></pre></td></tr></table></figure>
-<p>若在程序test1.py中导入模块mod2, 需要在mod2文件夹中建立空文件<strong>init</strong>.py文件(也可以在该文件中自定义输出模块接口);<br>    然后使用 from mod2.mod2 import * 或import mod2.mod2.</p>
-<p>（3）主程序导入上层目录中模块或其他目录(平级)下的模块<br>如下面程序结构:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">`-- src</div><div class="line">    |-- mod1.py</div><div class="line">    |-- mod2</div><div class="line">    |   `-- mod2.py</div><div class="line">    |-- sub</div><div class="line">    |   `-- test2.py</div><div class="line">    `-- test1.py</div></pre></td></tr></table></figure>
-<p>若在程序test2.py中导入模块mod1和mod2。首先需要在mod2下建立<strong>init</strong>.py文件(同(2))，src下不必建立该文件。然后调用方式如下:<br>下面程序执行方式均在程序文件所在目录下执行，如test2.py是在cd sub;<br>之后执行python test2.py<br>而test1.py是在cd src;之后执行python test1.py; 不保证在src目录下执行python sub/test2.py成功。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">import sys</div><div class="line">sys.path.append(&quot;..&quot;)</div><div class="line">import mod1</div><div class="line">import mod2.mod2</div></pre></td></tr></table></figure>
-<p>（4）从(3)可以看出，导入模块关键是能够根据sys.path环境变量的值，找到具体模块的路径。这里仅介绍上面三种简单情况</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2155,7 +2211,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2177,7 +2233,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
