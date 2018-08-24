@@ -83,20 +83,29 @@
 
 <meta name="description" content="原文地址：https://www.jiqizhixin.com/articles/2018-07-18-3
 介绍Pandas是基于Numpy构建的库，在数据处理方面可以把它理解为numpy加强版。不同于numpy的是，pandas拥有种数据结构：Series和DataFrame：
-用代码生成一个简单的Series对象1234567891011121314&amp;gt;&amp;gt;&amp;gt; from pand">
+
+用代码生成一个简单的Series对象
+123456789&amp;gt;&amp;gt;&amp;gt; from pandas impor">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pandas基础">
-<meta property="og:url" content="http://fingerchou.com/2018/08/23/pandas-basis/index.html">
+<meta property="og:url" content="http://fingerchou.com/2018/08/24/pandas-basis/index.html">
 <meta property="og:site_name" content="Finger's Blog">
 <meta property="og:description" content="原文地址：https://www.jiqizhixin.com/articles/2018-07-18-3
 介绍Pandas是基于Numpy构建的库，在数据处理方面可以把它理解为numpy加强版。不同于numpy的是，pandas拥有种数据结构：Series和DataFrame：
-用代码生成一个简单的Series对象1234567891011121314&amp;gt;&amp;gt;&amp;gt; from pand">
-<meta property="og:updated_time" content="2018-08-24T16:34:46.355Z">
+
+用代码生成一个简单的Series对象
+123456789&amp;gt;&amp;gt;&amp;gt; from pandas impor">
+<meta property="og:image" content="http://fingerchou.com/imgs/20180824/pandas-series.jpg">
+<meta property="og:image" content="http://fingerchou.com/imgs/20180824/pandas-dataframe.jpg">
+<meta property="og:updated_time" content="2018-08-24T16:50:21.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pandas基础">
 <meta name="twitter:description" content="原文地址：https://www.jiqizhixin.com/articles/2018-07-18-3
 介绍Pandas是基于Numpy构建的库，在数据处理方面可以把它理解为numpy加强版。不同于numpy的是，pandas拥有种数据结构：Series和DataFrame：
-用代码生成一个简单的Series对象1234567891011121314&amp;gt;&amp;gt;&amp;gt; from pand">
+
+用代码生成一个简单的Series对象
+123456789&amp;gt;&amp;gt;&amp;gt; from pandas impor">
+<meta name="twitter:image" content="http://fingerchou.com/imgs/20180824/pandas-series.jpg">
 
 
 
@@ -126,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="http://fingerchou.com/2018/08/23/pandas-basis/"/>
+  <link rel="canonical" href="http://fingerchou.com/2018/08/24/pandas-basis/"/>
 
 
 
@@ -323,7 +332,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/08/23/pandas-basis/">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/08/24/pandas-basis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Finger Chou">
@@ -352,8 +361,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T22:19:00+08:00">
-                2018-08-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T22:19:00+08:00">
+                2018-08-24
               </time>
             
 
@@ -393,9 +402,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/23/pandas-basis/#comments" itemprop="discussionUrl">
+                <a href="/2018/08/24/pandas-basis/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/23/pandas-basis/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/08/24/pandas-basis/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -403,7 +412,7 @@
 
           
           
-             <span id="/2018/08/23/pandas-basis/" class="leancloud_visitors" data-flag-title="Pandas基础">
+             <span id="/2018/08/24/pandas-basis/" class="leancloud_visitors" data-flag-title="Pandas基础">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -440,100 +449,43 @@
 
       
         <p>原文地址：<a href="https://www.jiqizhixin.com/articles/2018-07-18-3" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2018-07-18-3</a></p>
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>Pandas是基于Numpy构建的库，在数据处理方面可以把它理解为numpy加强版。不同于numpy的是，pandas拥有种数据结构：<code>Series</code>和<code>DataFrame</code>：</p>
-<p>用代码生成一个简单的Series对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from pandas import Series, DataFrame</div><div class="line">&gt;&gt;&gt; import pandas as pd</div><div class="line">&gt;&gt;&gt; data = Series([1,2,3,4],index = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;])</div><div class="line">&gt;&gt;&gt; data</div><div class="line">a    1</div><div class="line">b    2</div><div class="line">c    3</div><div class="line">d    4</div><div class="line">dtype: int64</div><div class="line">``` </div><div class="line"></div><div class="line">Series是一种类似一维数组的数据结构，由一组数据和与之相关的index组成，这个结构一看似乎与dict字典差不多，我们知道字典是一种无序的数据结构，而pandas中的Series的数据结构不一样，它相当于定长有序的字典，并且它的index和value之间是独立的，两者的索引还是有区别的，Series的index是可变的，而dict字典的key值是不可变的。</div><div class="line"></div><div class="line">用代码生成一个简单的DataFrame对象</div></pre></td></tr></table></figure></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>data = {‘a’:[1,2,3],’b’:[‘we’,’you’,’they’],’c’:[‘btc’,’eos’,’ae’]}<br>df = DataFrame(data)<br>df<br>   a     b    c<br>0  1    we  btc<br>1  2   you  eos<br>2  3  they   ae<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DataFrame这种数据结构我们可以把它看作是一张二维表，DataFrame长得跟我们平时使用的Excel表格差不多，DataFrame的横行称为columns，竖列和Series一样称为index，DataFrame每一列可以是不同类型的值集合，所以DataFrame你也可以把它视为不同数据类型同一index的Series集合。</div><div class="line"></div><div class="line"></div><div class="line">#### Series</div><div class="line"></div><div class="line">##### Series的两种生成方式</div></pre></td></tr></table></figure></p>
-<p>data = Series([222,’btc’,234,’eos’])<br>data<br>0    222<br>1    btc<br>2    234<br>3    eos<br>dtype: object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">虽然我们在生成的时候没有设置index值，但Series还是会自动帮我们生成index，这种方式生成的Series结构跟list列表差不多，可以把这种形式的Series理解为竖起来的list列表。</div></pre></td></tr></table></figure></p>
-<p>data = Series([1,2,3,4],index = [‘a’,’b’,’c’,’d’])<br>data<br>a    1<br>b    2<br>c    3<br>d    4<br>dtype: int64<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">这种形式的Series可以理解为numpy的array外面披了一件index的马甲，所以array的相关操作，Series同样也是支持的。结构非常相似的dict字典同样也是可以转化为Series格式的：</div></pre></td></tr></table></figure></p>
-<p>dic = {‘a’:1,’b’:2,’c’:’as’}<br>dicSeries = Series(dic)<br>dicSeries<br>a     1<br>b     2<br>c    as<br>dtype: object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">##### 查看Series的相关信息</div></pre></td></tr></table></figure></p>
-<p>data.index<br>Index([‘a’, ‘b’, ‘c’, ‘d’], dtype=’object’)<br>data.values<br>array([1, 2, 3, 4], dtype=int64)</p>
-<h1 id="in方法默认判断的是index值"><a href="#in方法默认判断的是index值" class="headerlink" title="in方法默认判断的是index值"></a>in方法默认判断的是index值</h1><p>‘a’ in data<br>True<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">##### Series的NaN生成</div></pre></td></tr></table></figure></p>
-<p>index1 = [ ‘a’,’b’,’c’,’d’]<br>dic = {‘b’:1,’c’:1,’d’:1}<br>data2 = Series(dic,index=index1)<br>data2<br>a    NaN<br>b    1.0<br>c    1.0<br>d    1.0<br>dtype: float64<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">从这里我们可以看出Series的生成依据的是index值，index‘a’在字典dic的key中并不存在，Series自然也找不到’a’的对应value值，这种情况下Pandas就会自动生成NaN(not a number)来填补缺失值，这里还有个有趣的现象，原本dtype是int类型，生成NaN后就变成了float类型了，因为NaN的官方定义就是float类型。</div><div class="line"></div><div class="line">##### NaN的相关查询</div></pre></td></tr></table></figure></p>
-<p>data2.isnull()<br>a     True<br>b    False<br>c    False<br>d    False<br>dtype: bool<br>data2.notnull()<br>a    False<br>b     True<br>c     True<br>d     True<br>dtype: bool</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="嵌套查询NaN"><a href="#嵌套查询NaN" class="headerlink" title="嵌套查询NaN"></a>嵌套查询NaN</h1><blockquote>
-<blockquote>
-<blockquote>
-<p>data2[data2.isnull()==True]<br>a   NaN<br>dtype: float64</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="统计非NaN个数"><a href="#统计非NaN个数" class="headerlink" title="统计非NaN个数"></a>统计非NaN个数</h1><blockquote>
-<blockquote>
-<blockquote>
-<p>data2.count()<br>3</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">切记切记，查询NaN值切记不要使用np.nan==np.nan这种形式来作为判断条件，结果永远是False，==是用作值判断的，而NaN并没有值，如果你不想使用上方的判断方法，你可以使用is作为判断方法，is是对象引用判断，np.nan is np.nan，结果就是你要的True。</div><div class="line"></div><div class="line">##### Series的name属性</div></pre></td></tr></table></figure>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>data.index.name = ‘abc’<br>data.name = ‘test’<br>data<br>abc<br>a    1<br>b    2<br>c    3<br>d    4<br>Name: test, dtype: int64<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Series对象本身及其索引index都有一个name属性，name属性主要发挥作用是在DataFrame中，当我们把一个Series对象放进DataFrame中，新的列将根据我们的name属性对该列进行命名，如果我们没有给Series命名，DataFrame则会自动帮我们命名为0。</div><div class="line"></div><div class="line">#### DataFrame</div></pre></td></tr></table></figure></p>
-<p>data = {‘name’: [‘BTC’, ‘ETH’, ‘EOS’], ‘price’:[50000, 4000, 150]}<br>data = DataFrame(data)<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2  EOS    150<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">DataFrame的生成与Series差不多，你可以自己指定index，也可不指定，DataFrame会自动帮你补上。</div><div class="line"></div><div class="line">##### 查看DataFrame的相关信息</div></pre></td></tr></table></figure></p>
-<p>data.index<br>RangeIndex(start=0, stop=3, step=1)<br>data.values<br>array([[‘BTC’, 50000],<br>       [‘ETH’, 4000],<br>       [‘EOS’, 150]], dtype=object)<br>data.columns<br>Index([‘name’, ‘price’], dtype=’object’)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">##### DataFrame索引</div></pre></td></tr></table></figure></p>
-<p>data.name<br>0    BTC<br>1    ETH<br>2    EOS<br>Name: name, dtype: object</p>
-<p>data[‘name’]<br>0    BTC<br>1    ETH<br>2    EOS<br>Name: name, dtype: object</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="loc-‘name’-查询的是行标签"><a href="#loc-‘name’-查询的是行标签" class="headerlink" title="loc[‘name’]查询的是行标签"></a>loc[‘name’]查询的是行标签</h1><blockquote>
-<blockquote>
-<blockquote>
-<p>data.iloc[1]<br>name      ETH<br>price    4000<br>Name: 1, dtype: object<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">其实行索引，除了iloc，loc还有个ix，ix既可以进行行标签索引，也可以进行行号索引，但这也大大增加了它的不确定性，有时会出现一些奇怪的问题，所以pandas在0.20.0版本的时候就把ix给弃用了。</div><div class="line"></div><div class="line">##### DataFrame的常用操作</div><div class="line"></div><div class="line">###### 简单地增加行、列</div></pre></td></tr></table></figure></p>
-<p>data[‘type’] = ‘token’<br>data<br>  name  price   type<br>0  BTC  50000  token<br>1  ETH   4000  token<br>2  EOS    150  token</p>
-<p>data.loc[‘3’] = [‘ae’,200,’token’]<br>data<br>  name  price   type<br>0  BTC  50000  token<br>1  ETH   4000  token<br>2  EOS    150  token<br>3   ae    200  token<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 删除行、列操作</div></pre></td></tr></table></figure></p>
-<p>del data[‘type’]<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2  EOS    150<br>3   ae    200</p>
-<p>data.drop([2])<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>3   ae    200</p>
-<p>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2  EOS    150<br>3   ae    200<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">这里需要注意的是，使用drop（）方法返回的是Copy而不是视图，要想真正在原数据里删除行，就要设置inplace=True</div></pre></td></tr></table></figure></p>
-<p>data.drop([2],inplace=True)<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>3   ae    200<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 设置某一列为index</div></pre></td></tr></table></figure></p>
-<p>data.set_index([‘name’],inplace=True)<br>data<br>      price<br>name<br>BTC   50000<br>ETH    4000<br>ae      200</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="将index返回回dataframe中"><a href="#将index返回回dataframe中" class="headerlink" title="将index返回回dataframe中"></a>将index返回回dataframe中</h1><blockquote>
-<blockquote>
-<blockquote>
-<p>data.reset_index(inplace=True)<br>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2   ae    200<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 处理缺失值</div></pre></td></tr></table></figure></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>data.dropna()    # 丢弃含有缺失值的行<br>data.fillna(0)    # 填充缺失值数据为0<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">还是需要注意：这些方法返回的是copy而不是视图，如果想在原数据上改变，别忘了inplace=True。</div><div class="line"></div><div class="line">###### 数据合并</div></pre></td></tr></table></figure></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>data<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2   ae    200<br>3  eos    eos</p>
-<p>data1<br>  name other<br>0  BTC     a<br>1  ETH     b</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="以name为key进行左连接"><a href="#以name为key进行左连接" class="headerlink" title="以name为key进行左连接"></a>以name为key进行左连接</h1><blockquote>
-<blockquote>
-<blockquote>
-<p>pd.merge(data,data1,on=’name’,how=’left’)<br>  name  price other<br>0  BTC  50000     a<br>1  ETH   4000     b<br>2   ae    200   NaN<br>3  eos    eos   NaN<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">平时进行数据合并操作，更多的会出一种情况，那就是出现重复值，DataFrame也为我们提供了简便的方法：</div></pre></td></tr></table></figure></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>data.drop_duplicates(inplace=True)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###### 数据的简单保存与读取</div></pre></td></tr></table></figure></p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>data.to_csv(‘test.csv’)<br>pd.read_csv(‘test.csv’)<br>   Unnamed: 0 name  price<br>0           0  BTC  50000<br>1           1  ETH   4000<br>2           2   ae    200<br>3           3  eos    eos<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">为什么会出现这种情况呢，从头看到尾的同学可能就看出来了，增加第三行时，我用的是loc[‘3’]行标签来增加的，而read_csv方法是默认index是从0开始增长的，此时只需要我们设置下index参数就ok了</div></pre></td></tr></table></figure></p>
-</blockquote>
-</blockquote>
-</blockquote>
-<h1 id="不保存行索引"><a href="#不保存行索引" class="headerlink" title="不保存行索引"></a>不保存行索引</h1><blockquote>
-<blockquote>
-<blockquote>
-<p>data.to_csv(‘test.csv’,index=None)<br>pd.read_csv(‘test.csv’)<br>  name  price<br>0  BTC  50000<br>1  ETH   4000<br>2   ae    200<br>3  eos    eos<br>```</p>
-</blockquote>
-</blockquote>
-</blockquote>
+<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>Pandas是基于Numpy构建的库，在数据处理方面可以把它理解为numpy加强版。不同于numpy的是，pandas拥有种数据结构：<strong>Series和DataFrame</strong>：</p>
+<p><img src="/imgs/20180824/pandas-series.jpg" alt=""></p>
+<p>用代码生成一个简单的Series对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from pandas import Series, DataFrame</div><div class="line">&gt;&gt;&gt; import pandas as pd</div><div class="line">&gt;&gt;&gt; data = Series([1,2,3,4],index = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;])</div><div class="line">&gt;&gt;&gt; data</div><div class="line">a    1</div><div class="line">b    2</div><div class="line">c    3</div><div class="line">d    4</div><div class="line">dtype: int64</div></pre></td></tr></table></figure>
+<p>Series是一种类似一维数组的数据结构，由一组数据和与之相关的index组成，这个结构一看似乎与dict字典差不多，我们知道字典是一种无序的数据结构，而pandas中的Series的数据结构不一样，它相当于定长有序的字典，并且它的index和value之间是独立的，两者的索引还是有区别的，Series的index是可变的，而dict字典的key值是不可变的。</p>
+<p><img src="/imgs/20180824/pandas-dataframe.jpg" alt=""></p>
+<p>用代码生成一个简单的DataFrame对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data = &#123;&apos;a&apos;:[1,2,3],&apos;b&apos;:[&apos;we&apos;,&apos;you&apos;,&apos;they&apos;],&apos;c&apos;:[&apos;btc&apos;,&apos;eos&apos;,&apos;ae&apos;]&#125;</div><div class="line">&gt;&gt;&gt; df = DataFrame(data)</div><div class="line">&gt;&gt;&gt; df</div><div class="line">   a     b    c</div><div class="line">0  1    we  btc</div><div class="line">1  2   you  eos</div><div class="line">2  3  they   ae</div></pre></td></tr></table></figure>
+<p>DataFrame这种数据结构我们可以把它看作是一张二维表，DataFrame长得跟我们平时使用的Excel表格差不多，DataFrame的横行称为columns，竖列和Series一样称为index，DataFrame每一列可以是不同类型的值集合，所以DataFrame你也可以把它视为不同数据类型同一index的Series集合。</p>
+<h4 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h4><h5 id="Series的两种生成方式"><a href="#Series的两种生成方式" class="headerlink" title="Series的两种生成方式"></a>Series的两种生成方式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data = Series([222,&apos;btc&apos;,234,&apos;eos&apos;])</div><div class="line">&gt;&gt;&gt; data</div><div class="line">0    222</div><div class="line">1    btc</div><div class="line">2    234</div><div class="line">3    eos</div><div class="line">dtype: object</div></pre></td></tr></table></figure>
+<p>虽然我们在生成的时候没有设置index值，但Series还是会自动帮我们生成index，这种方式生成的Series结构跟list列表差不多，可以把这种形式的Series理解为竖起来的list列表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data = Series([1,2,3,4],index = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;])</div><div class="line">&gt;&gt;&gt; data</div><div class="line">a    1</div><div class="line">b    2</div><div class="line">c    3</div><div class="line">d    4</div><div class="line">dtype: int64</div></pre></td></tr></table></figure>
+<p>这种形式的Series可以理解为numpy的array外面披了一件index的马甲，所以array的相关操作，Series同样也是支持的。结构非常相似的dict字典同样也是可以转化为Series格式的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; dic = &#123;&apos;a&apos;:1,&apos;b&apos;:2,&apos;c&apos;:&apos;as&apos;&#125;</div><div class="line">&gt;&gt;&gt; dicSeries = Series(dic)</div><div class="line">&gt;&gt;&gt; dicSeries</div><div class="line">a     1</div><div class="line">b     2</div><div class="line">c    as</div><div class="line">dtype: object</div></pre></td></tr></table></figure></p>
+<h5 id="查看Series的相关信息"><a href="#查看Series的相关信息" class="headerlink" title="查看Series的相关信息"></a>查看Series的相关信息</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data.index</div><div class="line">Index([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;], dtype=&apos;object&apos;)</div><div class="line">&gt;&gt;&gt; data.values</div><div class="line">array([1, 2, 3, 4], dtype=int64)</div><div class="line"># in方法默认判断的是index值</div><div class="line">&gt;&gt;&gt; &apos;a&apos; in data</div><div class="line">True</div></pre></td></tr></table></figure>
+<h5 id="Series的NaN生成"><a href="#Series的NaN生成" class="headerlink" title="Series的NaN生成"></a>Series的NaN生成</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; index1 = [ &apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;]</div><div class="line">&gt;&gt;&gt; dic = &#123;&apos;b&apos;:1,&apos;c&apos;:1,&apos;d&apos;:1&#125;</div><div class="line">&gt;&gt;&gt; data2 = Series(dic,index=index1)</div><div class="line">&gt;&gt;&gt; data2</div><div class="line">a    NaN</div><div class="line">b    1.0</div><div class="line">c    1.0</div><div class="line">d    1.0</div><div class="line">dtype: float64</div></pre></td></tr></table></figure>
+<p>从这里我们可以看出Series的生成依据的是index值，index‘a’在字典dic的key中并不存在，Series自然也找不到’a’的对应value值，这种情况下Pandas就会自动生成NaN(not a number)来填补缺失值，这里还有个有趣的现象，原本dtype是int类型，生成NaN后就变成了float类型了，因为NaN的官方定义就是float类型。</p>
+<h5 id="NaN的相关查询"><a href="#NaN的相关查询" class="headerlink" title="NaN的相关查询"></a>NaN的相关查询</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data2.isnull()</div><div class="line">a     True</div><div class="line">b    False</div><div class="line">c    False</div><div class="line">d    False</div><div class="line">dtype: bool</div><div class="line">&gt;&gt;&gt; data2.notnull()</div><div class="line">a    False</div><div class="line">b     True</div><div class="line">c     True</div><div class="line">d     True</div><div class="line">dtype: bool</div><div class="line"></div><div class="line"># 嵌套查询NaN</div><div class="line">&gt;&gt;&gt; data2[data2.isnull()==True]</div><div class="line">a   NaN</div><div class="line">dtype: float64</div><div class="line"></div><div class="line"># 统计非NaN个数</div><div class="line">&gt;&gt;&gt; data2.count()</div><div class="line">3</div></pre></td></tr></table></figure>
+<p>切记切记，查询NaN值切记不要使用np.nan==np.nan这种形式来作为判断条件，结果永远是False，==是用作值判断的，而NaN并没有值，如果你不想使用上方的判断方法，你可以使用is作为判断方法，is是对象引用判断，np.nan is np.nan，结果就是你要的True。</p>
+<h5 id="Series的name属性"><a href="#Series的name属性" class="headerlink" title="Series的name属性"></a>Series的name属性</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data.index.name = &apos;abc&apos;</div><div class="line">&gt;&gt;&gt; data.name = &apos;test&apos;</div><div class="line">&gt;&gt;&gt; data</div><div class="line">abc</div><div class="line">a    1</div><div class="line">b    2</div><div class="line">c    3</div><div class="line">d    4</div><div class="line">Name: test, dtype: int64</div></pre></td></tr></table></figure>
+<p>Series对象本身及其索引index都有一个name属性，name属性主要发挥作用是在DataFrame中，当我们把一个Series对象放进DataFrame中，新的列将根据我们的name属性对该列进行命名，如果我们没有给Series命名，DataFrame则会自动帮我们命名为0。</p>
+<h4 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data = &#123;&apos;name&apos;: [&apos;BTC&apos;, &apos;ETH&apos;, &apos;EOS&apos;], &apos;price&apos;:[50000, 4000, 150]&#125;</div><div class="line">&gt;&gt;&gt; data = DataFrame(data)</div><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">2  EOS    150</div></pre></td></tr></table></figure>
+<p>DataFrame的生成与Series差不多，你可以自己指定index，也可不指定，DataFrame会自动帮你补上。</p>
+<h5 id="查看DataFrame的相关信息"><a href="#查看DataFrame的相关信息" class="headerlink" title="查看DataFrame的相关信息"></a>查看DataFrame的相关信息</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data.index</div><div class="line">RangeIndex(start=0, stop=3, step=1)</div><div class="line">&gt;&gt;&gt; data.values</div><div class="line">array([[&apos;BTC&apos;, 50000],</div><div class="line">       [&apos;ETH&apos;, 4000],</div><div class="line">       [&apos;EOS&apos;, 150]], dtype=object)</div><div class="line">&gt;&gt;&gt; data.columns</div><div class="line">Index([&apos;name&apos;, &apos;price&apos;], dtype=&apos;object&apos;)</div></pre></td></tr></table></figure>
+<h5 id="DataFrame索引"><a href="#DataFrame索引" class="headerlink" title="DataFrame索引"></a>DataFrame索引</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data.name</div><div class="line">0    BTC</div><div class="line">1    ETH</div><div class="line">2    EOS</div><div class="line">Name: name, dtype: object</div><div class="line"></div><div class="line">&gt;&gt;&gt; data[&apos;name&apos;]</div><div class="line">0    BTC</div><div class="line">1    ETH</div><div class="line">2    EOS</div><div class="line">Name: name, dtype: object</div><div class="line"></div><div class="line"># loc[&apos;name&apos;]查询的是行标签</div><div class="line">&gt;&gt;&gt; data.iloc[1]</div><div class="line">name      ETH</div><div class="line">price    4000</div><div class="line">Name: 1, dtype: object</div></pre></td></tr></table></figure>
+<p>其实行索引，除了iloc，loc还有个ix，ix既可以进行行标签索引，也可以进行行号索引，但这也大大增加了它的不确定性，有时会出现一些奇怪的问题，所以pandas在0.20.0版本的时候就把ix给弃用了。</p>
+<h5 id="DataFrame的常用操作"><a href="#DataFrame的常用操作" class="headerlink" title="DataFrame的常用操作"></a>DataFrame的常用操作</h5><h6 id="简单地增加行、列"><a href="#简单地增加行、列" class="headerlink" title="简单地增加行、列"></a>简单地增加行、列</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data[&apos;type&apos;] = &apos;token&apos;</div><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price   type</div><div class="line">0  BTC  50000  token</div><div class="line">1  ETH   4000  token</div><div class="line">2  EOS    150  token</div><div class="line"></div><div class="line">&gt;&gt;&gt; data.loc[&apos;3&apos;] = [&apos;ae&apos;,200,&apos;token&apos;]</div><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price   type</div><div class="line">0  BTC  50000  token</div><div class="line">1  ETH   4000  token</div><div class="line">2  EOS    150  token</div><div class="line">3   ae    200  token</div></pre></td></tr></table></figure>
+<h6 id="删除行、列操作"><a href="#删除行、列操作" class="headerlink" title="删除行、列操作"></a>删除行、列操作</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; del data[&apos;type&apos;]</div><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">2  EOS    150</div><div class="line">3   ae    200</div><div class="line"></div><div class="line">&gt;&gt;&gt; data.drop([2])</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">3   ae    200</div><div class="line"></div><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">2  EOS    150</div><div class="line">3   ae    200</div></pre></td></tr></table></figure>
+<p>这里需要注意的是，使用drop（）方法返回的是Copy而不是视图，要想真正在原数据里删除行，就要设置inplace=True<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data.drop([2],inplace=True)</div><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">3   ae    200</div></pre></td></tr></table></figure></p>
+<h6 id="设置某一列为index"><a href="#设置某一列为index" class="headerlink" title="设置某一列为index"></a>设置某一列为index</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data.set_index([&apos;name&apos;],inplace=True)</div><div class="line">&gt;&gt;&gt; data</div><div class="line">      price</div><div class="line">name</div><div class="line">BTC   50000</div><div class="line">ETH    4000</div><div class="line">ae      200</div><div class="line"></div><div class="line"># 将index返回回dataframe中</div><div class="line">&gt;&gt;&gt; data.reset_index(inplace=True)</div><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">2   ae    200</div></pre></td></tr></table></figure>
+<h6 id="处理缺失值"><a href="#处理缺失值" class="headerlink" title="处理缺失值"></a>处理缺失值</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">data.dropna()    # 丢弃含有缺失值的行</div><div class="line">data.fillna(0)    # 填充缺失值数据为0</div></pre></td></tr></table></figure>
+<p>还是需要注意：这些方法返回的是copy而不是视图，如果想在原数据上改变，别忘了inplace=True。</p>
+<h6 id="数据合并"><a href="#数据合并" class="headerlink" title="数据合并"></a>数据合并</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">2   ae    200</div><div class="line">3  eos    eos</div><div class="line"></div><div class="line">&gt;&gt;&gt; data1</div><div class="line">  name other</div><div class="line">0  BTC     a</div><div class="line">1  ETH     b</div><div class="line"></div><div class="line"># 以name为key进行左连接</div><div class="line">&gt;&gt;&gt; pd.merge(data,data1,on=&apos;name&apos;,how=&apos;left&apos;)</div><div class="line">  name  price other</div><div class="line">0  BTC  50000     a</div><div class="line">1  ETH   4000     b</div><div class="line">2   ae    200   NaN</div><div class="line">3  eos    eos   NaN</div></pre></td></tr></table></figure>
+<p>平时进行数据合并操作，更多的会出一种情况，那就是出现重复值，DataFrame也为我们提供了简便的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">data.drop_duplicates(inplace=True)</div></pre></td></tr></table></figure>
+<h6 id="数据的简单保存与读取"><a href="#数据的简单保存与读取" class="headerlink" title="数据的简单保存与读取"></a>数据的简单保存与读取</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; data.to_csv(&apos;test.csv&apos;)</div><div class="line">&gt;&gt;&gt; pd.read_csv(&apos;test.csv&apos;)</div><div class="line">   Unnamed: 0 name  price</div><div class="line">0           0  BTC  50000</div><div class="line">1           1  ETH   4000</div><div class="line">2           2   ae    200</div><div class="line">3           3  eos    eos</div></pre></td></tr></table></figure>
+<p>为什么会出现这种情况呢，从头看到尾的同学可能就看出来了，增加第三行时，我用的是loc[‘3’]行标签来增加的，而read_csv方法是默认index是从0开始增长的，此时只需要我们设置下index参数就ok了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 不保存行索引</div><div class="line">&gt;&gt;&gt; data.to_csv(&apos;test.csv&apos;,index=None)</div><div class="line">&gt;&gt;&gt; pd.read_csv(&apos;test.csv&apos;)</div><div class="line">  name  price</div><div class="line">0  BTC  50000</div><div class="line">1  ETH   4000</div><div class="line">2   ae    200</div><div class="line">3  eos    eos</div></pre></td></tr></table></figure>
 <p>其他的还有header参数，这些参数都是我们在保存数据时需要注意的。</p>
 
       
@@ -807,7 +759,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#in方法默认判断的是index值"><span class="nav-number"></span> <span class="nav-text">in方法默认判断的是index值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#嵌套查询NaN"><span class="nav-number"></span> <span class="nav-text">嵌套查询NaN</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#统计非NaN个数"><span class="nav-number"></span> <span class="nav-text">统计非NaN个数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#loc-‘name’-查询的是行标签"><span class="nav-number"></span> <span class="nav-text">loc[‘name’]查询的是行标签</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将index返回回dataframe中"><span class="nav-number"></span> <span class="nav-text">将index返回回dataframe中</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#以name为key进行左连接"><span class="nav-number"></span> <span class="nav-text">以name为key进行左连接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#不保存行索引"><span class="nav-number"></span> <span class="nav-text">不保存行索引</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Series"><span class="nav-number">2.</span> <span class="nav-text">Series</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Series的两种生成方式"><span class="nav-number">2.1.</span> <span class="nav-text">Series的两种生成方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看Series的相关信息"><span class="nav-number">2.2.</span> <span class="nav-text">查看Series的相关信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Series的NaN生成"><span class="nav-number">2.3.</span> <span class="nav-text">Series的NaN生成</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NaN的相关查询"><span class="nav-number">2.4.</span> <span class="nav-text">NaN的相关查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Series的name属性"><span class="nav-number">2.5.</span> <span class="nav-text">Series的name属性</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DataFrame"><span class="nav-number">3.</span> <span class="nav-text">DataFrame</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看DataFrame的相关信息"><span class="nav-number">3.1.</span> <span class="nav-text">查看DataFrame的相关信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DataFrame索引"><span class="nav-number">3.2.</span> <span class="nav-text">DataFrame索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DataFrame的常用操作"><span class="nav-number">3.3.</span> <span class="nav-text">DataFrame的常用操作</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#简单地增加行、列"><span class="nav-number">3.3.1.</span> <span class="nav-text">简单地增加行、列</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#删除行、列操作"><span class="nav-number">3.3.2.</span> <span class="nav-text">删除行、列操作</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#设置某一列为index"><span class="nav-number">3.3.3.</span> <span class="nav-text">设置某一列为index</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#处理缺失值"><span class="nav-number">3.3.4.</span> <span class="nav-text">处理缺失值</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据合并"><span class="nav-number">3.3.5.</span> <span class="nav-text">数据合并</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#数据的简单保存与读取"><span class="nav-number">3.3.6.</span> <span class="nav-text">数据的简单保存与读取</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -997,8 +949,8 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://fingerchou.com/2018/08/23/pandas-basis/';
-          this.page.identifier = '2018/08/23/pandas-basis/';
+          this.page.url = 'http://fingerchou.com/2018/08/24/pandas-basis/';
+          this.page.identifier = '2018/08/24/pandas-basis/';
           this.page.title = 'Pandas基础';
         };
         var d = document, s = d.createElement('script');
