@@ -355,6 +355,18 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[Mysql遇到的问题笔记]]></title>
+    <url>%2F2017%2F01%2F03%2Fmysql-question%2F</url>
+    <content type="text"><![CDATA[问题描述:ERROR 1030 (HY000): Got error 28 from storage engine. 解决办法:查了一下，数据库文件所在的盘应该没事，应该是数据库用的临时目录空间不够。或者将tmpdir指向一个硬盘空间很大的目录即可。 问题描述:Can’t open the mysql.plugin table. Please run mysql_upgrade to create it. 解决办法：12345678sudo vim /etc/apparmor.d/usr.sbin.mysqldadded:/var/mysql r,/var/mysql** rwk,sudo /etc/init.d/apparmor restartsudo service mysql start 问题描述:marked as crashed and last (automatic?) repair failed 解决办法:123sudo service mysql stopcd /dadadir/mysql/databasesudo myisamchk -r *.MYI PS: 迁移数据前，一定要stop mysql不然就会出现上诉问题 导出mysql查询结果select date_time, uid from register where package = ‘mumayi’ into outfile “/tmp/uid.txt”;导出查询结果：Select语句 into outfile ‘保存路径+文件名’;导入查询结果：load data local infile ‘保存路径+文件名’ into table 表明 character set utf8;]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>Mysql</tag>
+        <tag>Database</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Python不同目录下的调用情况]]></title>
     <url>%2F2017%2F01%2F02%2Fpython-different-directories-execute%2F</url>
     <content type="text"><![CDATA[Python包含子目录中的模块方法比较简单，关键是能够在sys.path里面找到通向模块文件的路径。 下面将具体介绍几种常用情况: （1）主程序与模块程序在同一目录下:如下面程序结构: 123`-- src |-- mod1.py `-- test1.py 若在程序test1.py中导入模块mod1, 则直接使用import mod1或from mod1 import *; （2）主程序所在目录是模块所在目录的父(或祖辈)目录如下面程序结构: 12345`-- src |-- mod1.py |-- mod2 | `-- mod2.py `-- test1.py 若在程序test1.py中导入模块mod2, 需要在mod2文件夹中建立空文件init.py文件(也可以在该文件中自定义输出模块接口); 然后使用 from mod2.mod2 import * 或import mod2.mod2. （3）主程序导入上层目录中模块或其他目录(平级)下的模块如下面程序结构: 1234567`-- src |-- mod1.py |-- mod2 | `-- mod2.py |-- sub | `-- test2.py `-- test1.py 若在程序test2.py中导入模块mod1和mod2。首先需要在mod2下建立init.py文件(同(2))，src下不必建立该文件。然后调用方式如下:下面程序执行方式均在程序文件所在目录下执行，如test2.py是在cd sub;之后执行python test2.py而test1.py是在cd src;之后执行python test1.py; 不保证在src目录下执行python sub/test2.py成功。 1234import syssys.path.append(&quot;..&quot;)import mod1import mod2.mod2 （4）从(3)可以看出，导入模块关键是能够根据sys.path环境变量的值，找到具体模块的路径。这里仅介绍上面三种简单情况]]></content>
