@@ -81,25 +81,19 @@
 
 
 
-<meta name="description" content="问题描述:ERROR 1030 (HY000): Got error 28 from storage engine.
-解决办法:查了一下，数据库文件所在的盘应该没事，应该是数据库用的临时目录空间不够。或者将tmpdir指向一个硬盘空间很大的目录即可。
-
-问题描述:Can’t open the mysql.plugin table. Please run mysql_upgrade to creat">
+<meta name="description" content="问题描述：mysql远程连接错误10038–navicat for mysql (10038)
+解决方案：1、授权123mysql&amp;gt;grant all privileges on *.*  to  &amp;apos;root&amp;apos;@&amp;apos;%&amp;apos;  identified by &amp;apos;youpassword&amp;apos;  with grant option;mysql&amp;gt;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mysql遇到的问题笔记">
 <meta property="og:url" content="http://fingerchou.com/2017/01/03/mysql-question/index.html">
 <meta property="og:site_name" content="Finger's Blog">
-<meta property="og:description" content="问题描述:ERROR 1030 (HY000): Got error 28 from storage engine.
-解决办法:查了一下，数据库文件所在的盘应该没事，应该是数据库用的临时目录空间不够。或者将tmpdir指向一个硬盘空间很大的目录即可。
-
-问题描述:Can’t open the mysql.plugin table. Please run mysql_upgrade to creat">
-<meta property="og:updated_time" content="2018-08-25T02:51:32.707Z">
+<meta property="og:description" content="问题描述：mysql远程连接错误10038–navicat for mysql (10038)
+解决方案：1、授权123mysql&amp;gt;grant all privileges on *.*  to  &amp;apos;root&amp;apos;@&amp;apos;%&amp;apos;  identified by &amp;apos;youpassword&amp;apos;  with grant option;mysql&amp;gt;">
+<meta property="og:updated_time" content="2018-08-25T05:10:09.080Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql遇到的问题笔记">
-<meta name="twitter:description" content="问题描述:ERROR 1030 (HY000): Got error 28 from storage engine.
-解决办法:查了一下，数据库文件所在的盘应该没事，应该是数据库用的临时目录空间不够。或者将tmpdir指向一个硬盘空间很大的目录即可。
-
-问题描述:Can’t open the mysql.plugin table. Please run mysql_upgrade to creat">
+<meta name="twitter:description" content="问题描述：mysql远程连接错误10038–navicat for mysql (10038)
+解决方案：1、授权123mysql&amp;gt;grant all privileges on *.*  to  &amp;apos;root&amp;apos;@&amp;apos;%&amp;apos;  identified by &amp;apos;youpassword&amp;apos;  with grant option;mysql&amp;gt;">
 
 
 
@@ -442,7 +436,12 @@
       
 
       
-        <p>问题描述:<br>ERROR 1030 (HY000): Got error 28 from storage engine.</p>
+        <p>问题描述：mysql远程连接错误10038–navicat for mysql (10038)</p>
+<p>解决方案：<br>1、授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mysql&gt;grant all privileges on *.*  to  &apos;root&apos;@&apos;%&apos;  identified by &apos;youpassword&apos;  with grant option;</div><div class="line"></div><div class="line">mysql&gt;flush privileges;</div></pre></td></tr></table></figure></p>
+<p>2、修改 /etc/mysql/mysql.conf.d<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">找到bind-address = 127.0.0.1这一行</div><div class="line"></div><div class="line">改为bind-address = 0.0.0.0即可</div></pre></td></tr></table></figure></p>
+<p>如果还没解决可能是远程端口（3306）未对外开放。<br>需要修改安全组的入站规则。 </p>
+<hr>
+<p>问题描述:<br>ERROR 1030 (HY000): Got error 28 from storage engine.</p>
 <p>解决办法:<br>查了一下，数据库文件所在的盘应该没事，应该是数据库用的临时目录空间不够。或者将tmpdir指向一个硬盘空间很大的目录即可。</p>
 <hr>
 <p>问题描述:<br>Can’t open the mysql.plugin table. Please run mysql_upgrade to create it.</p>
@@ -642,7 +641,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -653,7 +652,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -664,7 +663,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2018-08-24T16:50:21.723Z</updated>
+  <updated>2018-09-15T03:37:19.852Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>AWS Serverless - NodeJs实践</title>
+    <link href="http://fingerchou.com/2018/09/15/aws-serverless-with-nodejs/"/>
+    <id>http://fingerchou.com/2018/09/15/aws-serverless-with-nodejs/</id>
+    <published>2018-09-15T03:37:00.000Z</published>
+    <updated>2018-09-15T03:37:19.852Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;一、Serverless简介&quot;&gt;&lt;a href=&quot;#一、Serverless简介&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="NodeJs" scheme="http://fingerchou.com/categories/NodeJs/"/>
+    
+    
+      <category term="Serverless" scheme="http://fingerchou.com/tags/Serverless/"/>
+    
+      <category term="NodeJs" scheme="http://fingerchou.com/tags/NodeJs/"/>
+    
+      <category term="AWS" scheme="http://fingerchou.com/tags/AWS/"/>
+    
+  </entry>
   
   <entry>
     <title>Pandas基础</title>
@@ -532,36 +562,6 @@
     
       <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
     
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
-      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Python Elasticsearch DSL 使用笔记(二)</title>
-    <link href="http://fingerchou.com/2017/08/13/elasticsearch-dsl-with-python-usage-2/"/>
-    <id>http://fingerchou.com/2017/08/13/elasticsearch-dsl-with-python-usage-2/</id>
-    <published>2017-08-12T23:56:00.000Z</published>
-    <updated>2018-06-09T05:47:18.866Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;使用ElasticSearch-DSL进行搜索&quot;&gt;&lt;a href=&quot;#使用ElasticSearch-DSL进行搜索&quot; class=&quot;headerlink&quot; title=&quot;使用ElasticSearch DSL进行搜索&quot;&gt;&lt;/a&gt;使用ElasticSearch
-        
-      
-    
-    </summary>
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
-    
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     

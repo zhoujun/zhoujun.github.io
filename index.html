@@ -317,6 +317,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/09/15/aws-serverless-with-nodejs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/15/aws-serverless-with-nodejs/" itemprop="url">AWS Serverless - NodeJs实践</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-15T11:37:00+08:00">
+                2018-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJs/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJs</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/15/aws-serverless-with-nodejs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/15/aws-serverless-with-nodejs/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/09/15/aws-serverless-with-nodejs/" class="leancloud_visitors" data-flag-title="AWS Serverless - NodeJs实践">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="一、Serverless简介"><a href="#一、Serverless简介" class="headerlink" title="一、Serverless简介"></a>一、Serverless简介</h4><p>Serverless是一种无服务的架构，如AWS Lambda。Serverless与传统架构不同，由开发者实现的服务端逻辑运行在无状态的计算容器中，它是由事件触发，短暂的(可能只存在于一次请求过程中)，完全被第三方管理。</p>
+<p>以亚马逊的AWS Lambda为案例，Lambda能让不用思考任何服务器，也就是说，不用你处理服务器上的部署、服务器容量和服务器的扩展和失败容错，还有服务器上选择什么OS操作系统，语言的更新，日志等等问题。你的应用程序只需要和多个第三方的API或服务打交道，也可以自我创建一个无服务器的API。</p>
+<h4 id="二、Amazon-API-Gateway"><a href="#二、Amazon-API-Gateway" class="headerlink" title="二、Amazon API Gateway"></a>二、Amazon API Gateway</h4><p>Amazon API Gateway 是一种完全托管的服务，可以帮助开发者轻松创建、发布、维护、监控和保护任意规模的 API。只需在 AWS 管理控制台中点击几下，您便可以创建可充当应用程序“前门”的 API，从后端服务访问数据、业务逻辑或功能，例如基于 Amazon Elastic Compute Cloud (Amazon EC2) 运行的工作负载、基于 AWS Lambda 运行的代码或任意 Web 应用。</p>
+<p>Amazon API Gateway 负责管理所有任务，涉及接受和处理成千上万个并发 API 调用，包括流量管理、授权和访问控制、监控，以及 API 版本管理。Amazon API Gateway 没有最低费用和启动成本。您只需为收到的 API 调用以及传出的数据量付费。</p>
+<h4 id="三、使用NodeJs创建Serverless-API"><a href="#三、使用NodeJs创建Serverless-API" class="headerlink" title="三、使用NodeJs创建Serverless API"></a>三、使用NodeJs创建Serverless API</h4><h4 id="aws-serverless-express-——-基于Express的Serverless中间件"><a href="#aws-serverless-express-——-基于Express的Serverless中间件" class="headerlink" title="aws-serverless-express —— 基于Express的Serverless中间件"></a>aws-serverless-express —— 基于Express的Serverless中间件</h4><p><a href="https://github.com/fingerchou/aws-serverless-express" target="_blank" rel="external">https://github.com/fingerchou/aws-serverless-express</a></p>
+<p>Run serverless applications and REST APIs using your existing Node.js application framework, on top of AWS Lambda and Amazon API Gateway. The sample provided allows you to easily build serverless web applications/services and RESTful APIs using the Express framework.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">// lambda.js</div><div class="line"></div><div class="line">&apos;use strict&apos;;</div><div class="line">const awsServerlessExpress = require(&apos;aws-serverless-express&apos;);</div><div class="line">const app = require(&apos;./app&apos;);</div><div class="line"></div><div class="line">// NOTE: If you get ERR_CONTENT_DECODING_FAILED in your browser, this is likely</div><div class="line">// due to a compressed response (e.g. gzip) which has not been handled correctly</div><div class="line">// by aws-serverless-express and/or API Gateway. Add the necessary MIME types to</div><div class="line">// binaryMimeTypes below, then redeploy (`npm run package-deploy`)</div><div class="line"></div><div class="line">const binaryMimeTypes = [</div><div class="line">  &apos;application/javascript&apos;,</div><div class="line">  &apos;application/json&apos;,</div><div class="line">  &apos;application/octet-stream&apos;,</div><div class="line">  &apos;application/xml&apos;,</div><div class="line">  &apos;font/eot&apos;,</div><div class="line">  &apos;font/opentype&apos;,</div><div class="line">  &apos;font/otf&apos;,</div><div class="line">  &apos;image/jpeg&apos;,</div><div class="line">  &apos;image/png&apos;,</div><div class="line">  &apos;image/svg+xml&apos;,</div><div class="line">  &apos;text/comma-separated-values&apos;,</div><div class="line">  &apos;text/css&apos;,</div><div class="line">  &apos;text/html&apos;,</div><div class="line">  &apos;text/javascript&apos;,</div><div class="line">  &apos;text/plain&apos;,</div><div class="line">  &apos;text/text&apos;,</div><div class="line">  &apos;text/xml&apos;</div><div class="line">];</div><div class="line"></div><div class="line">const server = awsServerlessExpress.createServer(app, null, binaryMimeTypes);</div><div class="line"></div><div class="line">exports.handler = (event, context) =&gt; awsServerlessExpress.proxy(server, event, context);</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line">// app.js</div><div class="line"></div><div class="line">&apos;use strict&apos;;</div><div class="line"></div><div class="line">const express = require(&apos;express&apos;);</div><div class="line">const bodyParser = require(&apos;body-parser&apos;);</div><div class="line">const cors = require(&apos;cors&apos;);</div><div class="line">const compression = require(&apos;compression&apos;);</div><div class="line">const awsServerlessExpressMiddleware = require(&apos;aws-serverless-express/middleware&apos;); </div><div class="line">const app = express();</div><div class="line">const router = express.Router();</div><div class="line"></div><div class="line">// gzip compression</div><div class="line">app.use(compression());</div><div class="line"></div><div class="line">// enable CORS - Cross Origin Resource Sharing</div><div class="line">app.use(cors());</div><div class="line">app.use(bodyParser.json());</div><div class="line">app.use(bodyParser.urlencoded(&#123; extended: true &#125;));</div><div class="line">app.use(awsServerlessExpressMiddleware.eventContext());</div><div class="line"></div><div class="line">router.get(&apos;/hello&apos;, (req, res) =&gt; &#123;</div><div class="line">    res.json(&#123;&quot;say&quot;: &quot;Hello World&quot;&#125;)</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.get(&apos;/users&apos;, (req, res) =&gt; &#123;</div><div class="line">    res.json(users);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.get(&apos;/users/:userId&apos;, (req, res) =&gt; &#123;</div><div class="line">    const user = getUser(req.params.userId);</div><div class="line">    if(!user) &#123;</div><div class="line">        return res.status(404).json(&#123;&#125;);</div><div class="line">    &#125;</div><div class="line">    return res.json(user);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.post(&apos;/users&apos;, (req, res) =&gt; &#123;</div><div class="line">    const user = &#123;</div><div class="line">        id: ++userIdCounter,</div><div class="line">        name: req.body.name</div><div class="line">    &#125;;</div><div class="line">    users.push(user);</div><div class="line">    res.status(201).json(user);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.put(&apos;/users/:userId&apos;, (req, res) =&gt; &#123;</div><div class="line">    const user = getUser(req.params.userId);</div><div class="line">    console.log(req.params.userId, user);</div><div class="line">    if (!user) &#123;</div><div class="line">        return res.status(404).json(&#123;&#125;);</div><div class="line">    &#125;</div><div class="line">    user.name = req.body.name;</div><div class="line">    res.json(user);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.delete(&apos;/users/:userId&apos;, (req, res) =&gt; &#123;</div><div class="line">    const userIndex = getUserIndex(req.params.userId);</div><div class="line">    if (userIndex === -1) &#123;</div><div class="line">        return res.status(404).json(&#123;&#125;);</div><div class="line">    &#125;</div><div class="line">    users.splice(userIndex, 1);</div><div class="line">    res.json(users);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">const users = [&#123;</div><div class="line">    id: 1,</div><div class="line">    name: &apos;Joe&apos;</div><div class="line">&#125;, &#123;</div><div class="line">    id: 2,</div><div class="line">    name: &apos;Jame&apos;</div><div class="line">&#125;];</div><div class="line"></div><div class="line">let userIdCounter = users.length;</div><div class="line"></div><div class="line">const getUser = (userId) =&gt; users.find(u =&gt; u.id === parseInt(userId));</div><div class="line">const getUserIndex = (userId) =&gt; users.findIndex(u =&gt; u.id === parseInt(userId));</div><div class="line"></div><div class="line">app.use(&apos;/&apos;, router);</div><div class="line"></div><div class="line">module.exports = app;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// app.local.js</div><div class="line"></div><div class="line">const app = require(&apos;./app&apos;);</div><div class="line">const port = 5000;</div><div class="line"></div><div class="line">app.listen(port);</div><div class="line">console.log(`listening on http://localhost:$&#123;port&#125;`);</div></pre></td></tr></table></figure>
+<h4 id="Apex-——-管理AWS-Lambda的开源工具"><a href="#Apex-——-管理AWS-Lambda的开源工具" class="headerlink" title="Apex —— 管理AWS Lambda的开源工具"></a>Apex —— 管理AWS Lambda的开源工具</h4><p><a href="http://apex.run/" target="_blank" rel="external">http://apex.run/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// project.development.json</div><div class="line"></div><div class="line">&#123;</div><div class="line">  &quot;name&quot;: &quot;finger_demo&quot;,</div><div class="line">  &quot;description&quot;: &quot;this is finger demo&quot;,</div><div class="line">  &quot;memory&quot;: 128,</div><div class="line">  &quot;timeout&quot;: 300,</div><div class="line">  &quot;role&quot;: &quot;xxx&quot;,</div><div class="line">  &quot;handler&quot;: &quot;lambda.handler&quot;,</div><div class="line">  &quot;runtime&quot;: &quot;nodejs8.10&quot;,</div><div class="line">  &quot;region&quot;: &quot;us-east-1&quot;,</div><div class="line">  &quot;retainedVersions&quot;: 5,</div><div class="line">  &quot;hooks&quot;: &#123;</div><div class="line">    &quot;build&quot;: &quot;npm install&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;environment&quot;: &#123;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 发布development环境</div><div class="line">apex deploy -e development</div><div class="line"></div><div class="line">// 使用development别名</div><div class="line">apex alias development</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/08/24/pandas-basis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2075,199 +2250,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/22/python3.6-cool-feature/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/22/python3.6-cool-feature/" itemprop="url">Python3.6中那些很酷的特性</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-22T20:40:00+08:00">
-                2018-05-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/22/python3.6-cool-feature/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/22/python3.6-cool-feature/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/05/22/python3.6-cool-feature/" class="leancloud_visitors" data-flag-title="Python3.6中那些很酷的特性">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="可读性更强的数字字面值"><a href="#可读性更强的数字字面值" class="headerlink" title="可读性更强的数字字面值"></a>可读性更强的数字字面值</h4><p>Python代码在可读性上做到了极致，被称为是可执行伪代码。然而，它还在不断地改进，比如这个可读性更好的数字字面值语法，就是方便程序员能以一种 “for humans ” 的方式阅读和理解数字。你现在可以给数字添加下划线，并按照你喜欢的方式对它们进行分组  。这对于二进制或十六进制数字或者是大数来说非常方便：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; six_figures  = 100_000</div><div class="line">&gt;&gt;&gt; six_figures</div><div class="line">100000</div><div class="line"></div><div class="line">&gt;&gt;&gt; a = 10_00_0</div><div class="line">&gt;&gt;&gt; a</div><div class="line">10000</div><div class="line"></div><div class="line">&gt;&gt;&gt; error  = 0xbad_c0ffee</div><div class="line">&gt;&gt;&gt; error</div><div class="line">50159747054</div><div class="line"></div><div class="line">&gt;&gt;&gt; flags  = 0b_0111_0101_0001_0101</div><div class="line">&gt;&gt;&gt; flags</div><div class="line">29973</div></pre></td></tr></table></figure>
-<p>请记住，这种改变只是语法层面上的变化，是一种在源代码中以不同方式表示数字文字的方法而已。在虚拟机编译成字节码的时候不会有任何变化，你可以在 PEP515 中了解到关于它的更多信息。</p>
-<h4 id="新的字符串格式化方法"><a href="#新的字符串格式化方法" class="headerlink" title="新的字符串格式化方法"></a>新的字符串格式化方法</h4><p>对字符串格式化操作有两种常用的方法，第一个是使用 “%” 操作符，第二个是使用 <code>format</code> 函数。</p>
-<p><strong>“%” 操作符</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; s = &quot;%s is %d&quot; % (&apos;two&apos;, 2)</div><div class="line">&gt;&gt;&gt; s</div><div class="line">&apos;two is 2&apos;</div></pre></td></tr></table></figure>
-<p><strong><code>format</code> 函数</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; s = &quot;&#123;fruit&#125; is &#123;color&#125;&quot;.format(fruit=&apos;apple&apos;, color=&apos;red&apos;)</div><div class="line">&gt;&gt;&gt; s</div><div class="line">&apos;apple is red&apos;</div></pre></td></tr></table></figure>
-<p>显然，format 函数要比 % 操作符的可读性要好，在Python 3.6 增加了第三种格式化字符串方法，称为 <strong>Formatted String Literals</strong> ，简称 <strong>f字符串</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; name = &apos;Bob&apos;</div><div class="line">&gt;&gt;&gt; f&apos;Hello, &#123;name&#125;!&apos;</div><div class="line">&apos;Hello, Bob!&apos;</div></pre></td></tr></table></figure>
-<p>你还可以在字符串内使用嵌入式的 Python 表达式，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a = 5</div><div class="line">&gt;&gt;&gt; b = 10</div><div class="line">&gt;&gt;&gt; f&apos;Five plus ten is &#123;a + b&#125; and not &#123;2 * (a + b)&#125;.&apos;</div><div class="line">&apos;Five plus ten is 15 and not 30.&apos;</div></pre></td></tr></table></figure>
-<p>这个看起来很酷，其实这种操作在模版引擎中早就有这样的特性存在，只不过因为用的人多了，就引入到了语言标准中。</p>
-<p>除了这些，还可以操作数字</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"># 精度</div><div class="line">&gt;&gt;&gt; PI = 3.141592653</div><div class="line">&gt;&gt;&gt; f&quot;Pi is &#123;PI:.2f&#125;&quot;</div><div class="line">&gt;&gt;&gt; &apos;Pi is 3.14&apos;</div><div class="line"></div><div class="line">&gt;&gt;&gt; error = 50159747054</div><div class="line">#以16进制格式化</div><div class="line">&gt;&gt;&gt; f&apos;Programmer Error: &#123;error:#x&#125;&apos;</div><div class="line">&apos;Programmer Error: 0xbadc0ffee&apos;</div><div class="line"></div><div class="line">#以二进制格式化</div><div class="line">&gt;&gt;&gt; f&apos;Programmer Error: &#123;error:#b&#125;&apos;</div><div class="line">&apos;Programmer Error: 0b101110101101110000001111111111101110&apos;</div></pre></td></tr></table></figure>
-<p>你可以在 PEP498 中了解更多信息</p>
-<p><strong>变量注释</strong></p>
-<p>“动态语言一时爽，代码重构火葬场”，虽有危言耸听嫌疑，但的确因为动态语言的灵活性也带来代码维护困难的麻烦，我们不得不通过文档注释来对参数进行说明，而有时又因为业务需求的变更导致代码修改后没有同步文档注释造成实际代码和文档不一致的情况，如果能像静态语言一样，让程序员在语法层面就是就被限制在规则范围内做事，就不会出问题了。所以，像Java这样的语言做工程项目是有优势的。</p>
-<p>从Python 3.5开始，可以将类型注解添加到函数和方法中：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def my_add(a: int, b: int) -&gt; int:</div><div class="line">...    return a + b</div></pre></td></tr></table></figure>
-<p>这个函数表示，a 和 b 两个参数必须是 int 类型，函数的返回值也是 int。</p>
-<p>在语义方面没有任何改变—CPython解释器只是将类型记录为类型注释，但不做任何方式类型检查。类型检查纯粹是可选的，你需要一个像Mypy这样的工具来帮助你。</p>
-<p>可以在PEP 526中了解更多关于这一变化的信息。</p>
-<p>当然，这个版本不止这么一点点变化，还有：</p>
-<ul>
-<li>异步生成器的语法</li>
-<li>异步推导式语法</li>
-<li>更快的字典结构，内存减少20％到25％</li>
-</ul>
-<p>英文原文：<a href="https://dbader.org/blog/cool-new-features-in-python-3-6" target="_blank" rel="external">https://dbader.org/blog/cool-new-features-in-python-3-6</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2318,7 +2300,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2329,7 +2311,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2340,7 +2322,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
