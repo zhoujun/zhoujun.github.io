@@ -317,6 +317,422 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/09/simple-bigdata-search-with-python/" itemprop="url">用Python实现一个大数据搜索引擎</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-09T13:06:00+08:00">
+                2018-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SearchEngine/" itemprop="url" rel="index">
+                    <span itemprop="name">SearchEngine</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/09/simple-bigdata-search-with-python/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/09/simple-bigdata-search-with-python/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/09/simple-bigdata-search-with-python/" class="leancloud_visitors" data-flag-title="用Python实现一个大数据搜索引擎">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文转自：<a href="https://my.oschina.net/taogang/blog/1579204" target="_blank" rel="external">https://my.oschina.net/taogang/blog/1579204</a></p>
+<p>搜索是大数据领域里常见的需求。Splunk和ELK分别是该领域在非开源和开源领域里的领导者。本文利用很少的Python代码实现了一个基本的数据搜索功能，试图让大家理解大数据搜索的基本原理。</p>
+<h4 id="1、布隆过滤器（Bloom-Filter）"><a href="#1、布隆过滤器（Bloom-Filter）" class="headerlink" title="1、布隆过滤器（Bloom Filter）"></a>1、布隆过滤器（Bloom Filter）</h4><p>第一步我们先要实现一个<a href="https://en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="external">布隆过滤器</a></p>
+<p>布隆过滤器是大数据领域的一个常见算法，它的目的是过滤掉那些不是目标的元素。也就是说如果一个要搜索的词并不存在与我的数据中，那么它可以以很快的速度返回目标不存在。</p>
+<p>让我们看看以下布隆过滤器的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">class Bloomfilter(object):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    A Bloom filter is a probabilistic data-structure that trades space for accuracy</div><div class="line">    when determining if a value is in a set.  It can tell you if a value was possibly</div><div class="line">    added, or if it was definitely not added, but it can&apos;t tell you for certain that</div><div class="line">    it was added.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    def __init__(self, size):</div><div class="line">        &quot;&quot;&quot;Setup the BF with the appropriate size&quot;&quot;&quot;</div><div class="line">        self.values = [False] * size</div><div class="line">        self.size = size</div><div class="line"></div><div class="line">    def hash_value(self, value):</div><div class="line">        &quot;&quot;&quot;Hash the value provided and scale it to fit the BF size&quot;&quot;&quot;</div><div class="line">        return hash(value) % self.size</div><div class="line"></div><div class="line">    def add_value(self, value):</div><div class="line">        &quot;&quot;&quot;Add a value to the BF&quot;&quot;&quot;</div><div class="line">        h = self.hash_value(value)</div><div class="line">        self.values[h] = True</div><div class="line"></div><div class="line">    def might_contain(self, value):</div><div class="line">        &quot;&quot;&quot;Check if the value might be in the BF&quot;&quot;&quot;</div><div class="line">        h = self.hash_value(value)</div><div class="line">        return self.values[h]</div><div class="line"></div><div class="line">    def print_contents(self):</div><div class="line">        &quot;&quot;&quot;Dump the contents of the BF for debugging purposes&quot;&quot;&quot;</div><div class="line">        print(self.values)</div></pre></td></tr></table></figure>
+<ul>
+<li>基本的数据结构是个数组（实际上是个位图，用1/0来记录数据是否存在），初始化是没有任何内容，所以全部置False。实际的使用当中，该数组的长度是非常大的，以保证效率。</li>
+<li>利用哈希算法来决定数据应该存在哪一位，也就是数组的索引</li>
+<li>当一个数据被加入到布隆过滤器的时候，计算它的哈希值然后把相应的位置为True</li>
+<li>当检查一个数据是否已经存在或者说被索引过的时候，只要检查对应的哈希值所在的位的True／Fasle</li>
+</ul>
+<p>看到这里，大家应该可以看出，如果布隆过滤器返回False，那么数据一定是没有索引过的，然而如果返回True，那也不能说数据一定就已经被索引过。在搜索过程中使用布隆过滤器可以使得很多没有命中的搜索提前返回来提高效率。</p>
+<p>我们看看这段 code是如何运行的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">bf = Bloomfilter(10)</div><div class="line">bf.add_value(&apos;dog&apos;)</div><div class="line">bf.add_value(&apos;fish&apos;)</div><div class="line">bf.add_value(&apos;cat&apos;)</div><div class="line">bf.print_contents()</div><div class="line">bf.add_value(&apos;bird&apos;)</div><div class="line">bf.print_contents()</div><div class="line"># Note: contents are unchanged after adding bird - it collides</div><div class="line">for term in [&apos;dog&apos;, &apos;fish&apos;, &apos;cat&apos;, &apos;bird&apos;, &apos;duck&apos;, &apos;emu&apos;]:</div><div class="line">    print(&apos;&#123;&#125;: &#123;&#125; &#123;&#125;&apos;.format(term, bf.hash_value(term), bf.might_contain(term)))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[False, False, False, False, True, True, False, False, False, True]</div><div class="line">[False, False, False, False, True, True, False, False, False, True]</div><div class="line">dog: 5 True</div><div class="line">fish: 4 True</div><div class="line">cat: 9 True</div><div class="line">bird: 9 True</div><div class="line">duck: 5 True</div><div class="line">emu: 8 False</div></pre></td></tr></table></figure>
+<h5 id="1-1、首先创建了一个容量为10的的布隆过滤器"><a href="#1-1、首先创建了一个容量为10的的布隆过滤器" class="headerlink" title="1.1、首先创建了一个容量为10的的布隆过滤器"></a>1.1、首先创建了一个容量为10的的布隆过滤器</h5><p><img src="/imgs/20180609/1.png" alt=""></p>
+<h5 id="1-2、然后分别加入-‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下："><a href="#1-2、然后分别加入-‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下：" class="headerlink" title="1.2、然后分别加入 ‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下："></a>1.2、然后分别加入 ‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下：</h5><p><img src="/imgs/20180609/2.png" alt=""></p>
+<h5 id="1-3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。"><a href="#1-3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。" class="headerlink" title="1.3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。"></a>1.3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。</h5><p><img src="/imgs/20180609/3.png" alt=""></p>
+<h5 id="1-4、最后我们检查一堆对象（’dog’-‘fish’-‘cat’-‘bird’-‘duck’-‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。"><a href="#1-4、最后我们检查一堆对象（’dog’-‘fish’-‘cat’-‘bird’-‘duck’-‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。" class="headerlink" title="1.4、最后我们检查一堆对象（’dog’, ‘fish’, ‘cat’, ‘bird’, ‘duck’, ‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。"></a>1.4、最后我们检查一堆对象（’dog’, ‘fish’, ‘cat’, ‘bird’, ‘duck’, ‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。</h5><p><img src="/imgs/20180609/4.png" alt=""></p>
+<h4 id="2、分词"><a href="#2、分词" class="headerlink" title="2、分词"></a>2、分词</h4><p>下面一步我们要实现分词。 分词的目的是要把我们的文本数据分割成可搜索的最小单元，也就是词。这里我们主要针对英语，因为中文的分词涉及到自然语言处理，比较复杂，而英文基本只要用标点符号就好了。</p>
+<p>下面我们看看分词的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">def major_segments(s):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Perform major segmenting on a string.  Split the string by all of the major</div><div class="line">    breaks, and return the set of everything found.  The breaks in this implementation</div><div class="line">    are single characters, but in Splunk proper they can be multiple characters.</div><div class="line">    A set is used because ordering doesn&apos;t matter, and duplicates are bad.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    major_breaks = &apos; &apos;</div><div class="line">    last = -1</div><div class="line">    results = set()</div><div class="line"></div><div class="line">    # enumerate() will give us (0, s[0]), (1, s[1]), ...</div><div class="line">    for idx, ch in enumerate(s):</div><div class="line">        if ch in major_breaks:</div><div class="line">            segment = s[last+1:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            last = idx</div><div class="line"></div><div class="line">    # The last character may not be a break so always capture</div><div class="line">    # the last segment (which may end up being &quot;&quot;, but yolo)</div><div class="line">    segment = s[last+1:]</div><div class="line">    results.add(segment)</div><div class="line"></div><div class="line">    return results</div></pre></td></tr></table></figure>
+<h5 id="2-1、主要分割"><a href="#2-1、主要分割" class="headerlink" title="2.1、主要分割"></a>2.1、主要分割</h5><p>主要分割使用空格来分词，实际的分词逻辑中，还会有其它的分隔符。例如Splunk的缺省分割符包括以下这些，用户也可以定义自己的分割符。</p>
+<p>] &lt; &gt; ( ) { } | ! ; , ‘ “ * \n \r \s \t &amp; ? + %21 %26 %2526 %3B %7C %20 %2B %3D – %2520 %5D %5B %3A %0A %2C %28 %29</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">def minor_segments(s):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Perform minor segmenting on a string.  This is like major</div><div class="line">    segmenting, except it also captures from the start of the</div><div class="line">    input to each break.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    minor_breaks = &apos;_.&apos;</div><div class="line">    last = -1</div><div class="line">    results = set()</div><div class="line"></div><div class="line">    for idx, ch in enumerate(s):</div><div class="line">        if ch in minor_breaks:</div><div class="line">            segment = s[last+1:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            segment = s[:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            last = idx</div><div class="line"></div><div class="line">    segment = s[last+1:]</div><div class="line">    results.add(segment)</div><div class="line">    results.add(s)</div><div class="line"></div><div class="line">    return results</div></pre></td></tr></table></figure>
+<h5 id="2-2、次要分割"><a href="#2-2、次要分割" class="headerlink" title="2.2、次要分割"></a>2.2、次要分割</h5><p>次要分割和主要分割的逻辑类似，只是还会把从开始部分到当前分割的结果加入。例如“1.2.3.4”的次要分割会有1，2，3，4，1.2，1.2.3</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def segments(event):</div><div class="line">    &quot;&quot;&quot;Simple wrapper around major_segments / minor_segments&quot;&quot;&quot;</div><div class="line">    results = set()</div><div class="line">    for major in major_segments(event):</div><div class="line">        for minor in minor_segments(major):</div><div class="line">            results.add(minor)</div><div class="line">    return results</div></pre></td></tr></table></figure>
+<p>分词的逻辑就是对文本先进行主要分割，对每一个主要分割在进行次要分割。然后把所有分出来的词返回。</p>
+<p>我们看看这段 code是如何运行的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for term in segments(&apos;src_ip = 1.2.3.4&apos;):</div><div class="line">	print(term)</div></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line">1.2</div><div class="line">1.2.3.4</div><div class="line">src_ip</div><div class="line">3</div><div class="line">1</div><div class="line">1.2.3</div><div class="line">ip</div><div class="line">2</div><div class="line">=</div><div class="line">4</div></pre></td></tr></table></figure>
+<h4 id="3、搜索"><a href="#3、搜索" class="headerlink" title="3、搜索"></a>3、搜索</h4><p>好了，有个分词和布隆过滤器这两个利器的支撑后，我们就可以来实现搜索的功能了。</p>
+<p>上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class Splunk(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.bf = Bloomfilter(64)</div><div class="line">        self.terms = &#123;&#125;  # Dictionary of term to set of events</div><div class="line">        self.events = []</div><div class="line"></div><div class="line">    def add_event(self, event):</div><div class="line">        &quot;&quot;&quot;Adds an event to this object&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Generate a unique ID for the event, and save it</div><div class="line">        event_id = len(self.events)</div><div class="line">        self.events.append(event)</div><div class="line"></div><div class="line">        # Add each term to the bloomfilter, and track the event by each term</div><div class="line">        for term in segments(event):</div><div class="line">            self.bf.add_value(term)</div><div class="line"></div><div class="line">            if term not in self.terms:</div><div class="line">                self.terms[term] = set()</div><div class="line">            self.terms[term].add(event_id)</div><div class="line"></div><div class="line">    def search(self, term):</div><div class="line">        &quot;&quot;&quot;Search for a single term, and yield all the events that contain it&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # In Splunk this runs in O(1), and is likely to be in filesystem cache (memory)</div><div class="line">        if not self.bf.might_contain(term):</div><div class="line">            return</div><div class="line"></div><div class="line">        # In Splunk this probably runs in O(log N) where N is the number of terms in the tsidx</div><div class="line">        if term not in self.terms:</div><div class="line">            return</div><div class="line"></div><div class="line">        for event_id in sorted(self.terms[term]):</div><div class="line">            yield self.events[event_id]</div></pre></td></tr></table></figure>
+<ul>
+<li>Splunk代表一个拥有搜索功能的索引集合</li>
+<li>每一个集合中包含一个布隆过滤器，一个倒排词表（字典），和一个存储所有事件的数组</li>
+<li>当一个事件被加入到索引的时候，会做以下的逻辑<ul>
+<li>为每一个事件生成一个unqie id，这里就是序号</li>
+<li>对事件进行分词，把每一个词加入到倒排词表，也就是每一个词对应的事件的id的映射结构，注意，一个词可能对应多个事件，所以倒排表的的值是一个Set。倒排表是绝大部分搜索引擎的核心功能。</li>
+</ul>
+</li>
+<li>当一个词被搜索的时候，会做以下的逻辑<ul>
+<li>检查布隆过滤器，如果为假，直接返回</li>
+<li>检查词表，如果被搜索单词不在词表中，直接返回</li>
+<li>在倒排表中找到所有对应的事件id，然后返回事件的内容</li>
+</ul>
+</li>
+</ul>
+<p>我们运行下看看吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">s = Splunk()</div><div class="line">s.add_event(&apos;src_ip = 1.2.3.4&apos;)</div><div class="line">s.add_event(&apos;src_ip = 5.6.7.8&apos;)</div><div class="line">s.add_event(&apos;dst_ip = 1.2.3.4&apos;)</div><div class="line"></div><div class="line">for event in s.search(&apos;1.2.3.4&apos;):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search(&apos;src_ip&apos;):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search(&apos;ip&apos;):</div><div class="line">    print(event)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">src_ip = 1.2.3.4</div><div class="line">dst_ip = 1.2.3.4</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">dst_ip = 1.2.3.4</div></pre></td></tr></table></figure>
+<p>是不是很赞！</p>
+<h4 id="4、更复杂的搜索"><a href="#4、更复杂的搜索" class="headerlink" title="4、更复杂的搜索"></a>4、更复杂的搜索</h4><p>更进一步，在搜索过程中，我们想用And和Or来实现更复杂的搜索逻辑。</p>
+<p>上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">class SplunkM(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.bf = Bloomfilter(64)</div><div class="line">        self.terms = &#123;&#125;  # Dictionary of term to set of events</div><div class="line">        self.events = []</div><div class="line"></div><div class="line">    def add_event(self, event):</div><div class="line">        &quot;&quot;&quot;Adds an event to this object&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Generate a unique ID for the event, and save it</div><div class="line">        event_id = len(self.events)</div><div class="line">        self.events.append(event)</div><div class="line"></div><div class="line">        # Add each term to the bloomfilter, and track the event by each term</div><div class="line">        for term in segments(event):</div><div class="line">            self.bf.add_value(term)</div><div class="line">            if term not in self.terms:</div><div class="line">                self.terms[term] = set()</div><div class="line"></div><div class="line">            self.terms[term].add(event_id)</div><div class="line"></div><div class="line">    def search_all(self, terms):</div><div class="line">        &quot;&quot;&quot;Search for an AND of all terms&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Start with the universe of all events...</div><div class="line">        results = set(range(len(self.events)))</div><div class="line"></div><div class="line">        for term in terms:</div><div class="line">            # If a term isn&apos;t present at all then we can stop looking</div><div class="line">            if not self.bf.might_contain(term):</div><div class="line">                return</div><div class="line">            if term not in self.terms:</div><div class="line">                return</div><div class="line"></div><div class="line">            # Drop events that don&apos;t match from our results</div><div class="line">            results = results.intersection(self.terms[term])</div><div class="line"></div><div class="line">        for event_id in sorted(results):</div><div class="line">            yield self.events[event_id]</div><div class="line"></div><div class="line"></div><div class="line">    def search_any(self, terms):</div><div class="line">        &quot;&quot;&quot;Search for an OR of all terms&quot;&quot;&quot;</div><div class="line">        results = set()</div><div class="line"></div><div class="line">        for term in terms:</div><div class="line">            # If a term isn&apos;t present, we skip it, but don&apos;t stop</div><div class="line">            if not self.bf.might_contain(term):</div><div class="line">                continue</div><div class="line">            if term not in self.terms:</div><div class="line">                continue</div><div class="line"></div><div class="line">            # Add these events to our results</div><div class="line">            results = results.union(self.terms[term])</div><div class="line"></div><div class="line">        for event_id in sorted(results):</div><div class="line">            yield self.events[event_id]</div></pre></td></tr></table></figure>
+<p>利用Python集合的intersection和union操作，可以很方便的支持And（求交集）和Or（求合集）的操作。</p>
+<p>运行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">s = SplunkM()</div><div class="line">s.add_event(&apos;src_ip = 1.2.3.4&apos;)</div><div class="line">s.add_event(&apos;src_ip = 5.6.7.8&apos;)</div><div class="line">s.add_event(&apos;dst_ip = 1.2.3.4&apos;)</div><div class="line"></div><div class="line">for event in s.search_all([&apos;src_ip&apos;, &apos;5.6&apos;]):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search_any([&apos;src_ip&apos;, &apos;dst_ip&apos;]):</div><div class="line">    print(event)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">src_ip = 5.6.7.8</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">dst_ip = 1.2.3.4</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/zhoujun/mydemos/tree/master/simple-bigdata-seach" target="_blank" rel="external">完整源码地址</a></p>
+<h4 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h4><p>以上的代码只是为了说明大数据搜索的基本原理，包括布隆过滤器，分词和倒排表。如果大家真的想要利用这代码来实现真正的搜索功能，还差的太远。所有的内容来自于Splunk Conf2017。大家如果有兴趣可以去看网上的视频。</p>
+<ul>
+<li><a href="https://conf.splunk.com/files/2017/slides/a-trip-through-the-splunk-data-ingestion-and-retrieval-pipeline.pdf" target="_blank" rel="external">文档</a></li>
+<li><a href="http://conf.splunk.com/files/2017/recordings/a-trip-through-the-splunk-data-ingestion-and-retrieval-pipeline.mp4" target="_blank" rel="external">视频</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/24/python-hidden-feature/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/24/python-hidden-feature/" itemprop="url">Python中的10个隐藏特性</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-24T11:10:00+08:00">
+                2018-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/24/python-hidden-feature/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/24/python-hidden-feature/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/05/24/python-hidden-feature/" class="leancloud_visitors" data-flag-title="Python中的10个隐藏特性">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="1、函数参数解包-unpack"><a href="#1、函数参数解包-unpack" class="headerlink" title="1、函数参数解包(unpack)"></a>1、函数参数解包(unpack)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def foo(x, y): print(x, y)</div><div class="line">... </div><div class="line">&gt;&gt;&gt; alist = [1,2]</div><div class="line">&gt;&gt;&gt; adict = &#123;&apos;x&apos;: 1, &apos;y&apos;: 2&#125;</div><div class="line">&gt;&gt;&gt; foo(*alist)</div><div class="line">1 2</div><div class="line">&gt;&gt;&gt; foo(**adict)</div><div class="line">1 2</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<h4 id="2、python3中的元组unpack"><a href="#2、python3中的元组unpack" class="headerlink" title="2、python3中的元组unpack"></a>2、python3中的元组unpack</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a, b, *rest = range(10)</div><div class="line">&gt;&gt;&gt; a</div><div class="line">0</div><div class="line">&gt;&gt;&gt; b</div><div class="line">1</div><div class="line">&gt;&gt;&gt; rest</div><div class="line">[2, 3, 4, 5, 6, 7, 8, 9]</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>也可以取最后一个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; first, second, *rest, last = range(10)</div><div class="line">&gt;&gt;&gt; first</div><div class="line">0</div><div class="line">&gt;&gt;&gt; second</div><div class="line">1</div><div class="line">&gt;&gt;&gt; last</div><div class="line">9</div><div class="line">&gt;&gt;&gt; rest</div><div class="line">[2, 3, 4, 5, 6, 7, 8]</div></pre></td></tr></table></figure>
+<h4 id="3、链式比较操作符"><a href="#3、链式比较操作符" class="headerlink" title="3、链式比较操作符"></a>3、链式比较操作符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; 1 &lt; x &lt; 2</div><div class="line">False</div><div class="line">&gt;&gt;&gt; 4 &gt; x &gt;= 3</div><div class="line">True</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<h4 id="4、列表切片操作"><a href="#4、列表切片操作" class="headerlink" title="4、列表切片操作"></a>4、列表切片操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># 按步长2取列表数据</div><div class="line">&gt;&gt;&gt; a = [1,2,3,4,5]</div><div class="line">&gt;&gt;&gt; a[::2] </div><div class="line">[1, 3, 5]</div><div class="line"></div><div class="line"># 用步长-1来反转列表</div><div class="line">&gt;&gt;&gt; a[::-1]</div><div class="line">[5, 4, 3, 2, 1]</div><div class="line"></div><div class="line"># 用切片来删除列表的某一段</div><div class="line">&gt;&gt;&gt; a = [1,2,3,4,5]</div><div class="line">&gt;&gt;&gt; a[1:3] = []</div><div class="line">&gt;&gt;&gt; a</div><div class="line">[1, 4, 5]</div><div class="line"></div><div class="line"># 也可以用 del a[1:3]</div><div class="line">&gt;&gt;&gt; a = [1,2,3,4,5]</div><div class="line">&gt;&gt;&gt; del a[1:3]</div><div class="line">&gt;&gt;&gt; a</div><div class="line">[1, 4, 5]</div></pre></td></tr></table></figure>
+<h4 id="5、嵌套的列表推导式"><a href="#5、嵌套的列表推导式" class="headerlink" title="5、嵌套的列表推导式"></a>5、嵌套的列表推导式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; [(i, j) for i in range(3) for j in range(i)]</div><div class="line">[(1, 0), (2, 0), (2, 1)]</div></pre></td></tr></table></figure>
+<h4 id="6、字典里的无限递归"><a href="#6、字典里的无限递归" class="headerlink" title="6、字典里的无限递归"></a>6、字典里的无限递归</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a, b = &#123;&#125;, &#123;&#125;</div><div class="line">&gt;&gt;&gt; a[&apos;b&apos;] = b</div><div class="line">&gt;&gt;&gt; b[&apos;a&apos;] = a</div><div class="line">&gt;&gt;&gt; a</div><div class="line">&#123;&apos;b&apos;: &#123;&apos;a&apos;: &#123;...&#125;&#125;&#125;</div></pre></td></tr></table></figure>
+<p>当然列表也可以</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a, b = [], []</div><div class="line">&gt;&gt;&gt; a.append(b)</div><div class="line">&gt;&gt;&gt; b.append(a)</div><div class="line">&gt;&gt;&gt; a</div><div class="line">[[[...]]]</div></pre></td></tr></table></figure>
+<h4 id="7、下划线”-”"><a href="#7、下划线”-”" class="headerlink" title="7、下划线”_”"></a>7、下划线”_”</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># _ 在Python解析器上返回上一次的值</div><div class="line"></div><div class="line">&gt;&gt;&gt; 1 + 1</div><div class="line">2</div><div class="line">&gt;&gt;&gt; _</div><div class="line">2</div></pre></td></tr></table></figure>
+<p>另外 Python中的”_”也经常用在未使用的变量命名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; pos = (1, 2)</div><div class="line">&gt;&gt;&gt; x, _ = pos</div></pre></td></tr></table></figure>
+<h4 id="8、注意函数的默认参数"><a href="#8、注意函数的默认参数" class="headerlink" title="8、注意函数的默认参数"></a>8、注意函数的默认参数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def foo(x=[]):</div><div class="line">...     x.append(1)</div><div class="line">...     print x</div><div class="line">...</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1, 1]</div></pre></td></tr></table></figure>
+<p>更安全的做法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def foo(x=None):</div><div class="line">...     if x is None:</div><div class="line">...         x = []</div><div class="line">...     x.append(1)</div><div class="line">...     print x</div><div class="line">...</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<h4 id="9、另一种字符串连接"><a href="#9、另一种字符串连接" class="headerlink" title="9、另一种字符串连接"></a>9、另一种字符串连接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; name = &quot;Hello&quot; &quot;World&quot;</div><div class="line">&gt;&gt;&gt; name</div><div class="line">&apos;HelloWorld&apos;</div></pre></td></tr></table></figure>
+<p>连接多行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; name = &quot;Hello&quot; \</div><div class="line">...     &quot;World&quot;</div><div class="line">&gt;&gt;&gt; name</div><div class="line">&apos;HelloWorld&apos;</div></pre></td></tr></table></figure>
+<h4 id="10、不能访问到的属性"><a href="#10、不能访问到的属性" class="headerlink" title="10、不能访问到的属性"></a>10、不能访问到的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Foo(object): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; obj = Foo()</div><div class="line">&gt;&gt;&gt; setattr(o, &apos;hello world&apos;, 1)</div><div class="line">&gt;&gt;&gt; o.hello world</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1</div><div class="line">    o.hello world</div><div class="line">                ^</div><div class="line">SyntaxError: invalid syntax</div></pre></td></tr></table></figure>
+<p>不过，能用 <code>setattr</code> 设置属性，就可以用 <code>getattr</code> 取出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; getattr(o, &apos;hello world&apos;)</div><div class="line">1</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/22/python3.6-cool-feature/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1897,389 +2313,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/16/using-elasticsearch-bulk-with-python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/16/using-elasticsearch-bulk-with-python/" itemprop="url">Using Elasticsearch Bulk With Python</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T22:02:00+08:00">
-                2017-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
-                    <span itemprop="name">ElasticSearch</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/16/using-elasticsearch-bulk-with-python/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/16/using-elasticsearch-bulk-with-python/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/08/16/using-elasticsearch-bulk-with-python/" class="leancloud_visitors" data-flag-title="Using Elasticsearch Bulk With Python">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Python Elasticsearch客户端提供了批量索引的功能，详情请查看<a href="https://github.com/elastic/elasticsearch-py" target="_blank" rel="external">项目主页</a></p>
-<p>主要封装了两种方式进行<code>bulk</code>操作：</p>
-<ul>
-<li>streaming_bulk     流式</li>
-<li>parallel_buck     多线程</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">streaming_bulk</span><span class="params">(</span></span></div><div class="line">	client, </div><div class="line">	actions, </div><div class="line">	chunk_size=<span class="number">500</span>, </div><div class="line">	max_chunk_bytes=<span class="number">104857600</span>, </div><div class="line">	raise_on_error=True, </div><div class="line">	expand_action_callback=&lt;function expand_action&gt;, </div><div class="line">	raise_on_exception=True, </div><div class="line">	max_retries=<span class="number">0</span>, </div><div class="line">	initial_backoff=<span class="number">2</span>, </div><div class="line">	max_backoff=<span class="number">600</span>, </div><div class="line">	yield_ok=True, </div><div class="line">	**kwargs): <span class="keyword">pass</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parallel_bulk</span><span class="params">(</span></span></div><div class="line">	client, </div><div class="line">	actions, </div><div class="line">	thread_count=<span class="number">4</span>, </div><div class="line">	chunk_size=<span class="number">500</span>, </div><div class="line">	max_chunk_bytes=<span class="number">104857600</span>, </div><div class="line">	queue_size=<span class="number">4</span>, </div><div class="line">	expand_action_callback=&lt;function expand_action&gt;, </div><div class="line">	**kwargs): <span class="keyword">pass</span></div></pre></td></tr></table></figure>
-<p><code>streaming</code>比<code>parallel</code>多了重试的机制。两个方法默认都是每次处理500索引，两个方法都返回迭代器对象，<code>bulk</code>方法默认使用的是<code>streaming_bulk</code>方式。如果要使用<code>parallel_buck</code>需要修改源代码或者自己扩展。</p>
-<p>bulk方法定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">bulk</span><span class="params">(client, actions, stats_only=False, **kwargs)</span>:</span></div><div class="line">    success, failed = <span class="number">0</span>, <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="comment"># list of errors to be collected is not stats_only</span></div><div class="line">    errors = []</div><div class="line"></div><div class="line">    <span class="keyword">for</span> ok, item <span class="keyword">in</span> streaming_bulk(client, actions, **kwargs):</div><div class="line">        <span class="comment"># go through request-reponse pairs and detect failures</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ok:</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> stats_only:</div><div class="line">                errors.append(item)</div><div class="line">            failed += <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            success += <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> success, failed <span class="keyword">if</span> stats_only <span class="keyword">else</span> errors</div></pre></td></tr></table></figure></p>
-<ul>
-<li>client     为ElasticSearch实例对象</li>
-<li>actions     索引内容</li>
-<li>stats_only 为True则只返回成功和失败的数量，False则会返回具体的失败内容列表</li>
-</ul>
-<p>actions 内容为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &apos;_op_type&apos;: &apos;delete&apos;,</div><div class="line">    &apos;_index&apos;: &apos;index-name&apos;,</div><div class="line">    &apos;_type&apos;: &apos;type-name&apos;,</div><div class="line">    &apos;_id&apos;: 1,</div><div class="line">&#125;</div><div class="line">&#123;</div><div class="line">    &apos;_op_type&apos;: &apos;update&apos;,</div><div class="line">    &apos;_index&apos;: &apos;index-name&apos;,</div><div class="line">    &apos;_type&apos;: &apos;type-name&apos;,</div><div class="line">    &apos;_id&apos;: 1,</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<ul>
-<li><code>_op_type</code> 可以是<code>index</code>, <code>create</code>, <code>delete</code>, <code>update</code>操作，默认使用<code>index</code></li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch</div><div class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> helpers</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_streaming_bulk</span><span class="params">()</span>:</span></div><div class="line">    actions = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>, <span class="number">100000</span>):</div><div class="line">        actions.append(&#123;<span class="string">'_index'</span>: <span class="string">'test_index'</span>, <span class="string">'_type'</span>: <span class="string">'test'</span>, <span class="string">'x'</span>: i&#125;)</div><div class="line"></div><div class="line">    helpers.bulk(es, actions, <span class="keyword">False</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_parallel_bulk</span><span class="params">()</span>:</span></div><div class="line">    actions = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>, <span class="number">100000</span>):</div><div class="line">        actions.append(&#123;<span class="string">'_index'</span>: <span class="string">'test_index'</span>, <span class="string">'_type'</span>: <span class="string">'test'</span>, <span class="string">'x'</span>: i&#125;)</div><div class="line"></div><div class="line">    parallel_bulk(es, actions)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parallel_bulk</span><span class="params">(client, actions, stats_only=False, **kwargs)</span>:</span></div><div class="line"></div><div class="line">    success, failed = <span class="number">0</span>, <span class="number">0</span></div><div class="line"></div><div class="line">    <span class="comment"># list of errors to be collected is not stats_only</span></div><div class="line">    errors = []</div><div class="line"></div><div class="line">    <span class="keyword">for</span> ok, item <span class="keyword">in</span> helpers.parallel_bulk(client, actions, **kwargs):</div><div class="line">        <span class="comment"># print ok, item</span></div><div class="line">        <span class="comment"># go through request-reponse pairs and detect failures</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> ok:</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> stats_only:</div><div class="line">                errors.append(item)</div><div class="line">            failed += <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            success += <span class="number">1</span></div><div class="line"></div><div class="line">    <span class="keyword">return</span> success, failed <span class="keyword">if</span> stats_only <span class="keyword">else</span> errors</div></pre></td></tr></table></figure>
-<p>测试代码： <a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/15/elasticsearch-document-api/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/15/elasticsearch-document-api/" itemprop="url">Elasticsearch Documents APIs</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-15T23:24:00+08:00">
-                2017-08-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
-                    <span itemprop="name">ElasticSearch</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/15/elasticsearch-document-api/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/15/elasticsearch-document-api/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/08/15/elasticsearch-document-api/" class="leancloud_visitors" data-flag-title="Elasticsearch Documents APIs">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、Elasticsearch-索引别名"><a href="#一、Elasticsearch-索引别名" class="headerlink" title="一、Elasticsearch 索引别名"></a>一、Elasticsearch 索引别名</h3><p>索引别名就像一个快捷方式或软链接，可以指向一个或多个索引，也可以给任何需要索引名的API使用。别名带给我们极大的灵活性，允许我们做到：</p>
-<ul>
-<li>在一个运行的集群上无缝的从一个索引切换到另一个</li>
-<li>给多个索引分类</li>
-<li>给索引的一个子集创建视图</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># 创建别名</div><div class="line">PUT /my_index_v1 </div><div class="line"></div><div class="line"># 将别名my_index指向my_index_v1</div><div class="line">PUT /my_index_v1/_alias/my_index </div><div class="line"></div><div class="line"># 检查别名指向哪个索引</div><div class="line">GET /*/_alias/my_index</div><div class="line"></div><div class="line"># 或者哪个别名指向这个索引</div><div class="line">GET /my_index_v1/_alias/*</div></pre></td></tr></table></figure>
-<p>如果我们决定要修改索引中一个字段的映射。但是我们不能修改现存的映射，因此我们需要重新索引数据。这个时候别名就可以帮助我们完成。</p>
-<p>首先，我们需要创建新的索引 <code>my_index_v2</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">PUT /my_index_v2</div></pre></td></tr></table></figure></p>
-<p>然后我们将数据从 <code>my_index_v1</code> 迁移到 <code>my_index_v2</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">POST /_aliases</div><div class="line">&#123;</div><div class="line">    &quot;actions&quot;: [</div><div class="line">        &#123; &quot;remove&quot;: &#123; &quot;index&quot;: &quot;my_index_v1&quot;, &quot;alias&quot;: &quot;my_index&quot; &#125;&#125;,</div><div class="line">        &#123; &quot;add&quot;:    &#123; &quot;index&quot;: &quot;my_index_v2&quot;, &quot;alias&quot;: &quot;my_index&quot; &#125;&#125;</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>最后，我们的应用就从旧的索引迁移到了新的，而没有停机时间。</p>
-<p><strong>提示：</strong></p>
-<blockquote>
-<p>即使你认为现在的索引设计已经是完美的了，当你的应用在生产环境使用时，还是有可能在今后有一些改变的。<br>索引请做好准备：在应用中使用别名而不是索引。然后你就可以在任何时候重新索引。别名的开销很小，应当广泛使用。</p>
-</blockquote>
-<h3 id="二、Elasticsearch-文档APIs"><a href="#二、Elasticsearch-文档APIs" class="headerlink" title="二、Elasticsearch 文档APIs"></a>二、Elasticsearch 文档APIs</h3><h4 id="1、创建文档"><a href="#1、创建文档" class="headerlink" title="1、创建文档"></a>1、创建文档</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"># 创建index为twitter, type为tweet，id为1的文档</div><div class="line">PUT twitter/tweet/1</div><div class="line">&#123;</div><div class="line">    &quot;user&quot; : &quot;kimchy&quot;,</div><div class="line">    &quot;post_date&quot; : &quot;2009-11-15T14:12:12&quot;,</div><div class="line">    &quot;message&quot; : &quot;trying out Elasticsearch&quot;</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 结果为：</div><div class="line">&#123;</div><div class="line">    &quot;_shards&quot; : &#123;</div><div class="line">        &quot;total&quot; : 2,</div><div class="line">        &quot;failed&quot; : 0,</div><div class="line">        &quot;successful&quot; : 2</div><div class="line">    &#125;,</div><div class="line">    &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">    &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">    &quot;_id&quot; : &quot;1&quot;,</div><div class="line">    &quot;_version&quot; : 1,</div><div class="line">    &quot;created&quot; : true,</div><div class="line">    &quot;result&quot; : created</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="2、获取文档"><a href="#2、获取文档" class="headerlink" title="2、获取文档"></a>2、获取文档</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">GET twitter/tweet/1</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">    &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">    &quot;_id&quot; : &quot;0&quot;,</div><div class="line">    &quot;_version&quot; : 1,</div><div class="line">    &quot;found&quot;: true,</div><div class="line">    &quot;_source&quot; : &#123;</div><div class="line">        &quot;user&quot; : &quot;kimchy&quot;,</div><div class="line">        &quot;date&quot; : &quot;2009-11-15T14:12:12&quot;,</div><div class="line">        &quot;likes&quot;: 0,</div><div class="line">        &quot;message&quot; : &quot;trying out Elasticsearch&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="3、删除文档"><a href="#3、删除文档" class="headerlink" title="3、删除文档"></a>3、删除文档</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">DELETE /twitter/tweet/1</div><div class="line"></div><div class="line">&#123;</div><div class="line">    &quot;_shards&quot; : &#123;</div><div class="line">        &quot;total&quot; : 2,</div><div class="line">        &quot;failed&quot; : 0,</div><div class="line">        &quot;successful&quot; : 2</div><div class="line">    &#125;,</div><div class="line">    &quot;found&quot; : true,</div><div class="line">    &quot;_index&quot; : &quot;twitter&quot;,</div><div class="line">    &quot;_type&quot; : &quot;tweet&quot;,</div><div class="line">    &quot;_id&quot; : &quot;1&quot;,</div><div class="line">    &quot;_version&quot; : 2,</div><div class="line">    &quot;result&quot;: &quot;deleted&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="4、删除Type映射"><a href="#4、删除Type映射" class="headerlink" title="4、删除Type映射"></a>4、删除Type映射</h4><p>报错：<br>No handler found for uri [/edemo/test] and method [DELETE]</p>
-<p>因为ElasticSearch已经不支持删除一个type了。所以如果想要删除type有两种选择：</p>
-<ul>
-<li>重新设置index</li>
-<li>删除type下的所有内容</li>
-</ul>
-<p>1、如果是重新设置index的话，官方建议尽可能不要直接删除type。应该是删除index然后重新创建type。<br>具体请查看<a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.4/indices-delete-mapping.html" target="_blank" rel="external">官方文档</a></p>
-<p>2、如果是想要删除type下的所有数据的话，可以使用delete by query的方法:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">POST index/type/_delete_by_query?conflicts=proceed</div><div class="line">&#123;</div><div class="line">  &quot;query&quot;: &#123;</div><div class="line">    &quot;match_all&quot;: &#123;&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>具体请查看<a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.4/docs-delete-by-query.html" target="_blank" rel="external">官方文档</a></p>
-<h4 id="5、查看映射-Mapping"><a href="#5、查看映射-Mapping" class="headerlink" title="5、查看映射(Mapping)"></a>5、查看映射(Mapping)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 查看index中的所有mapping</div><div class="line">GET /index/_mapping</div><div class="line"></div><div class="line"># 查看index中某一个type的mapping</div><div class="line">GET /index/_mapping/type</div></pre></td></tr></table></figure>
-<h4 id="6、批量操作-Bulk"><a href="#6、批量操作-Bulk" class="headerlink" title="6、批量操作(Bulk)"></a>6、批量操作(Bulk)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line">POST _bulk</div><div class="line"></div><div class="line">&#123; &quot;index&quot; : &#123; &quot;_index&quot; : &quot;test&quot;, &quot;_type&quot; : &quot;type1&quot;, &quot;_id&quot; : &quot;1&quot; &#125; &#125;</div><div class="line">&#123; &quot;field1&quot; : &quot;value1&quot; &#125;</div><div class="line">&#123; &quot;delete&quot; : &#123; &quot;_index&quot; : &quot;test&quot;, &quot;_type&quot; : &quot;type1&quot;, &quot;_id&quot; : &quot;2&quot; &#125; &#125;</div><div class="line">&#123; &quot;create&quot; : &#123; &quot;_index&quot; : &quot;test&quot;, &quot;_type&quot; : &quot;type1&quot;, &quot;_id&quot; : &quot;3&quot; &#125; &#125;</div><div class="line">&#123; &quot;field1&quot; : &quot;value3&quot; &#125;</div><div class="line">&#123; &quot;update&quot; : &#123;&quot;_id&quot; : &quot;1&quot;, &quot;_type&quot; : &quot;type1&quot;, &quot;_index&quot; : &quot;test&quot;&#125; &#125;</div><div class="line">&#123; &quot;doc&quot; : &#123;&quot;field2&quot; : &quot;value2&quot;&#125; &#125;</div><div class="line"></div><div class="line"># 结果为：</div><div class="line">&#123;</div><div class="line">   &quot;took&quot;: 30,</div><div class="line">   &quot;errors&quot;: false,</div><div class="line">   &quot;items&quot;: [</div><div class="line">      &#123;</div><div class="line">         &quot;index&quot;: &#123;</div><div class="line">            &quot;_index&quot;: &quot;test&quot;,</div><div class="line">            &quot;_type&quot;: &quot;type1&quot;,</div><div class="line">            &quot;_id&quot;: &quot;1&quot;,</div><div class="line">            &quot;_version&quot;: 1,</div><div class="line">            &quot;result&quot;: &quot;created&quot;,</div><div class="line">            &quot;_shards&quot;: &#123;</div><div class="line">               &quot;total&quot;: 2,</div><div class="line">               &quot;successful&quot;: 1,</div><div class="line">               &quot;failed&quot;: 0</div><div class="line">            &#125;,</div><div class="line">            &quot;created&quot;: true,</div><div class="line">            &quot;status&quot;: 201</div><div class="line">         &#125;</div><div class="line">      &#125;,</div><div class="line">      &#123;</div><div class="line">         &quot;delete&quot;: &#123;</div><div class="line">            &quot;found&quot;: false,</div><div class="line">            &quot;_index&quot;: &quot;test&quot;,</div><div class="line">            &quot;_type&quot;: &quot;type1&quot;,</div><div class="line">            &quot;_id&quot;: &quot;2&quot;,</div><div class="line">            &quot;_version&quot;: 1,</div><div class="line">            &quot;result&quot;: &quot;not_found&quot;,</div><div class="line">            &quot;_shards&quot;: &#123;</div><div class="line">               &quot;total&quot;: 2,</div><div class="line">               &quot;successful&quot;: 1,</div><div class="line">               &quot;failed&quot;: 0</div><div class="line">            &#125;,</div><div class="line">            &quot;status&quot;: 404</div><div class="line">         &#125;</div><div class="line">      &#125;,</div><div class="line">      &#123;</div><div class="line">         &quot;create&quot;: &#123;</div><div class="line">            &quot;_index&quot;: &quot;test&quot;,</div><div class="line">            &quot;_type&quot;: &quot;type1&quot;,</div><div class="line">            &quot;_id&quot;: &quot;3&quot;,</div><div class="line">            &quot;_version&quot;: 1,</div><div class="line">            &quot;result&quot;: &quot;created&quot;,</div><div class="line">            &quot;_shards&quot;: &#123;</div><div class="line">               &quot;total&quot;: 2,</div><div class="line">               &quot;successful&quot;: 1,</div><div class="line">               &quot;failed&quot;: 0</div><div class="line">            &#125;,</div><div class="line">            &quot;created&quot;: true,</div><div class="line">            &quot;status&quot;: 201</div><div class="line">         &#125;</div><div class="line">      &#125;,</div><div class="line">      &#123;</div><div class="line">         &quot;update&quot;: &#123;</div><div class="line">            &quot;_index&quot;: &quot;test&quot;,</div><div class="line">            &quot;_type&quot;: &quot;type1&quot;,</div><div class="line">            &quot;_id&quot;: &quot;1&quot;,</div><div class="line">            &quot;_version&quot;: 2,</div><div class="line">            &quot;result&quot;: &quot;updated&quot;,</div><div class="line">            &quot;_shards&quot;: &#123;</div><div class="line">                &quot;total&quot;: 2,</div><div class="line">                &quot;successful&quot;: 1,</div><div class="line">                &quot;failed&quot;: 0</div><div class="line">            &#125;,</div><div class="line">            &quot;status&quot;: 200</div><div class="line">         &#125;</div><div class="line">      &#125;</div><div class="line">   ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="7、其他"><a href="#7、其他" class="headerlink" title="7、其他"></a>7、其他</h4><ul>
-<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html" target="_blank" rel="external">Update API</a></li>
-<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html" target="_blank" rel="external">Update By Query API</a></li>
-<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-multi-get.html" target="_blank" rel="external">Multi Get API</a></li>
-<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-reindex.html" target="_blank" rel="external">Reindex API</a></li>
-</ul>
-<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html" target="_blank" rel="external">https://www.elastic.co/guide/en/elasticsearch/reference/current/docs.html</a></p>
-<p><a href="http://blog.csdn.net/leafage_m/article/details/74011357" target="_blank" rel="external">http://blog.csdn.net/leafage_m/article/details/74011357</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2330,7 +2363,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2352,7 +2385,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2412,7 +2445,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -317,6 +317,376 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2019/03/23/flask-apscheduler-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/23/flask-apscheduler-usage/" itemprop="url">Flask-APScheduler 笔记</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T23:14:00+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/23/flask-apscheduler-usage/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/23/flask-apscheduler-usage/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/03/23/flask-apscheduler-usage/" class="leancloud_visitors" data-flag-title="Flask-APScheduler 笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Flask-APScheduler是Flask扩展，增加了对APScheduler的支持。</p>
+<ul>
+<li>支持从Flask配置加载调度程序配置以及任务定义。</li>
+<li>支持WEB程序和调度程序共存。提供REST API管理任务调度。并为REST API提供身份验证。目前只支持Basic-Auth认证。</li>
+</ul>
+<p>官方地址：<a href="https://github.com/viniciuschiele/flask-apscheduler" target="_blank" rel="external">https://github.com/viniciuschiele/flask-apscheduler</a></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">from flask import Flask</div><div class="line">from flask_apscheduler import APScheduler</div><div class="line"></div><div class="line"></div><div class="line">class Config(object):</div><div class="line">    JOBS = [</div><div class="line">        &#123;</div><div class="line">            &apos;id&apos;: &apos;job1&apos;,</div><div class="line">            &apos;func&apos;: &apos;jobs:job1&apos;,</div><div class="line">            &apos;args&apos;: (1, 2),</div><div class="line">            &apos;trigger&apos;: &apos;interval&apos;,</div><div class="line">            &apos;seconds&apos;: 10</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line"></div><div class="line">    SCHEDULER_API_ENABLED = True</div><div class="line"></div><div class="line"></div><div class="line">def job1(a, b):</div><div class="line">    print(str(a) + &apos; &apos; + str(b))</div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    app = Flask(__name__)</div><div class="line">    app.config.from_object(Config())</div><div class="line"></div><div class="line">    scheduler = APScheduler()</div><div class="line">    # it is also possible to enable the API directly</div><div class="line">    # scheduler.api_enabled = True</div><div class="line">    scheduler.init_app(app)</div><div class="line">    scheduler.start()</div><div class="line"></div><div class="line">    app.run()</div></pre></td></tr></table></figure>
+<h3 id="Flask-Config-属性配置"><a href="#Flask-Config-属性配置" class="headerlink" title="Flask Config 属性配置"></a>Flask Config 属性配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">SCHEDULER_JOBSTORES         # 配置存储任务存储器</div><div class="line">SCHEDULER_EXECUTORS         # 配置执行器</div><div class="line">SCHEDULER_JOB_DEFAULTS      # 配置调度默认属性</div><div class="line">SCHEDULER_TIMEZONE          # 配置时区</div><div class="line">SCHEDULER_AUTH              # 配置认证中心</div><div class="line">SCHEDULER_API_ENABLED       # 配置是否开启API</div><div class="line">SCHEDULER_API_PREFIX        # 配置API路由前缀</div><div class="line">SCHEDULER_ENDPOINT_PREFIX   # 配置API路由后缀</div><div class="line">SCHEDULER_ALLOWED_HOSTS     # 配置访问白名单</div></pre></td></tr></table></figure>
+<h3 id="REST-API-接口"><a href="#REST-API-接口" class="headerlink" title="REST API 接口"></a>REST API 接口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&quot;&quot;&quot;</div><div class="line">Add the routes for the scheduler API.</div><div class="line">&quot;&quot;&quot;</div><div class="line">self._add_url_route(&apos;get_scheduler_info&apos;, &apos;&apos;, api.get_scheduler_info, &apos;GET&apos;)</div><div class="line">self._add_url_route(&apos;add_job&apos;, &apos;/jobs&apos;, api.add_job, &apos;POST&apos;)</div><div class="line">self._add_url_route(&apos;get_job&apos;, &apos;/jobs/&lt;job_id&gt;&apos;, api.get_job, &apos;GET&apos;)</div><div class="line">self._add_url_route(&apos;get_jobs&apos;, &apos;/jobs&apos;, api.get_jobs, &apos;GET&apos;)</div><div class="line">self._add_url_route(&apos;delete_job&apos;, &apos;/jobs/&lt;job_id&gt;&apos;, api.delete_job, &apos;DELETE&apos;)</div><div class="line">self._add_url_route(&apos;update_job&apos;, &apos;/jobs/&lt;job_id&gt;&apos;, api.update_job, &apos;PATCH&apos;)</div><div class="line">self._add_url_route(&apos;pause_job&apos;, &apos;/jobs/&lt;job_id&gt;/pause&apos;, api.pause_job, &apos;POST&apos;)</div><div class="line">self._add_url_route(&apos;resume_job&apos;, &apos;/jobs/&lt;job_id&gt;/resume&apos;, api.resume_job, &apos;POST&apos;)</div><div class="line">self._add_url_route(&apos;run_job&apos;, &apos;/jobs/&lt;job_id&gt;/run&apos;, api.run_job, &apos;POST&apos;)</div></pre></td></tr></table></figure>
+<p>访问地址为：<a href="http://localhost:5000/scheduler/jobs" target="_blank" rel="external">http://localhost:5000/scheduler/jobs</a></p>
+<p>如果配置了 <code>SCHEDULER_API_PREFIX = &quot;/api/v1/scheduler&quot;</code>，则访问地址为: <a href="http://localhost:5000/api/v1/scheduler/jobs" target="_blank" rel="external">http://localhost:5000/api/v1/scheduler/jobs</a></p>
+<h3 id="配置API认证"><a href="#配置API认证" class="headerlink" title="配置API认证"></a>配置API认证</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SCHEDULER_AUTH = HTTPBasicAuth()</div><div class="line"></div><div class="line">@scheduler.authenticate</div><div class="line">def authenticate(auth):</div><div class="line">    return auth[&apos;username&apos;] == &apos;guest&apos; and auth[&apos;password&apos;] == &apos;guest&apos;</div></pre></td></tr></table></figure>
+<p>完整示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">from flask import Flask</div><div class="line">from flask_apscheduler import APScheduler</div><div class="line">from flask_apscheduler.auth import HTTPBasicAuth</div><div class="line"></div><div class="line"></div><div class="line">class Config(object):</div><div class="line">    JOBS = [</div><div class="line">        &#123;</div><div class="line">            &apos;id&apos;: &apos;job1&apos;,</div><div class="line">            &apos;func&apos;: &apos;__main__:job1&apos;,</div><div class="line">            &apos;args&apos;: (1, 2),</div><div class="line">            &apos;trigger&apos;: &apos;interval&apos;,</div><div class="line">            &apos;seconds&apos;: 10</div><div class="line">        &#125;</div><div class="line">    ]</div><div class="line"></div><div class="line">    SCHEDULER_API_ENABLED = True</div><div class="line">    SCHEDULER_AUTH = HTTPBasicAuth()</div><div class="line"></div><div class="line"></div><div class="line">def job1(a, b):</div><div class="line">    print(str(a) + &apos; &apos; + str(b))</div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    app = Flask(__name__)</div><div class="line">    app.config.from_object(Config())</div><div class="line"></div><div class="line">    scheduler = APScheduler()</div><div class="line">    # it is also possible to set the authentication directly</div><div class="line">    # scheduler.auth = HTTPBasicAuth()</div><div class="line">    scheduler.init_app(app)</div><div class="line">    scheduler.start()</div><div class="line"></div><div class="line">    @scheduler.authenticate</div><div class="line">    def authenticate(auth):</div><div class="line">        return auth[&apos;username&apos;] == &apos;guest&apos; and auth[&apos;password&apos;] == &apos;guest&apos;</div><div class="line"></div><div class="line">    app.run()</div></pre></td></tr></table></figure>
+<h3 id="使用过程遇到的问题"><a href="#使用过程遇到的问题" class="headerlink" title="使用过程遇到的问题"></a>使用过程遇到的问题</h3><h4 id="Debug启动过程中重复运行的问题"><a href="#Debug启动过程中重复运行的问题" class="headerlink" title="Debug启动过程中重复运行的问题"></a>Debug启动过程中重复运行的问题</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># Bug: APScheduler in Flask executes twice</div><div class="line"># https://github.com/viniciuschiele/flask-apscheduler/issues/58</div><div class="line"></div><div class="line">app.run(debug=True, use_reloader=False)</div><div class="line"></div><div class="line"># or </div><div class="line"></div><div class="line">manager.add_command(&quot;runserver&quot;, Server(use_debugger=False, use_reloader=False))</div></pre></td></tr></table></figure>
+<h4 id="多进程中APScheduler重复运行的问题"><a href="#多进程中APScheduler重复运行的问题" class="headerlink" title="多进程中APScheduler重复运行的问题"></a>多进程中APScheduler重复运行的问题</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"># Fix Multiple instances of scheduler problem</div><div class="line"># https://github.com/viniciuschiele/flask-apscheduler/issues/51</div><div class="line">import platform</div><div class="line">import atexit</div><div class="line">if platform.system() != &apos;Windows&apos;:</div><div class="line">    fcntl = __import__(&quot;fcntl&quot;)</div><div class="line">    f = open(&quot;scheduler.lock&quot;, &quot;wb&quot;)</div><div class="line">    try:</div><div class="line">        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)</div><div class="line">        scheduler.start()</div><div class="line">        logger.debug(&quot;Scheduler Started...&quot;)</div><div class="line">    except Exception as e:</div><div class="line">        logger.error(&apos;Exit the scheduler, error - &#123;&#125;&apos;.format(e))</div><div class="line">        scheduler.shutdown()</div><div class="line"></div><div class="line">    def unlock():</div><div class="line">        fcntl.flock(f, fcntl.LOCK_UN)</div><div class="line">        f.close()</div><div class="line"></div><div class="line">    atexit.register(unlock)</div><div class="line">else:</div><div class="line">    msvcrt = __import__(&quot;msvcrt&quot;)</div><div class="line">    f = open(&quot;scheduler.lock&quot;, &quot;wb&quot;)</div><div class="line">    try:</div><div class="line">        msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)</div><div class="line">        scheduler.start()</div><div class="line">        logger.debug(&quot;Scheduler Started...&quot;)</div><div class="line">    except Exception as e:</div><div class="line">        logger.error(&apos;Exit the scheduler, error - &#123;&#125;&apos;.format(e))</div><div class="line">        scheduler.shutdown()</div><div class="line"></div><div class="line">    def _unlock_file():</div><div class="line">        try:</div><div class="line">            f.seek(0)</div><div class="line">            msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)</div><div class="line">        except IOError:</div><div class="line">            raise</div><div class="line">    atexit.register(_unlock_file)</div></pre></td></tr></table></figure>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>Flask-APScheduler缺少可视化任务调度和监控界面，需要使用者自己根据REST API扩展实现。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://stackoverflow.com/questions/25504149/why-does-running-the-flask-dev-server-run-itself-twice" target="_blank" rel="external">https://stackoverflow.com/questions/25504149/why-does-running-the-flask-dev-server-run-itself-twice</a></li>
+<li><a href="https://blog.csdn.net/Raptor/article/details/69218271" target="_blank" rel="external">https://blog.csdn.net/Raptor/article/details/69218271</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2019/03/23/apscheduler-usage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/23/apscheduler-usage/" itemprop="url">APScheduler 笔记</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T14:13:00+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/23/apscheduler-usage/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/23/apscheduler-usage/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/03/23/apscheduler-usage/" class="leancloud_visitors" data-flag-title="APScheduler 笔记">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p> APScheduler是类似Quartz的一个Python定时任务框架，实现了Quartz的所有功能，使用起来十分方便。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。如果将任务持久化到数据库中，那么它们也将在调度程序在重新启动后继续运行并保持其状态。重启启动调度程序后，它将运行它在脱机时运行的所有任务。</p>
+<p> 除此之外，APScheduler还可以用作特定于平台的调度程序（如cron守护程序或Windows任务调度程序）的跨平台，特定于应用程序的替代程序。但请注意，APScheduler本身不是守护程序或服务，也不附带任何命令行工具。它主要用于在现有应用程序中运行。也就是说，APScheduler确实为我们提供了一些构建块来构建调度程序服务或运行专用的调度程序进程。</p>
+<p> 官方地址：<a href="https://github.com/agronholm/apscheduler" target="_blank" rel="external">https://github.com/agronholm/apscheduler</a></p>
+<p><img src="/imgs/20190323/APScheduler.png" alt=""></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">#!usr/bin/env python3</div><div class="line"># -*- coding:utf-8 _*-</div><div class="line"></div><div class="line">from datetime import datetime</div><div class="line">import time</div><div class="line">import os</div><div class="line"></div><div class="line">from apscheduler.schedulers.background import BackgroundScheduler</div><div class="line"></div><div class="line"></div><div class="line">def tick():</div><div class="line">    print(&apos;Tick! The time is: %s&apos; % datetime.now())</div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    # 1、创建后台执行的 schedulers</div><div class="line">    scheduler = BackgroundScheduler()</div><div class="line">    # 2、添加调度任务，触发器选择 interval(间隔)，每隔3秒执行一次</div><div class="line">    scheduler.add_job(tick, &apos;interval&apos;, seconds=3)</div><div class="line">    # 3、启动调度任务</div><div class="line">    scheduler.start()</div><div class="line">    print(&apos;Press Ctrl+&#123;0&#125; to exit&apos;.format(&apos;Break&apos; if os.name == &apos;nt&apos; else &apos;C&apos;))</div><div class="line"></div><div class="line">    try:</div><div class="line">        # This is here to simulate application activity (which keeps the main thread alive).</div><div class="line">        while True:</div><div class="line">            time.sleep(2)</div><div class="line">    except (KeyboardInterrupt, SystemExit):</div><div class="line">        # Not strictly necessary if daemonic mode is enabled but should be done if possible</div><div class="line">        scheduler.shutdown()</div></pre></td></tr></table></figure>
+<p><strong><code>jitter</code></strong>: 振动参数，给每次触发添加一个随机浮动秒数，一般适用于多服务器，避免同时运行造成服务拥堵。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 每小时（上下浮动120秒区间内）运行`tick`</div><div class="line">sched.add_job(tick, &apos;interval&apos;, hours=1, jitter=120)</div></pre></td></tr></table></figure></p>
+<h4 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h4><p>方法一</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">#!usr/bin/env python3</div><div class="line"># -*- coding:utf-8 _*-</div><div class="line"></div><div class="line">from pytz import utc</div><div class="line">from datetime import datetime</div><div class="line">from apscheduler.schedulers.background import BackgroundScheduler</div><div class="line">from apscheduler.jobstores.mongodb import MongoDBJobStore</div><div class="line">from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore</div><div class="line">from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor</div><div class="line"></div><div class="line"></div><div class="line">def tick():</div><div class="line">    print(&apos;Tick! The time is: %s&apos; % datetime.now())</div><div class="line"></div><div class="line"></div><div class="line"># 选择MongoDB作为任务存储数据库</div><div class="line">jobstores = &#123;</div><div class="line">    &apos;mongo&apos;: MongoDBJobStore(),</div><div class="line">    &apos;default&apos;: SQLAlchemyJobStore(url=&apos;sqlite:///jobs.sqlite&apos;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 默认使用线程池</div><div class="line">executors = &#123;</div><div class="line">    &apos;default&apos;: ThreadPoolExecutor(20),</div><div class="line">    &apos;processpool&apos;: ProcessPoolExecutor(5)</div><div class="line">&#125;</div><div class="line"></div><div class="line"># 默认参数配置</div><div class="line">job_defaults = &#123;</div><div class="line">    &apos;coalesce&apos;: False,  # 积攒的任务是否只跑一次，是否合并所有错过的Job</div><div class="line">    &apos;max_instances&apos;: 3,  # 默认同一时刻只能有一个实例运行，通过max_instances=3修改为3个。</div><div class="line">    &apos;misfire_grace_time&apos;: 30  # 30秒的任务超时容错</div><div class="line">&#125;</div><div class="line"></div><div class="line">scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults, timezone=utc)</div><div class="line">scheduler.add_job(tick, &apos;interval&apos;, seconds=3)</div><div class="line">scheduler.start()</div></pre></td></tr></table></figure>
+<p>方法二</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">from apscheduler.schedulers.background import BackgroundScheduler</div><div class="line"></div><div class="line"></div><div class="line"># The &quot;apscheduler.&quot; prefix is hard coded</div><div class="line">scheduler = BackgroundScheduler(&#123;</div><div class="line">    &apos;apscheduler.jobstores.mongo&apos;: &#123;</div><div class="line">         &apos;type&apos;: &apos;mongodb&apos;</div><div class="line">    &#125;,</div><div class="line">    &apos;apscheduler.jobstores.default&apos;: &#123;</div><div class="line">        &apos;type&apos;: &apos;sqlalchemy&apos;,</div><div class="line">        &apos;url&apos;: &apos;sqlite:///jobs.sqlite&apos;</div><div class="line">    &#125;,</div><div class="line">    &apos;apscheduler.executors.default&apos;: &#123;</div><div class="line">        &apos;class&apos;: &apos;apscheduler.executors.pool:ThreadPoolExecutor&apos;,</div><div class="line">        &apos;max_workers&apos;: &apos;20&apos;</div><div class="line">    &#125;,</div><div class="line">    &apos;apscheduler.executors.processpool&apos;: &#123;</div><div class="line">        &apos;type&apos;: &apos;processpool&apos;,</div><div class="line">        &apos;max_workers&apos;: &apos;5&apos;</div><div class="line">    &#125;,</div><div class="line">    &apos;apscheduler.job_defaults.coalesce&apos;: &apos;false&apos;,</div><div class="line">    &apos;apscheduler.job_defaults.max_instances&apos;: &apos;3&apos;,</div><div class="line">    &apos;apscheduler.timezone&apos;: &apos;UTC&apos;,</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>方法三<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">from pytz import utc</div><div class="line"></div><div class="line">from apscheduler.schedulers.background import BackgroundScheduler</div><div class="line">from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore</div><div class="line">from apscheduler.executors.pool import ProcessPoolExecutor</div><div class="line"></div><div class="line"></div><div class="line">jobstores = &#123;</div><div class="line">    &apos;mongo&apos;: &#123;&apos;type&apos;: &apos;mongodb&apos;&#125;,</div><div class="line">    &apos;default&apos;: SQLAlchemyJobStore(url=&apos;sqlite:///jobs.sqlite&apos;)</div><div class="line">&#125;</div><div class="line">executors = &#123;</div><div class="line">    &apos;default&apos;: &#123;&apos;type&apos;: &apos;threadpool&apos;, &apos;max_workers&apos;: 20&#125;,</div><div class="line">    &apos;processpool&apos;: ProcessPoolExecutor(max_workers=5)</div><div class="line">&#125;</div><div class="line">job_defaults = &#123;</div><div class="line">    &apos;coalesce&apos;: False,</div><div class="line">    &apos;max_instances&apos;: 3</div><div class="line">&#125;</div><div class="line">scheduler = BackgroundScheduler()</div><div class="line"></div><div class="line"># ..这里可以添加任务</div><div class="line"></div><div class="line">scheduler.configure(jobstores=jobstores, executors=executors, job_defaults=job_defaults, timezone=utc)</div></pre></td></tr></table></figure></p>
+<p><strong><code>misfire_grace_time</code></strong>：如果一个job本来14:00有一次执行，但是由于某种原因没有被调度上，现在14:01了，这个14:00的运行实例被提交时，会检查它预订运行的时间和当下时间的差值（这里是1分钟），大于我们设置的30秒限制，那么这个运行实例不会被执行。<br>合并：最常见的情形是scheduler被shutdown后重启，某个任务会积攒了好几次没执行如5次，下次这个job被submit给executor时，执行5次。将coalesce=True后，只会执行一次</p>
+<p><strong><code>replace_existing</code></strong>: 如果在程序初始化时，是从数据库读取任务的，那么必须为每个任务定义一个明确的ID，并且使用replace_existing=True，否则每次重启程序，你都会得到一份新的任务拷贝，也就意味着任务的状态不会保存。</p>
+<h4 id="调度器的操作"><a href="#调度器的操作" class="headerlink" title="调度器的操作"></a>调度器的操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">scheduler.add_job()         </div><div class="line">scheduler.modify_job()      </div><div class="line">scheduler.remove_job()</div><div class="line">scheduler.pause_job()</div><div class="line">scheduler.resume_job()</div><div class="line">scheduler.reschedule_job()</div><div class="line">scheduler.start()</div><div class="line">scheduler.shutdown()</div><div class="line"></div><div class="line">scheduler.get_jobs()</div><div class="line">scheduler.remove_all_jobs()</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">添加job，所需要的属性</div><div class="line">add_job(func, trigger=None, args=None, kwargs=None, id=None, name=None,</div><div class="line">                misfire_grace_time=undefined, coalesce=undefined, max_instances=undefined,</div><div class="line">                next_run_time=undefined, jobstore=&apos;default&apos;, executor=&apos;default&apos;,</div><div class="line">                replace_existing=False, **trigger_args):</div><div class="line"></div><div class="line"></div><div class="line">job_kwargs = &#123;</div><div class="line">    &apos;trigger&apos;: self._create_trigger(trigger, trigger_args),</div><div class="line">    &apos;executor&apos;: executor,</div><div class="line">    &apos;func&apos;: func,</div><div class="line">    &apos;args&apos;: tuple(args) if args is not None else (),</div><div class="line">    &apos;kwargs&apos;: dict(kwargs) if kwargs is not None else &#123;&#125;,</div><div class="line">    &apos;id&apos;: id,</div><div class="line">    &apos;name&apos;: name,</div><div class="line">    &apos;misfire_grace_time&apos;: misfire_grace_time,</div><div class="line">    &apos;coalesce&apos;: coalesce,</div><div class="line">    &apos;max_instances&apos;: max_instances,</div><div class="line">    &apos;next_run_time&apos;: next_run_time</div><div class="line">&#125;</div><div class="line">job_kwargs = dict((key, value) for key, value in six.iteritems(job_kwargs) if</div><div class="line">                  value is not undefined)</div><div class="line">job = Job(self, **job_kwargs)</div></pre></td></tr></table></figure>
+<h4 id="调度监听"><a href="#调度监听" class="headerlink" title="调度监听"></a>调度监听</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def my_listener(event):</div><div class="line">    if event.exception:</div><div class="line">        print(&apos;The job() crashed :(&apos;.format(event.job_id))  # or logger.fatal(&apos;The job crashed :(&apos;)</div><div class="line">    else:</div><div class="line">        print(&apos;The job() worked :)&apos;.format(event.job_id))</div><div class="line"></div><div class="line">scheduler.add_listener(my_listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)</div></pre></td></tr></table></figure>
+<h4 id="夏令时问题"><a href="#夏令时问题" class="headerlink" title="夏令时问题"></a>夏令时问题</h4><p>有些<code>timezone</code>时区可能会有夏令时的问题。这个可能导致令时切换时，任务不执行或任务执行两次。避免这个问题，可以使用UTC时间，或提前预知并规划好执行的问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 在Europe/Helsinki时区, 在三月最后一个周一就不会触发；在十月最后一个周一会触发两次</div><div class="line">sched.add_job(job_function, &apos;cron&apos;, hour=3, minute=30)</div></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://github.com/agronholm/apscheduler" target="_blank" rel="external">https://github.com/agronholm/apscheduler</a></li>
+<li><a href="https://www.jianshu.com/p/4f5305e220f0" target="_blank" rel="external">https://www.jianshu.com/p/4f5305e220f0</a></li>
+<li><a href="https://www.jianshu.com/p/4f5305e220f0" target="_blank" rel="external">https://www.jianshu.com/p/4f5305e220f0</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/09/15/aws-serverless-with-nodejs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -444,7 +814,7 @@
 <h4 id="Apex-——-发布程序到AWS-Lambda"><a href="#Apex-——-发布程序到AWS-Lambda" class="headerlink" title="Apex —— 发布程序到AWS Lambda"></a>Apex —— 发布程序到AWS Lambda</h4><p><a href="http://apex.run/" target="_blank" rel="external">http://apex.run/</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// project.development.json</div><div class="line"></div><div class="line">&#123;</div><div class="line">  &quot;name&quot;: &quot;finger_demo&quot;,</div><div class="line">  &quot;description&quot;: &quot;this is finger demo&quot;,</div><div class="line">  &quot;memory&quot;: 128,</div><div class="line">  &quot;timeout&quot;: 300,</div><div class="line">  &quot;role&quot;: &quot;xxx&quot;,</div><div class="line">  &quot;handler&quot;: &quot;lambda.handler&quot;,</div><div class="line">  &quot;runtime&quot;: &quot;nodejs8.10&quot;,</div><div class="line">  &quot;region&quot;: &quot;us-east-1&quot;,</div><div class="line">  &quot;retainedVersions&quot;: 5,</div><div class="line">  &quot;hooks&quot;: &#123;</div><div class="line">    &quot;build&quot;: &quot;npm install&quot;</div><div class="line">  &#125;,</div><div class="line">  &quot;environment&quot;: &#123;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 发布development环境</div><div class="line">apex deploy -e development</div><div class="line"></div><div class="line">// 使用development别名</div><div class="line">apex alias development</div></pre></td></tr></table></figure>
-<h3 id="创建AWS-API-Gateway测试"><a href="#创建AWS-API-Gateway测试" class="headerlink" title="创建AWS API-Gateway测试"></a>创建AWS API-Gateway测试</h3><h4 id="新建API-Gateway，创建Proxy"><a href="#新建API-Gateway，创建Proxy" class="headerlink" title="新建API-Gateway，创建Proxy"></a>新建API-Gateway，创建Proxy</h4><p><img src="/imgs/20180915/20180915114350.png" alt=""></p>
+<h3 id="四、创建AWS-API-Gateway测试"><a href="#四、创建AWS-API-Gateway测试" class="headerlink" title="四、创建AWS API-Gateway测试"></a>四、创建AWS API-Gateway测试</h3><h4 id="新建API-Gateway，创建Proxy"><a href="#新建API-Gateway，创建Proxy" class="headerlink" title="新建API-Gateway，创建Proxy"></a>新建API-Gateway，创建Proxy</h4><p><img src="/imgs/20180915/20180915114350.png" alt=""></p>
 <h4 id="proxy指向Lambda"><a href="#proxy指向Lambda" class="headerlink" title="proxy指向Lambda"></a>proxy指向Lambda</h4><p><img src="/imgs/20180915/20180915114509.png" alt=""></p>
 <h4 id="发布API，别名为development"><a href="#发布API，别名为development" class="headerlink" title="发布API，别名为development"></a>发布API，别名为development</h4><p><img src="/imgs/20180915/20180915114615.png" alt=""></p>
 <h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p><img src="/imgs/20180915/20180915114718.png" alt=""></p>
@@ -1838,422 +2208,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/09/simple-bigdata-search-with-python/" itemprop="url">用Python实现一个大数据搜索引擎</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-09T13:06:00+08:00">
-                2018-06-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SearchEngine/" itemprop="url" rel="index">
-                    <span itemprop="name">SearchEngine</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/09/simple-bigdata-search-with-python/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/09/simple-bigdata-search-with-python/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/06/09/simple-bigdata-search-with-python/" class="leancloud_visitors" data-flag-title="用Python实现一个大数据搜索引擎">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文转自：<a href="https://my.oschina.net/taogang/blog/1579204" target="_blank" rel="external">https://my.oschina.net/taogang/blog/1579204</a></p>
-<p>搜索是大数据领域里常见的需求。Splunk和ELK分别是该领域在非开源和开源领域里的领导者。本文利用很少的Python代码实现了一个基本的数据搜索功能，试图让大家理解大数据搜索的基本原理。</p>
-<h4 id="1、布隆过滤器（Bloom-Filter）"><a href="#1、布隆过滤器（Bloom-Filter）" class="headerlink" title="1、布隆过滤器（Bloom Filter）"></a>1、布隆过滤器（Bloom Filter）</h4><p>第一步我们先要实现一个<a href="https://en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="external">布隆过滤器</a></p>
-<p>布隆过滤器是大数据领域的一个常见算法，它的目的是过滤掉那些不是目标的元素。也就是说如果一个要搜索的词并不存在与我的数据中，那么它可以以很快的速度返回目标不存在。</p>
-<p>让我们看看以下布隆过滤器的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">class Bloomfilter(object):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    A Bloom filter is a probabilistic data-structure that trades space for accuracy</div><div class="line">    when determining if a value is in a set.  It can tell you if a value was possibly</div><div class="line">    added, or if it was definitely not added, but it can&apos;t tell you for certain that</div><div class="line">    it was added.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    def __init__(self, size):</div><div class="line">        &quot;&quot;&quot;Setup the BF with the appropriate size&quot;&quot;&quot;</div><div class="line">        self.values = [False] * size</div><div class="line">        self.size = size</div><div class="line"></div><div class="line">    def hash_value(self, value):</div><div class="line">        &quot;&quot;&quot;Hash the value provided and scale it to fit the BF size&quot;&quot;&quot;</div><div class="line">        return hash(value) % self.size</div><div class="line"></div><div class="line">    def add_value(self, value):</div><div class="line">        &quot;&quot;&quot;Add a value to the BF&quot;&quot;&quot;</div><div class="line">        h = self.hash_value(value)</div><div class="line">        self.values[h] = True</div><div class="line"></div><div class="line">    def might_contain(self, value):</div><div class="line">        &quot;&quot;&quot;Check if the value might be in the BF&quot;&quot;&quot;</div><div class="line">        h = self.hash_value(value)</div><div class="line">        return self.values[h]</div><div class="line"></div><div class="line">    def print_contents(self):</div><div class="line">        &quot;&quot;&quot;Dump the contents of the BF for debugging purposes&quot;&quot;&quot;</div><div class="line">        print(self.values)</div></pre></td></tr></table></figure>
-<ul>
-<li>基本的数据结构是个数组（实际上是个位图，用1/0来记录数据是否存在），初始化是没有任何内容，所以全部置False。实际的使用当中，该数组的长度是非常大的，以保证效率。</li>
-<li>利用哈希算法来决定数据应该存在哪一位，也就是数组的索引</li>
-<li>当一个数据被加入到布隆过滤器的时候，计算它的哈希值然后把相应的位置为True</li>
-<li>当检查一个数据是否已经存在或者说被索引过的时候，只要检查对应的哈希值所在的位的True／Fasle</li>
-</ul>
-<p>看到这里，大家应该可以看出，如果布隆过滤器返回False，那么数据一定是没有索引过的，然而如果返回True，那也不能说数据一定就已经被索引过。在搜索过程中使用布隆过滤器可以使得很多没有命中的搜索提前返回来提高效率。</p>
-<p>我们看看这段 code是如何运行的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">bf = Bloomfilter(10)</div><div class="line">bf.add_value(&apos;dog&apos;)</div><div class="line">bf.add_value(&apos;fish&apos;)</div><div class="line">bf.add_value(&apos;cat&apos;)</div><div class="line">bf.print_contents()</div><div class="line">bf.add_value(&apos;bird&apos;)</div><div class="line">bf.print_contents()</div><div class="line"># Note: contents are unchanged after adding bird - it collides</div><div class="line">for term in [&apos;dog&apos;, &apos;fish&apos;, &apos;cat&apos;, &apos;bird&apos;, &apos;duck&apos;, &apos;emu&apos;]:</div><div class="line">    print(&apos;&#123;&#125;: &#123;&#125; &#123;&#125;&apos;.format(term, bf.hash_value(term), bf.might_contain(term)))</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[False, False, False, False, True, True, False, False, False, True]</div><div class="line">[False, False, False, False, True, True, False, False, False, True]</div><div class="line">dog: 5 True</div><div class="line">fish: 4 True</div><div class="line">cat: 9 True</div><div class="line">bird: 9 True</div><div class="line">duck: 5 True</div><div class="line">emu: 8 False</div></pre></td></tr></table></figure>
-<h5 id="1-1、首先创建了一个容量为10的的布隆过滤器"><a href="#1-1、首先创建了一个容量为10的的布隆过滤器" class="headerlink" title="1.1、首先创建了一个容量为10的的布隆过滤器"></a>1.1、首先创建了一个容量为10的的布隆过滤器</h5><p><img src="/imgs/20180609/1.png" alt=""></p>
-<h5 id="1-2、然后分别加入-‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下："><a href="#1-2、然后分别加入-‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下：" class="headerlink" title="1.2、然后分别加入 ‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下："></a>1.2、然后分别加入 ‘dog’，‘fish’，‘cat’三个对象，这时的布隆过滤器的内容如下：</h5><p><img src="/imgs/20180609/2.png" alt=""></p>
-<h5 id="1-3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。"><a href="#1-3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。" class="headerlink" title="1.3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。"></a>1.3、然后加入‘bird’对象，布隆过滤器的内容并没有改变，因为‘bird’和‘fish’恰好拥有相同的哈希。</h5><p><img src="/imgs/20180609/3.png" alt=""></p>
-<h5 id="1-4、最后我们检查一堆对象（’dog’-‘fish’-‘cat’-‘bird’-‘duck’-‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。"><a href="#1-4、最后我们检查一堆对象（’dog’-‘fish’-‘cat’-‘bird’-‘duck’-‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。" class="headerlink" title="1.4、最后我们检查一堆对象（’dog’, ‘fish’, ‘cat’, ‘bird’, ‘duck’, ‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。"></a>1.4、最后我们检查一堆对象（’dog’, ‘fish’, ‘cat’, ‘bird’, ‘duck’, ‘emu’）是不是已经被索引了。结果发现‘duck’返回True，2而‘emu’返回False。因为‘duck’的哈希恰好和‘dog’是一样的。</h5><p><img src="/imgs/20180609/4.png" alt=""></p>
-<h4 id="2、分词"><a href="#2、分词" class="headerlink" title="2、分词"></a>2、分词</h4><p>下面一步我们要实现分词。 分词的目的是要把我们的文本数据分割成可搜索的最小单元，也就是词。这里我们主要针对英语，因为中文的分词涉及到自然语言处理，比较复杂，而英文基本只要用标点符号就好了。</p>
-<p>下面我们看看分词的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">def major_segments(s):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Perform major segmenting on a string.  Split the string by all of the major</div><div class="line">    breaks, and return the set of everything found.  The breaks in this implementation</div><div class="line">    are single characters, but in Splunk proper they can be multiple characters.</div><div class="line">    A set is used because ordering doesn&apos;t matter, and duplicates are bad.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    major_breaks = &apos; &apos;</div><div class="line">    last = -1</div><div class="line">    results = set()</div><div class="line"></div><div class="line">    # enumerate() will give us (0, s[0]), (1, s[1]), ...</div><div class="line">    for idx, ch in enumerate(s):</div><div class="line">        if ch in major_breaks:</div><div class="line">            segment = s[last+1:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            last = idx</div><div class="line"></div><div class="line">    # The last character may not be a break so always capture</div><div class="line">    # the last segment (which may end up being &quot;&quot;, but yolo)</div><div class="line">    segment = s[last+1:]</div><div class="line">    results.add(segment)</div><div class="line"></div><div class="line">    return results</div></pre></td></tr></table></figure>
-<h5 id="2-1、主要分割"><a href="#2-1、主要分割" class="headerlink" title="2.1、主要分割"></a>2.1、主要分割</h5><p>主要分割使用空格来分词，实际的分词逻辑中，还会有其它的分隔符。例如Splunk的缺省分割符包括以下这些，用户也可以定义自己的分割符。</p>
-<p>] &lt; &gt; ( ) { } | ! ; , ‘ “ * \n \r \s \t &amp; ? + %21 %26 %2526 %3B %7C %20 %2B %3D – %2520 %5D %5B %3A %0A %2C %28 %29</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">def minor_segments(s):</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    Perform minor segmenting on a string.  This is like major</div><div class="line">    segmenting, except it also captures from the start of the</div><div class="line">    input to each break.</div><div class="line">    &quot;&quot;&quot;</div><div class="line">    minor_breaks = &apos;_.&apos;</div><div class="line">    last = -1</div><div class="line">    results = set()</div><div class="line"></div><div class="line">    for idx, ch in enumerate(s):</div><div class="line">        if ch in minor_breaks:</div><div class="line">            segment = s[last+1:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            segment = s[:idx]</div><div class="line">            results.add(segment)</div><div class="line"></div><div class="line">            last = idx</div><div class="line"></div><div class="line">    segment = s[last+1:]</div><div class="line">    results.add(segment)</div><div class="line">    results.add(s)</div><div class="line"></div><div class="line">    return results</div></pre></td></tr></table></figure>
-<h5 id="2-2、次要分割"><a href="#2-2、次要分割" class="headerlink" title="2.2、次要分割"></a>2.2、次要分割</h5><p>次要分割和主要分割的逻辑类似，只是还会把从开始部分到当前分割的结果加入。例如“1.2.3.4”的次要分割会有1，2，3，4，1.2，1.2.3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def segments(event):</div><div class="line">    &quot;&quot;&quot;Simple wrapper around major_segments / minor_segments&quot;&quot;&quot;</div><div class="line">    results = set()</div><div class="line">    for major in major_segments(event):</div><div class="line">        for minor in minor_segments(major):</div><div class="line">            results.add(minor)</div><div class="line">    return results</div></pre></td></tr></table></figure>
-<p>分词的逻辑就是对文本先进行主要分割，对每一个主要分割在进行次要分割。然后把所有分出来的词返回。</p>
-<p>我们看看这段 code是如何运行的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">for term in segments(&apos;src_ip = 1.2.3.4&apos;):</div><div class="line">	print(term)</div></pre></td></tr></table></figure>
-<p>结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">src</div><div class="line">1.2</div><div class="line">1.2.3.4</div><div class="line">src_ip</div><div class="line">3</div><div class="line">1</div><div class="line">1.2.3</div><div class="line">ip</div><div class="line">2</div><div class="line">=</div><div class="line">4</div></pre></td></tr></table></figure>
-<h4 id="3、搜索"><a href="#3、搜索" class="headerlink" title="3、搜索"></a>3、搜索</h4><p>好了，有个分词和布隆过滤器这两个利器的支撑后，我们就可以来实现搜索的功能了。</p>
-<p>上代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class Splunk(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.bf = Bloomfilter(64)</div><div class="line">        self.terms = &#123;&#125;  # Dictionary of term to set of events</div><div class="line">        self.events = []</div><div class="line"></div><div class="line">    def add_event(self, event):</div><div class="line">        &quot;&quot;&quot;Adds an event to this object&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Generate a unique ID for the event, and save it</div><div class="line">        event_id = len(self.events)</div><div class="line">        self.events.append(event)</div><div class="line"></div><div class="line">        # Add each term to the bloomfilter, and track the event by each term</div><div class="line">        for term in segments(event):</div><div class="line">            self.bf.add_value(term)</div><div class="line"></div><div class="line">            if term not in self.terms:</div><div class="line">                self.terms[term] = set()</div><div class="line">            self.terms[term].add(event_id)</div><div class="line"></div><div class="line">    def search(self, term):</div><div class="line">        &quot;&quot;&quot;Search for a single term, and yield all the events that contain it&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # In Splunk this runs in O(1), and is likely to be in filesystem cache (memory)</div><div class="line">        if not self.bf.might_contain(term):</div><div class="line">            return</div><div class="line"></div><div class="line">        # In Splunk this probably runs in O(log N) where N is the number of terms in the tsidx</div><div class="line">        if term not in self.terms:</div><div class="line">            return</div><div class="line"></div><div class="line">        for event_id in sorted(self.terms[term]):</div><div class="line">            yield self.events[event_id]</div></pre></td></tr></table></figure>
-<ul>
-<li>Splunk代表一个拥有搜索功能的索引集合</li>
-<li>每一个集合中包含一个布隆过滤器，一个倒排词表（字典），和一个存储所有事件的数组</li>
-<li>当一个事件被加入到索引的时候，会做以下的逻辑<ul>
-<li>为每一个事件生成一个unqie id，这里就是序号</li>
-<li>对事件进行分词，把每一个词加入到倒排词表，也就是每一个词对应的事件的id的映射结构，注意，一个词可能对应多个事件，所以倒排表的的值是一个Set。倒排表是绝大部分搜索引擎的核心功能。</li>
-</ul>
-</li>
-<li>当一个词被搜索的时候，会做以下的逻辑<ul>
-<li>检查布隆过滤器，如果为假，直接返回</li>
-<li>检查词表，如果被搜索单词不在词表中，直接返回</li>
-<li>在倒排表中找到所有对应的事件id，然后返回事件的内容</li>
-</ul>
-</li>
-</ul>
-<p>我们运行下看看吧：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">s = Splunk()</div><div class="line">s.add_event(&apos;src_ip = 1.2.3.4&apos;)</div><div class="line">s.add_event(&apos;src_ip = 5.6.7.8&apos;)</div><div class="line">s.add_event(&apos;dst_ip = 1.2.3.4&apos;)</div><div class="line"></div><div class="line">for event in s.search(&apos;1.2.3.4&apos;):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search(&apos;src_ip&apos;):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search(&apos;ip&apos;):</div><div class="line">    print(event)</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">src_ip = 1.2.3.4</div><div class="line">dst_ip = 1.2.3.4</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">dst_ip = 1.2.3.4</div></pre></td></tr></table></figure>
-<p>是不是很赞！</p>
-<h4 id="4、更复杂的搜索"><a href="#4、更复杂的搜索" class="headerlink" title="4、更复杂的搜索"></a>4、更复杂的搜索</h4><p>更进一步，在搜索过程中，我们想用And和Or来实现更复杂的搜索逻辑。</p>
-<p>上代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">class SplunkM(object):</div><div class="line">    def __init__(self):</div><div class="line">        self.bf = Bloomfilter(64)</div><div class="line">        self.terms = &#123;&#125;  # Dictionary of term to set of events</div><div class="line">        self.events = []</div><div class="line"></div><div class="line">    def add_event(self, event):</div><div class="line">        &quot;&quot;&quot;Adds an event to this object&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Generate a unique ID for the event, and save it</div><div class="line">        event_id = len(self.events)</div><div class="line">        self.events.append(event)</div><div class="line"></div><div class="line">        # Add each term to the bloomfilter, and track the event by each term</div><div class="line">        for term in segments(event):</div><div class="line">            self.bf.add_value(term)</div><div class="line">            if term not in self.terms:</div><div class="line">                self.terms[term] = set()</div><div class="line"></div><div class="line">            self.terms[term].add(event_id)</div><div class="line"></div><div class="line">    def search_all(self, terms):</div><div class="line">        &quot;&quot;&quot;Search for an AND of all terms&quot;&quot;&quot;</div><div class="line"></div><div class="line">        # Start with the universe of all events...</div><div class="line">        results = set(range(len(self.events)))</div><div class="line"></div><div class="line">        for term in terms:</div><div class="line">            # If a term isn&apos;t present at all then we can stop looking</div><div class="line">            if not self.bf.might_contain(term):</div><div class="line">                return</div><div class="line">            if term not in self.terms:</div><div class="line">                return</div><div class="line"></div><div class="line">            # Drop events that don&apos;t match from our results</div><div class="line">            results = results.intersection(self.terms[term])</div><div class="line"></div><div class="line">        for event_id in sorted(results):</div><div class="line">            yield self.events[event_id]</div><div class="line"></div><div class="line"></div><div class="line">    def search_any(self, terms):</div><div class="line">        &quot;&quot;&quot;Search for an OR of all terms&quot;&quot;&quot;</div><div class="line">        results = set()</div><div class="line"></div><div class="line">        for term in terms:</div><div class="line">            # If a term isn&apos;t present, we skip it, but don&apos;t stop</div><div class="line">            if not self.bf.might_contain(term):</div><div class="line">                continue</div><div class="line">            if term not in self.terms:</div><div class="line">                continue</div><div class="line"></div><div class="line">            # Add these events to our results</div><div class="line">            results = results.union(self.terms[term])</div><div class="line"></div><div class="line">        for event_id in sorted(results):</div><div class="line">            yield self.events[event_id]</div></pre></td></tr></table></figure>
-<p>利用Python集合的intersection和union操作，可以很方便的支持And（求交集）和Or（求合集）的操作。</p>
-<p>运行结果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">s = SplunkM()</div><div class="line">s.add_event(&apos;src_ip = 1.2.3.4&apos;)</div><div class="line">s.add_event(&apos;src_ip = 5.6.7.8&apos;)</div><div class="line">s.add_event(&apos;dst_ip = 1.2.3.4&apos;)</div><div class="line"></div><div class="line">for event in s.search_all([&apos;src_ip&apos;, &apos;5.6&apos;]):</div><div class="line">    print(event)</div><div class="line">print(&apos;-&apos;)</div><div class="line">for event in s.search_any([&apos;src_ip&apos;, &apos;dst_ip&apos;]):</div><div class="line">    print(event)</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">src_ip = 5.6.7.8</div><div class="line">-</div><div class="line">src_ip = 1.2.3.4</div><div class="line">src_ip = 5.6.7.8</div><div class="line">dst_ip = 1.2.3.4</div></pre></td></tr></table></figure>
-<p><a href="https://github.com/zhoujun/mydemos/tree/master/simple-bigdata-seach" target="_blank" rel="external">完整源码地址</a></p>
-<h4 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h4><p>以上的代码只是为了说明大数据搜索的基本原理，包括布隆过滤器，分词和倒排表。如果大家真的想要利用这代码来实现真正的搜索功能，还差的太远。所有的内容来自于Splunk Conf2017。大家如果有兴趣可以去看网上的视频。</p>
-<ul>
-<li><a href="https://conf.splunk.com/files/2017/slides/a-trip-through-the-splunk-data-ingestion-and-retrieval-pipeline.pdf" target="_blank" rel="external">文档</a></li>
-<li><a href="http://conf.splunk.com/files/2017/recordings/a-trip-through-the-splunk-data-ingestion-and-retrieval-pipeline.mp4" target="_blank" rel="external">视频</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/05/24/python-hidden-feature/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/24/python-hidden-feature/" itemprop="url">Python中的10个隐藏特性</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-24T11:10:00+08:00">
-                2018-05-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/24/python-hidden-feature/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/24/python-hidden-feature/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/05/24/python-hidden-feature/" class="leancloud_visitors" data-flag-title="Python中的10个隐藏特性">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="1、函数参数解包-unpack"><a href="#1、函数参数解包-unpack" class="headerlink" title="1、函数参数解包(unpack)"></a>1、函数参数解包(unpack)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def foo(x, y): print(x, y)</div><div class="line">... </div><div class="line">&gt;&gt;&gt; alist = [1,2]</div><div class="line">&gt;&gt;&gt; adict = &#123;&apos;x&apos;: 1, &apos;y&apos;: 2&#125;</div><div class="line">&gt;&gt;&gt; foo(*alist)</div><div class="line">1 2</div><div class="line">&gt;&gt;&gt; foo(**adict)</div><div class="line">1 2</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<h4 id="2、python3中的元组unpack"><a href="#2、python3中的元组unpack" class="headerlink" title="2、python3中的元组unpack"></a>2、python3中的元组unpack</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a, b, *rest = range(10)</div><div class="line">&gt;&gt;&gt; a</div><div class="line">0</div><div class="line">&gt;&gt;&gt; b</div><div class="line">1</div><div class="line">&gt;&gt;&gt; rest</div><div class="line">[2, 3, 4, 5, 6, 7, 8, 9]</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>也可以取最后一个：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; first, second, *rest, last = range(10)</div><div class="line">&gt;&gt;&gt; first</div><div class="line">0</div><div class="line">&gt;&gt;&gt; second</div><div class="line">1</div><div class="line">&gt;&gt;&gt; last</div><div class="line">9</div><div class="line">&gt;&gt;&gt; rest</div><div class="line">[2, 3, 4, 5, 6, 7, 8]</div></pre></td></tr></table></figure>
-<h4 id="3、链式比较操作符"><a href="#3、链式比较操作符" class="headerlink" title="3、链式比较操作符"></a>3、链式比较操作符</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; 1 &lt; x &lt; 2</div><div class="line">False</div><div class="line">&gt;&gt;&gt; 4 &gt; x &gt;= 3</div><div class="line">True</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<h4 id="4、列表切片操作"><a href="#4、列表切片操作" class="headerlink" title="4、列表切片操作"></a>4、列表切片操作</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># 按步长2取列表数据</div><div class="line">&gt;&gt;&gt; a = [1,2,3,4,5]</div><div class="line">&gt;&gt;&gt; a[::2] </div><div class="line">[1, 3, 5]</div><div class="line"></div><div class="line"># 用步长-1来反转列表</div><div class="line">&gt;&gt;&gt; a[::-1]</div><div class="line">[5, 4, 3, 2, 1]</div><div class="line"></div><div class="line"># 用切片来删除列表的某一段</div><div class="line">&gt;&gt;&gt; a = [1,2,3,4,5]</div><div class="line">&gt;&gt;&gt; a[1:3] = []</div><div class="line">&gt;&gt;&gt; a</div><div class="line">[1, 4, 5]</div><div class="line"></div><div class="line"># 也可以用 del a[1:3]</div><div class="line">&gt;&gt;&gt; a = [1,2,3,4,5]</div><div class="line">&gt;&gt;&gt; del a[1:3]</div><div class="line">&gt;&gt;&gt; a</div><div class="line">[1, 4, 5]</div></pre></td></tr></table></figure>
-<h4 id="5、嵌套的列表推导式"><a href="#5、嵌套的列表推导式" class="headerlink" title="5、嵌套的列表推导式"></a>5、嵌套的列表推导式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; [(i, j) for i in range(3) for j in range(i)]</div><div class="line">[(1, 0), (2, 0), (2, 1)]</div></pre></td></tr></table></figure>
-<h4 id="6、字典里的无限递归"><a href="#6、字典里的无限递归" class="headerlink" title="6、字典里的无限递归"></a>6、字典里的无限递归</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a, b = &#123;&#125;, &#123;&#125;</div><div class="line">&gt;&gt;&gt; a[&apos;b&apos;] = b</div><div class="line">&gt;&gt;&gt; b[&apos;a&apos;] = a</div><div class="line">&gt;&gt;&gt; a</div><div class="line">&#123;&apos;b&apos;: &#123;&apos;a&apos;: &#123;...&#125;&#125;&#125;</div></pre></td></tr></table></figure>
-<p>当然列表也可以</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a, b = [], []</div><div class="line">&gt;&gt;&gt; a.append(b)</div><div class="line">&gt;&gt;&gt; b.append(a)</div><div class="line">&gt;&gt;&gt; a</div><div class="line">[[[...]]]</div></pre></td></tr></table></figure>
-<h4 id="7、下划线”-”"><a href="#7、下划线”-”" class="headerlink" title="7、下划线”_”"></a>7、下划线”_”</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># _ 在Python解析器上返回上一次的值</div><div class="line"></div><div class="line">&gt;&gt;&gt; 1 + 1</div><div class="line">2</div><div class="line">&gt;&gt;&gt; _</div><div class="line">2</div></pre></td></tr></table></figure>
-<p>另外 Python中的”_”也经常用在未使用的变量命名</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; pos = (1, 2)</div><div class="line">&gt;&gt;&gt; x, _ = pos</div></pre></td></tr></table></figure>
-<h4 id="8、注意函数的默认参数"><a href="#8、注意函数的默认参数" class="headerlink" title="8、注意函数的默认参数"></a>8、注意函数的默认参数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def foo(x=[]):</div><div class="line">...     x.append(1)</div><div class="line">...     print x</div><div class="line">...</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1, 1]</div></pre></td></tr></table></figure>
-<p>更安全的做法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; def foo(x=None):</div><div class="line">...     if x is None:</div><div class="line">...         x = []</div><div class="line">...     x.append(1)</div><div class="line">...     print x</div><div class="line">...</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt; foo()</div><div class="line">[1]</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<h4 id="9、另一种字符串连接"><a href="#9、另一种字符串连接" class="headerlink" title="9、另一种字符串连接"></a>9、另一种字符串连接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; name = &quot;Hello&quot; &quot;World&quot;</div><div class="line">&gt;&gt;&gt; name</div><div class="line">&apos;HelloWorld&apos;</div></pre></td></tr></table></figure>
-<p>连接多行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; name = &quot;Hello&quot; \</div><div class="line">...     &quot;World&quot;</div><div class="line">&gt;&gt;&gt; name</div><div class="line">&apos;HelloWorld&apos;</div></pre></td></tr></table></figure>
-<h4 id="10、不能访问到的属性"><a href="#10、不能访问到的属性" class="headerlink" title="10、不能访问到的属性"></a>10、不能访问到的属性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Foo(object): pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; obj = Foo()</div><div class="line">&gt;&gt;&gt; setattr(o, &apos;hello world&apos;, 1)</div><div class="line">&gt;&gt;&gt; o.hello world</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1</div><div class="line">    o.hello world</div><div class="line">                ^</div><div class="line">SyntaxError: invalid syntax</div></pre></td></tr></table></figure>
-<p>不过，能用 <code>setattr</code> 设置属性，就可以用 <code>getattr</code> 取出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; getattr(o, &apos;hello world&apos;)</div><div class="line">1</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2304,7 +2258,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2326,7 +2280,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -2386,7 +2340,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
