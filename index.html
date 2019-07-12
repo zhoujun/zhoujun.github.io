@@ -417,6 +417,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -429,19 +431,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -475,7 +465,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">def with_metaclass(meta, *bases):</div><div class="line">    &quot;&quot;&quot;Create a base class with a metaclass.&quot;&quot;&quot;</div><div class="line">    # This requires a bit of explanation: the basic idea is to make a dummy</div><div class="line">    # metaclass for one level of class instantiation that replaces itself with</div><div class="line">    # the actual metaclass.</div><div class="line">    class metaclass(type):</div><div class="line"></div><div class="line">        def __new__(cls, name, this_bases, d):</div><div class="line">            return meta(name, bases, d)</div><div class="line"></div><div class="line">        @classmethod</div><div class="line">        def __prepare__(cls, name, this_bases):</div><div class="line">            return meta.__prepare__(name, bases)</div><div class="line">    return type.__new__(metaclass, ‘temporary_class‘, (), &#123;&#125;)</div></pre></td></tr></table></figure>
 <p>six.with_metaclass(ABCMeta, object)就通过内部类的<strong>new</strong>函数返回一个ABCMeta元类创建的临时类，作为PeopleBase类的基类。</p>
 <p>在python里类也是对象，下面两个语句可以看PeopleBase类的类型，都是<class 'abc.abcmeta'="">，即PeopleBase类是ABCMeta元类的对象，是由ABCMeta元类生成的。</class></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">print(type(PeopleBase))</div><div class="line">print(PeopleBase.__class__)</div><div class="line">#&lt;class ‘abc.ABCMeta‘&gt;</div><div class="line">#&lt;class ‘abc.ABCMeta‘&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class PeopleBase(six.with_metaclass(ABCMeta, object)):</div><div class="line">    @abstractmethod</div><div class="line">    def work(self, *args, **kwargs):</div><div class="line">        #pass为空语句，占位用</div><div class="line">        pass</div><div class="line"></div><div class="line">    @abstractmethod</div><div class="line">    def live(self, *args, **kwargs):</div><div class="line">        pass</div><div class="line"></div><div class="line">print(type(PeopleBase))</div><div class="line">print(PeopleBase.__class__)</div><div class="line">#&lt;class ‘abc.ABCMeta‘&gt;</div><div class="line">#&lt;class ‘abc.ABCMeta‘&gt;</div></pre></td></tr></table></figure>
 <p>详情请查看：</p>
 <ul>
 <li><a href="https://www.cnblogs.com/zhaoshizi/p/9180886.html" target="_blank" rel="external">https://www.cnblogs.com/zhaoshizi/p/9180886.html</a></li>
@@ -654,6 +644,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -666,19 +658,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -851,6 +831,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -863,19 +845,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -1066,6 +1036,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -1078,19 +1050,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -1283,6 +1243,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -1295,19 +1257,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -1493,6 +1443,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -1505,19 +1457,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -1726,6 +1666,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -1738,19 +1680,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -1942,6 +1872,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -1954,19 +1886,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -2148,6 +2068,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -2160,19 +2082,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -2355,6 +2265,8 @@
             <div class="post-wordcount">
               
                 
+                  <span class="post-meta-divider">|</span>
+                
                 <span class="post-meta-item-icon">
                   <i class="fa fa-file-word-o"></i>
                 </span>
@@ -2367,19 +2279,7 @@
               
 
               
-                <span class="post-meta-divider">|</span>
-              
 
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  
-                </span>
               
             </div>
           
@@ -2594,15 +2494,6 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Finger.Chou</span>
 
-  
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">Site words total count&#58;</span>
-    
-    <span title="Site words total count"></span>
   
 </div>
 
