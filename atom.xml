@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2019-03-23T15:19:07.340Z</updated>
+  <updated>2019-07-11T23:41:59.087Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -15,6 +15,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python 杂记(一)</title>
+    <link href="http://fingerchou.com/2019/07/11/python-notes-1/"/>
+    <id>http://fingerchou.com/2019/07/11/python-notes-1/</id>
+    <published>2019-07-10T23:31:00.000Z</published>
+    <updated>2019-07-11T23:41:59.087Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;使用slots&quot;&gt;&lt;a href=&quot;#使用slots&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用PyCryptodome替代pyscrypto</title>
+    <link href="http://fingerchou.com/2019/07/04/pycryptodome-usage/"/>
+    <id>http://fingerchou.com/2019/07/04/pycryptodome-usage/</id>
+    <published>2019-07-03T23:11:00.000Z</published>
+    <updated>2019-07-11T23:27:26.872Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;pycrypto 在Windows系统上安装比较麻烦，会出现意想不到的各种问题。因为pycrypto-2.6.1 之后就不在维护。因此系统兼容性就不那么友好。推荐PyCryptodome作为替代工具包。官方地址为：&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Python" scheme="http://fingerchou.com/categories/Python/"/>
+    
+      <category term="pycrypto" scheme="http://fingerchou.com/categories/Python/pycrypto/"/>
+    
+    
+      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>Flask-APScheduler 笔记</title>
@@ -514,62 +568,6 @@
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
     
       <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Python实现Elasticsearch function_score查询(一)</title>
-    <link href="http://fingerchou.com/2017/08/19/using-elasticsearch-function-score-with-python-1/"/>
-    <id>http://fingerchou.com/2017/08/19/using-elasticsearch-function-score-with-python-1/</id>
-    <published>2017-08-19T04:38:00.000Z</published>
-    <updated>2018-06-09T05:48:15.482Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;什么是function-score&quot;&gt;&lt;a href=&quot;#什么是function-score&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
-    
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Python实现Elasticsearch提供的搜索建议</title>
-    <link href="http://fingerchou.com/2017/08/16/elasticsearch-search-suggest-with-python/"/>
-    <id>http://fingerchou.com/2017/08/16/elasticsearch-search-suggest-with-python/</id>
-    <published>2017-08-16T15:01:00.000Z</published>
-    <updated>2018-06-09T05:47:08.820Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h3 id=&quot;Suggest搜索&quot;&gt;&lt;a href=&quot;#Suggest搜索&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
-    
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
-    
-      <category term="SearchEngine" scheme="http://fingerchou.com/tags/SearchEngine/"/>
     
   </entry>
   

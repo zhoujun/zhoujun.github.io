@@ -81,15 +81,15 @@
 
 
 
-<meta name="description" content="If we dream, everything is possible.">
+<meta name="description" content="Doing it, Feeling it.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Finger's Blog">
 <meta property="og:url" content="http://fingerchou.com/page/2/index.html">
 <meta property="og:site_name" content="Finger's Blog">
-<meta property="og:description" content="If we dream, everything is possible.">
+<meta property="og:description" content="Doing it, Feeling it.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Finger's Blog">
-<meta name="twitter:description" content="If we dream, everything is possible.">
+<meta name="twitter:description" content="Doing it, Feeling it.">
 
 
 
@@ -317,6 +317,502 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/24/solution-of-linear-equations-with-numpy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/24/solution-of-linear-equations-with-numpy/" itemprop="url">用Numpy解线性方程组</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T10:02:00+08:00">
+                2018-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Numpy/" itemprop="url" rel="index">
+                    <span itemprop="name">Numpy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/24/solution-of-linear-equations-with-numpy/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/24/solution-of-linear-equations-with-numpy/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/24/solution-of-linear-equations-with-numpy/" class="leancloud_visitors" data-flag-title="用Numpy解线性方程组">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>矩阵可以通过线性方式把一个向量变换成另一个向量，因此从数值计算的角度看，<br>这种操作对应于一个线性方程组。Numpy.linalg中的 <code>solve()</code> 子例程可以求解类似 <code>Ax=b</code> 这种形式的线性方程组，其中A是一个矩阵，b是一维或者二维数组，二x是未知量。下面介绍如何使用 <code>dot()</code> 函数来计算两个浮点型数组的点积(dot product)。</p>
+<p>这里举例说明解线性方程组的过程，具体步骤如下所示：</p>
+<h4 id="1、创建矩阵A和数组b"><a href="#1、创建矩阵A和数组b" class="headerlink" title="1、创建矩阵A和数组b"></a>1、创建矩阵A和数组b</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import numpy as np</div><div class="line">&gt;&gt;&gt; A = np.mat(&quot;1 -2 1; 0 2 -8; -4 5 9&quot;) # mat函数可以将目标数据的类型转换为矩阵（matrix）</div><div class="line">&gt;&gt;&gt; A</div><div class="line">matrix([[ 1, -2,  1],</div><div class="line">        [ 0,  2, -8],</div><div class="line">        [-4,  5,  9]])</div><div class="line">&gt;&gt;&gt; b = np.array([0, 8, -9])</div><div class="line">&gt;&gt;&gt; b</div><div class="line">array([ 0,  8, -9])</div></pre></td></tr></table></figure>
+<h4 id="2、调用solve-函数"><a href="#2、调用solve-函数" class="headerlink" title="2、调用solve()函数"></a>2、调用solve()函数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = np.linalg.solve(A, b)</div><div class="line">&gt;&gt;&gt; x</div><div class="line">array([29., 16.,  3.])</div></pre></td></tr></table></figure>
+<p>如上述所示，得出该线性方程组的解为：[29., 16.,  3.]</p>
+<h4 id="3、利用dot-函数进行验算"><a href="#3、利用dot-函数进行验算" class="headerlink" title="3、利用dot()函数进行验算"></a>3、利用dot()函数进行验算</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; np.dot(A, x)</div><div class="line">matrix([[ 0.,  8., -9.]])</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/10/matrix-with-numpy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/10/matrix-with-numpy/" itemprop="url">深度学习矩阵运算的概念和代码实现(Numpy)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-10T09:51:00+08:00">
+                2018-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/10/matrix-with-numpy/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/10/matrix-with-numpy/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/10/matrix-with-numpy/" class="leancloud_visitors" data-flag-title="深度学习矩阵运算的概念和代码实现(Numpy)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>本文从向量的概念与运算扩展到矩阵运算的概念与代码实现，对机器学习或者是深度学习的入门者提供最基础，也是最实用的教程指导，为以后的机器学习模型开发打下基础。</p>
+</blockquote>
+<p>在我们学习机器学习时，常常遇到需要使用矩阵提高计算效率的时候。如在使用批量梯度下降迭代求最优解时，正规方程会采用更简洁的矩阵形式提供权重的解析解法。而如果不了解矩阵的运算法则及意义，甚至我们都很难去理解一些如矩阵因子分解法和反向传播算法之类的基本概念。同时由于特征和权重都以向量储存，那如果我们不了解矩阵运算，代码实现将变得十分艰难。</p>
+<p><img src="/imgs/20180610/1.jpg" alt=""></p>
+<h3 id="1、什么是线性代数？"><a href="#1、什么是线性代数？" class="headerlink" title="1、什么是线性代数？"></a>1、什么是线性代数？</h3><p>在深度学习中，线性代数是一个强大的数学工具箱，它提供同时计算多维数组的方法。线性代数不仅会提供如同向量和矩阵那样的结构来储存这些数字，还会提供矩阵的加，减，乘，除和其他运算规则。</p>
+<h3 id="2、线性代数为什么如此实用？"><a href="#2、线性代数为什么如此实用？" class="headerlink" title="2、线性代数为什么如此实用？"></a>2、线性代数为什么如此实用？</h3><p>线性代数将复杂问题转变为简单，直观和高效的计算问题。下面的例子可以表明实现同样的功能，线性代数的代码表达是如何的简洁与美观。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># Multiply two arrays </div><div class="line">&gt;&gt;&gt; x = [1, 2, 3]</div><div class="line">&gt;&gt;&gt; y = [2, 3, 4]</div><div class="line">&gt;&gt;&gt; product = []</div><div class="line">&gt;&gt;&gt; for i in range(len(x)):</div><div class="line">...     product.append(x[i] * y[i])</div><div class="line">...</div><div class="line">&gt;&gt;&gt; product</div><div class="line">[2, 6, 12]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Linear algebra version</div><div class="line">&gt;&gt;&gt; import numpy as np</div><div class="line">&gt;&gt;&gt; x = np.array([1,2,3])</div><div class="line">&gt;&gt;&gt; y = np.array([2,3,4])</div><div class="line">&gt;&gt;&gt; x * y</div><div class="line">array([ 2,  6, 12])</div></pre></td></tr></table></figure>
+<h3 id="3、线性代数怎样应用到深度学习？"><a href="#3、线性代数怎样应用到深度学习？" class="headerlink" title="3、线性代数怎样应用到深度学习？"></a>3、线性代数怎样应用到深度学习？</h3><p>神经网络将权重储存在矩阵当中。而线性代数特别是在GPU上，可以对矩阵进行简单迅捷的计算处理。实际上，GPU的设计就是源于向量和矩阵计算处理的基本概念。像素块阵列构成，视频游戏使用巨量，连续展开的矩阵生成引人注目的游戏体验是一样的.GPU会并行地操作整个矩阵里元素，而不是一个接一个地处理。</p>
+<h3 id="4、向量"><a href="#4、向量" class="headerlink" title="4、向量"></a>4、向量</h3><p>向量由数字或其它项组成的一维阵列。在几何学中，向量储存了空间中一个点潜在的改变方向。向量[3，-2]也就代表着原点向（3，-2）这一点运动的趋向。若向量所具有的维度超过一维，那么就称之为矩阵。</p>
+<h4 id="4-1、向量的符号表示"><a href="#4-1、向量的符号表示" class="headerlink" title="4.1、向量的符号表示"></a>4.1、向量的符号表示</h4><p>有很多符号方式都能表示向量，下面是在本篇文章中你可能会遇到的：</p>
+<p><img src="/imgs/20180610/2.png" alt=""></p>
+<h4 id="4-2、几何学中的向量"><a href="#4-2、几何学中的向量" class="headerlink" title="4.2、几何学中的向量"></a>4.2、几何学中的向量</h4><p>向量一般表征着一个点的运动，一个向量同时储存其潜在变化的方向和大小。如下图所示，在平面空间中画出了向量[-2,5]，因为向量只储存了方向和大小，那么平移并不会改变向量的值，所以所有平移的向量（方向和大小不变）都是相等的。</p>
+<p><img src="/imgs/20180610/3.jpg" alt=""></p>
+<h4 id="4-3、标量运算"><a href="#4-3、标量运算" class="headerlink" title="4.3、标量运算"></a>4.3、标量运算</h4><p>标量运算即为向量和数字间的运算，向量与数的运算就是向量内每一个元素与这一个数进行相应的运算如下图的一个标量运算：</p>
+<p><img src="/imgs/20180610/4.png" alt=""></p>
+<h4 id="4-4、向量间运算"><a href="#4-4、向量间运算" class="headerlink" title="4.4、向量间运算"></a>4.4、向量间运算</h4><p>在向量间的运算中，对应位置的值可以组合而产生一个新向量。第一个向量的第我个值只与第二个向量的第我个值相匹配。这也就意味着向量之间的维度必须相等才能进行运算。下图表明向量之间的加减法是对应元素之间的加减，代码表明了向量之间的加减和除法。</p>
+<p><img src="/imgs/20180610/5.jpg" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = np.array([1,2,3])</div><div class="line">&gt;&gt;&gt; y = np.array([2,3,4])</div><div class="line">&gt;&gt;&gt; x + y</div><div class="line">array([3, 5, 7])</div><div class="line">&gt;&gt;&gt; x - y</div><div class="line">array([-1, -1, -1])</div><div class="line">&gt;&gt;&gt; x / y</div><div class="line">array([0.5       , 0.66666667, 0.75      ])</div></pre></td></tr></table></figure>
+<p>在Numpy中，如果向量是一维的，那么他就能看作是一个标量，与其他多维向量的运算就相当于一个数。</p>
+<h4 id="4-5、向量乘法"><a href="#4-5、向量乘法" class="headerlink" title="4.5、向量乘法"></a>4.5、向量乘法</h4><p>向量的乘法有两种类型：一种是点积，另一种是哈达玛积(Hadamard)。</p>
+<h5 id="4-5-1、点积"><a href="#4-5-1、点积" class="headerlink" title="4.5.1、点积"></a>4.5.1、点积</h5><p>两个向量的点积结果是一个标量。向量和矩阵（矩阵乘法）的点积在深度学习中是最重要的运算之一。 </p>
+<h5 id="4-5-2、哈达玛积-Hadamard"><a href="#4-5-2、哈达玛积-Hadamard" class="headerlink" title="4.5.2、哈达玛积(Hadamard)"></a>4.5.2、哈达玛积(Hadamard)</h5><p>哈达玛积是元素之间的乘积，并得出一个向量。从下图可以看出来阿达玛积就将是向量对应元素相乘。</p>
+<p><img src="/imgs/20180610/6.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; x = np.array([1,2,3])</div><div class="line">&gt;&gt;&gt; y = np.array([4,5,6])</div><div class="line">&gt;&gt;&gt; x * y</div><div class="line">array([ 4, 10, 18])</div></pre></td></tr></table></figure>
+<h4 id="4-6、向量场"><a href="#4-6、向量场" class="headerlink" title="4.6、向量场"></a>4.6、向量场</h4><p>向量场展示了如果我们运用一个向量函数（如向量加法或乘法等），其中任意点（X，Y）会有什么样的运动倾向。在空间中给定一点，向量场就是我们使用的向量运算在该点的方向和大小。</p>
+<p><img src="/imgs/20180610/7.png" alt=""></p>
+<p>该向量场很有意思，因为根据不同的出发点，其都有不同的方向。出现这种情况是因为在该向量场中，向量背后储存的项不是一个5或2那样的实数，它是2倍或X对于图表中的每一个点，我们将坐标轴变换为2x或x ^ 2，然后将起始点画一个箭头到新的坐标点，这样就制成了上图机器学习算法（如梯度下降算法）的可视化十分重要。</p>
+<h3 id="5、矩阵"><a href="#5、矩阵" class="headerlink" title="5、矩阵"></a>5、矩阵</h3><p>矩阵就是一个由数字或其它项组成的表格，只不过是该表格会有特定的加法，减法和乘法规则。</p>
+<h4 id="5-1、矩阵的阶"><a href="#5-1、矩阵的阶" class="headerlink" title="5.1、矩阵的阶"></a>5.1、矩阵的阶</h4><p>我们描述矩阵的维度由阶来表达：即行数×列数（如3×2）阶矩阵。</p>
+<p><img src="/imgs/20180610/8.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">a = np.array([</div><div class="line"> [1,2,3], </div><div class="line"> [4,5,6]</div><div class="line">])</div><div class="line">a.shape == (2,3)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">b = np.array([</div><div class="line"> [1,2,3]</div><div class="line">])</div><div class="line">b.shape == (1,3)</div></pre></td></tr></table></figure>
+<h4 id="5-2、矩阵的标量运算"><a href="#5-2、矩阵的标量运算" class="headerlink" title="5.2、矩阵的标量运算"></a>5.2、矩阵的标量运算</h4><p>矩阵的标量运算和向量的标量运算是一样的。可以简单地将标量和矩阵中的每一个元素做运算处理（如加，减，乘，除等）。</p>
+<p><img src="/imgs/20180610/9.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; a = np.array([[2, 3], [2, 3], [2, 3]])</div><div class="line">&gt;&gt;&gt; a + 1</div><div class="line">array([[3, 4],</div><div class="line">       [3, 4],</div><div class="line">       [3, 4]])</div></pre></td></tr></table></figure>
+<h4 id="5-3、矩阵间的运算"><a href="#5-3、矩阵间的运算" class="headerlink" title="5.3、矩阵间的运算"></a>5.3、矩阵间的运算</h4><p>为了能进行加减运算，两个矩阵的阶必须相等。然后我们可以对两个矩阵相应的元素进行运算处理。如下图就是两阶方阵的加法。</p>
+<p><img src="/imgs/20180610/10.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">a = np.array([</div><div class="line"> [1,2],</div><div class="line"> [3,4]</div><div class="line">])</div><div class="line">b = np.array([</div><div class="line"> [1,2],</div><div class="line"> [3,4]</div><div class="line">])</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a + b</div><div class="line">[[2, 4],</div><div class="line"> [6, 8]]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a — b</div><div class="line">[[0, 0],</div><div class="line"> [0, 0]]</div></pre></td></tr></table></figure>
+<p>在Numpy中，矩阵之间运算所需要的阶相等可以通过一个称之为广播的机制变得不那么严格。如果两个矩阵相应的阶（行数×列数）满足下面两个要求，那么它们就是可以进行运算的：</p>
+<ul>
+<li>两个矩阵的阶相等</li>
+<li>矩阵的阶有一个维度是1</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">a = np.array([</div><div class="line"> [1],</div><div class="line"> [2]</div><div class="line">])</div><div class="line">b = np.array([</div><div class="line"> [3,4],</div><div class="line"> [5,6]</div><div class="line">])</div><div class="line">c = np.array([</div><div class="line"> [1,2]</div><div class="line">])</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Same no. of rows</div><div class="line"># Different no. of columns</div><div class="line"># but a has one column so this works</div><div class="line">a * b</div><div class="line">[[ 3, 4],</div><div class="line"> [10, 12]]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Same no. of columns</div><div class="line"># Different no. of rows</div><div class="line"># but c has one row so this works</div><div class="line">b * c</div><div class="line">[[ 3, 8],</div><div class="line"> [5, 12]]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Different no. of columns</div><div class="line"># Different no. of rows</div><div class="line"># but both a and c meet the </div><div class="line"># size 1 requirement rule</div><div class="line">a + c</div><div class="line">[[2, 3],</div><div class="line"> [3, 4]]</div></pre></td></tr></table></figure>
+<p>而在高维（三维或四维等）矩阵的情况下，矩阵间运算更有意思，不过在深度学习里并不常见。</p>
+<h4 id="5-4、矩阵Hadamard乘积"><a href="#5-4、矩阵Hadamard乘积" class="headerlink" title="5.4、矩阵Hadamard乘积"></a>5.4、矩阵Hadamard乘积</h4><p>Hadamard乘积同样是矩阵间的运算，即两个矩阵间相同位置的元素相互乘积。</p>
+<p><img src="/imgs/20180610/11.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">a = np.array(</div><div class="line">[[2,3],</div><div class="line"> [2,3]])</div><div class="line">b = np.array(</div><div class="line">[[3,4],</div><div class="line"> [5,6]])</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># Uses python&apos;s multiply operator</div><div class="line">a * b</div><div class="line">[[ 6, 12],</div><div class="line"> [10, 18]]</div></pre></td></tr></table></figure>
+<p>在Numpy中，矩阵和向量的Hadamard乘要只需要两个矩阵满足广播机制的要求就行。</p>
+<p><img src="/imgs/20180610/12.png" alt=""></p>
+<h4 id="5-5、矩阵的转置"><a href="#5-5、矩阵的转置" class="headerlink" title="5.5、矩阵的转置"></a>5.5、矩阵的转置</h4><p>把矩阵A的行和列互相交换所产生的矩阵称为A的转置矩阵，这一过程称为矩阵的转置。</p>
+<p>神经网络在处理不同大小的权重或输入矩阵时，经常出现矩阵的阶不符合矩阵乘法的要求。矩阵的转置通过将矩阵旋转一下以满足矩阵乘法所需要的维度要求。下面，我们可以通过两步完成矩阵的转置。</p>
+<ul>
+<li>旋转矩阵90度</li>
+<li>将每一行的元素都反向写一遍</li>
+</ul>
+<p>以下我们将矩阵M转置为矩阵T</p>
+<p><img src="/imgs/20180610/13.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = np.array([</div><div class="line">   [1, 2], </div><div class="line">   [3, 4]])</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a.T</div><div class="line">[[1, 3],</div><div class="line"> [2, 4]]</div></pre></td></tr></table></figure>
+<p>矩阵的转置满足以下运算规律：</p>
+<p><img src="/imgs/20180610/21.png" alt=""></p>
+<h4 id="5-6、矩阵乘法"><a href="#5-6、矩阵乘法" class="headerlink" title="5.6、矩阵乘法"></a>5.6、矩阵乘法</h4><p>矩阵乘法是由一组乘法法则组成，他们共同作用以乘得一个新矩阵。</p>
+<h5 id="5-6-1、规则"><a href="#5-6-1、规则" class="headerlink" title="5.6.1、规则"></a>5.6.1、规则</h5><p>并不是所有矩阵都能进行矩阵乘法运算的，如果两个矩阵能相乘，那么它需要满足以下条件：</p>
+<ul>
+<li>第一个矩阵列的数量必须等于第二个矩阵行的数量</li>
+<li>m × n 阶矩阵左乘n×k阶矩阵的结果是 m × k 阶矩阵。新得出来矩阵就等于第一矩阵的行数 × 第二矩阵的列数。</li>
+</ul>
+<h5 id="5-6-2、步骤"><a href="#5-6-2、步骤" class="headerlink" title="5.6.2、步骤"></a>5.6.2、步骤</h5><p>矩阵乘法的步骤和向量点积的过程是相似的，它们都是由对应位置的元素进行乘积并相加而得出。第一个矩阵每一行的维度和第二个矩阵每一列的维度相等，所以第一个矩阵第i行元素与第二个矩阵第j列对应元素的乘积和就等于新矩阵的第i行第j列的元素值。在下图中，A矩阵左乘B矩阵得到C矩阵A矩阵行向量与B矩阵列向量点积就等于C矩阵的元素，具体可以通过下图C矩阵内部元素的构成来了解。</p>
+<p><img src="/imgs/20180610/14.png" alt=""></p>
+<p>A矩阵行向量与B矩阵列向量b1的点积，即下图所示：</p>
+<p><img src="/imgs/20180610/15.png" alt=""></p>
+<p>下面是另一个矩阵的乘积：</p>
+<p><img src="/imgs/20180610/16.png" alt=""></p>
+<p>矩阵乘法是不可交换的（即AB≠BA）。因为不可能预期在改变向量的部分后还能得到相同的结果，而且第一个矩阵的列数必须要和第二个矩阵的行数相同，也可以看出为什么矩阵相乘的顺序会影响其结果。虽然矩阵乘法是人为的规则，但它确实大大简化了计算的表达，可以将巨大的计算量很简洁地表达出来，这一点对机器学习算法的开发和使用有重要的作用。</p>
+<p>最后你可以用以下案例检测一下是否你已经掌握了矩阵运算的基本原理：</p>
+<p>下面矩阵乘法的阶是多少？</p>
+<p><img src="/imgs/20180610/17.png" alt=""></p>
+<p>下面矩阵的乘法的阶是多少？<br><img src="/imgs/20180610/22.png" alt=""></p>
+<p>下面矩阵的乘法是多少？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[2*5 + 3*3, 2*4 + 3*5]</div><div class="line">[1*5 + 4*3, 1*4 + 4*5]</div></pre></td></tr></table></figure>
+<p><img src="/imgs/20180610/18.png" alt=""></p>
+<p>下面矩阵的乘法是多少？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[3*1, 3*2, 3*3]</div><div class="line">[5*1, 5*2, 5*3]</div></pre></td></tr></table></figure>
+<p><img src="/imgs/20180610/19.png" alt=""></p>
+<p>下面矩阵的乘法是多少？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[1*4 + 2*5 + 3*6]</div></pre></td></tr></table></figure>
+<p><img src="/imgs/20180610/20.png" alt=""></p>
+<h5 id="5-6-3、使用Numpy进行矩阵乘法运算"><a href="#5-6-3、使用Numpy进行矩阵乘法运算" class="headerlink" title="5.6.3、使用Numpy进行矩阵乘法运算"></a>5.6.3、使用Numpy进行矩阵乘法运算</h5><p>在Numpy中，np.dot（a，b）函数可以进行向量和矩阵点积。并且该函数还有许多有意思的特征, 所以我建议你在使用该函数前先看看该函数的用法：<a href="https：//docs.scipy.org/doc/numpy/reference/generated/numpy.dot.html">查看文档</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a = np.array([</div><div class="line"> [1, 2]</div><div class="line"> ])</div><div class="line">a.shape == (1,2)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">b = np.array([</div><div class="line"> [3, 4],</div><div class="line"> [5, 6]</div><div class="line"> ])</div><div class="line">b.shape == (2,2)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># Multiply</div><div class="line">mm = np.dot(a,b)</div><div class="line">mm == [13, 16]</div><div class="line">mm.shape == (1,2)</div></pre></td></tr></table></figure>
+<p>深度学习通常会有巨大的计算量。从最开始的特征输入，我们会使用一个个高维向量将特征输入到神经网络中，而每一层的权重作为列向量组成一个权重矩阵。每一层的正向传播都需要使用矩阵乘法进行计算，而反向传播更需要理解矩阵运算才能对其运行原理有一个较为深入的理解。本文是矩阵运算的基础性文章，其不仅对概念的理解很是重要，同时在新手开始学着搭建机器学习系统时更为有用，因为矩阵运算的代码在实际操作中是我们看懂一段代码或写出一段代码的基础。并且采用矩阵运算代码实现也远比采用循环语句或条件语句代码实现的算法要简洁易读得多。</p>
+<p>原文链接：<a href="https://www.jiqizhixin.com/articles/2017-08-07-2" target="_blank" rel="external">https://www.jiqizhixin.com/articles/2017-08-07-2</a></p>
+<p>英文链接：<a href="https://towardsdatascience.com/linear-algebra-cheat-sheet-for-deep-learning-cd67aba4526c" target="_blank" rel="external">https://towardsdatascience.com/linear-algebra-cheat-sheet-for-deep-learning-cd67aba4526c</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/09/simple-bigdata-search-with-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -413,6 +909,37 @@
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
           
 
           
@@ -645,6 +1172,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
 
           
 
@@ -829,6 +1387,37 @@
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
           
 
           
@@ -1023,6 +1612,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
 
           
 
@@ -1195,6 +1815,37 @@
 
           
 
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
           
 
           
@@ -1394,6 +2045,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
 
           
 
@@ -1577,6 +2259,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
 
           
 
@@ -1756,6 +2469,37 @@
           
 
           
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
 
           
 
@@ -1804,480 +2548,6 @@
 </ul>
 <p><strong>选择曲线的依据完全由期望评分<code>_score</code>的衰减速率来决定，即距原点<code>origin</code>的值。</strong></p>
 <p>Demo地址：<a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/19/using-elasticsearch-function-score-with-python-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/19/using-elasticsearch-function-score-with-python-1/" itemprop="url">用Python实现Elasticsearch function_score查询(一)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T12:38:00+08:00">
-                2017-08-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
-                    <span itemprop="name">ElasticSearch</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/19/using-elasticsearch-function-score-with-python-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/19/using-elasticsearch-function-score-with-python-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/08/19/using-elasticsearch-function-score-with-python-1/" class="leancloud_visitors" data-flag-title="用Python实现Elasticsearch function_score查询(一)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="什么是function-score"><a href="#什么是function-score" class="headerlink" title="什么是function_score"></a>什么是function_score</h3><p><code>function_score</code>查询是处理分值计算过程的终极工具。它让你能够对所有匹配了主查询的每份文档调用一个函数来调整甚至是完全替换原来的<code>_score</code>。</p>
-<p>实际上，你可以通过设置过滤器来将查询得到的结果分成若干个子集，然后对每个子集使用不同的函数。这样你就能够同时得益于：高效的分值计算以及可以缓存的过滤器。</p>
-<p>它拥有几种预先定义好了的函数：</p>
-<ul>
-<li><code>weight</code> 对每份文档适用一个简单的提升，且该提升不会被归约：当<code>weight</code>为2时，结果为2 * <code>_score</code>。</li>
-<li><code>field_value_factor</code> 使用文档中某个字段的值来改变<code>_score</code>，比如将受欢迎程度或者投票数量考虑在内。</li>
-<li><code>random_score</code> 使用一致性随机分值计算来对每个用户采用不同的结果排序方式，对相同用户仍然使用相同的排序方式。</li>
-<li>衰减函数(Decay Function)-(<code>linear</code>，<code>exp</code>，<code>gauss</code>) 将像<code>publish_date</code>，<code>geo_location</code>或者<code>price</code>这类浮动值考虑到<code>_score</code>中，偏好最近发布的文档，邻近于某个地理位置(译注：其中的某个字段)的文档或者价格(译注：其中的某个字段)靠近某一点的文档。</li>
-<li><code>script_score</code> 使用自定义的脚本来完全控制分值计算逻辑。如果你需要以上预定义函数之外的功能，可以根据需要通过脚本进行实现。</li>
-</ul>
-<p>没有<code>function_score</code>查询的话，我们也许就不能将全文搜索得到分值和近因进行结合了。我们将不得不根据<code>_score</code>或者<code>date</code>进行排序；无论采用哪一种都会抹去另一种的影响。<code>function_score</code>查询让我们能够将两者融合在一起：仍然通过全文相关度排序，但是给新近发布的文档，或者流行的文档，或者符合用户价格期望的文档额外的权重。你可以想象，一个拥有所有这些功能的查询看起来会相当复杂。我们从一个简单的例子开始，循序渐进地对它进行介绍。</p>
-<h3 id="如何使用function-score"><a href="#如何使用function-score" class="headerlink" title="如何使用function_score"></a>如何使用function_score</h3><p>假设我们有一个博客网站让用户投票选择他们喜欢的文章。我们希望让人气高的文章出现在结果列表的头部，但是主要的排序依据仍然是全文搜索分值。我们可以通过保存每篇文章的投票数量来实现。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 1、新建一个索引映射：</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Post</span><span class="params">(DocType)</span>:</span></div><div class="line">    title = String()</div><div class="line">    content = Text()</div><div class="line">    votes = Integer()</div><div class="line">    created_at = Date()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blogposts'</span></div><div class="line">        type = <span class="string">'post'</span></div><div class="line"></div><div class="line">Post.init()</div><div class="line"></div><div class="line"><span class="comment"># 2、添加测试数据</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_post</span><span class="params">(id_, title, content)</span>:</span></div><div class="line">    post = Post(meta=&#123;<span class="string">'id'</span>: id_&#125;)</div><div class="line">    post.title = title</div><div class="line">    post.content = content</div><div class="line">    post.votes = random.randint(<span class="number">0</span>, <span class="number">100</span>)</div><div class="line">    post.save()</div><div class="line"></div><div class="line"><span class="comment"># 3、初始化数据</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_data</span><span class="params">()</span>:</span></div><div class="line">    add_post(<span class="number">1</span>, <span class="string">'Python is good'</span>, <span class="string">'Python is good'</span>)</div><div class="line">    add_post(<span class="number">2</span>, <span class="string">'Python is beautiful'</span>, <span class="string">'Python is beautiful'</span>)</div><div class="line">    add_post(<span class="number">3</span>, <span class="string">'Python is nice'</span>, <span class="string">'Python is nice'</span>)</div><div class="line">    add_post(<span class="number">4</span>, <span class="string">'Today is good day'</span>, <span class="string">'Today is good day'</span>)</div><div class="line">    add_post(<span class="number">5</span>, <span class="string">'Today is nice day'</span>, <span class="string">'Today is nice day'</span>)</div><div class="line">    add_post(<span class="number">6</span>, <span class="string">'The key aspect in promoting'</span>, <span class="string">'The key aspect in promoting'</span>)</div><div class="line">    add_post(<span class="number">7</span>, <span class="string">'Just a month after we started'</span>, <span class="string">'Just a month after we started working on reddit'</span>)</div><div class="line">    add_post(<span class="number">8</span>, <span class="string">"If I can't hear your heartbeat"</span>, <span class="string">"If I can't hear your heartbeat, you're too far away."</span>)</div><div class="line">    add_post(<span class="number">9</span>, <span class="string">'No Country for Old Men'</span>, <span class="string">'No Country for Old Men'</span>)</div><div class="line">    add_post(<span class="number">10</span>, <span class="string">'Django is web framework'</span>, <span class="string">'Django is python lib'</span>)</div></pre></td></tr></table></figure>
-<h4 id="field-value-factor"><a href="#field-value-factor" class="headerlink" title="field_value_factor"></a>field_value_factor</h4><p>使用<code>field_value_factor</code>函数的<code>function_score</code>查询将投票数和全文相关度分值结合起来：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>)</div><div class="line">    ]</div><div class="line">)</div><div class="line">s = Post.search()</div><div class="line">s = s.query(q)</div><div class="line">response = s.execute()</div><div class="line"><span class="keyword">for</span> h <span class="keyword">in</span> response:</div><div class="line">    print(h.title)</div><div class="line"></div><div class="line"><span class="string">"""</span></div><div class="line">Out:</div><div class="line">Python is nice</div><div class="line">Python is good</div><div class="line">Python is beautiful</div><div class="line">Django is web framework</div><div class="line">"""</div></pre></td></tr></table></figure></p>
-<p><img src="/imgs/20170819/20170819125817.png" alt=""></p>
-<p><code>function_score</code>查询会包含主查询(Main Query)和希望使用的函数。先会执行主查询，然后再为匹配的文档调用相应的函数。每份文档中都必须有一个<code>votes</code>字段用来保证<code>function_score</code>能够起作用。</p>
-<p>在前面的例子中，每份文档的最终<code>_score</code>会通过下面的方式改变：</p>
-<blockquote>
-<p>new_score = old_score * number_of_votes</p>
-</blockquote>
-<p>它得到的结果并不好。全文搜索的<code>_score</code>通常会在0到10之间。而从下图我们可以发现，拥有10票以上的文章的分值大大超过了这个范围，而没有被投票的文章的分值会被重置为0。<br><img src="/imgs/20170819/20170819125818.png" alt=""><br><img src="/imgs/20170819/20170819133637.png" alt=""></p>
-<h4 id="modifier"><a href="#modifier" class="headerlink" title="modifier"></a>modifier</h4><p>为了让<code>votes</code>值对最终分值的影响更缓和，我们可以使用modifier。换言之，我们需要让头几票的效果更明显，其后的票的影响逐渐减小。0票和1票的区别应该比10票和11票的区别要大的多。</p>
-<p>一个用于此场景的典型modifier是log1p，它将公式改成这样：</p>
-<blockquote>
-<p>new_score = old_score * log(1 + number_of_votes)</p>
-</blockquote>
-<p><code>log</code>函数将<code>votes</code>字段的效果减缓了，其效果类似下面的曲线：<br><img src="/imgs/20170819/20170819125819.png" alt=""><br>使用了<code>modifier</code>参数的请求如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p><img src="/imgs/20170819/20170819131048.png" alt=""><br>可用的<code>modifiers</code>有：none(默认值)，log，log1p，log2p，ln，ln1p，ln2p，square，sqrt以及reciprocal。</p>
-<table>
-<thead>
-<tr>
-<th>Modifier</th>
-<th>Meaning </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>none</td>
-<td>Do not apply any multiplier to the field value</td>
-</tr>
-<tr>
-<td>log</td>
-<td>Take the logarithm of the field value </td>
-</tr>
-<tr>
-<td>log1p</td>
-<td>Add 1 to the field value and take the logarithm</td>
-</tr>
-<tr>
-<td>log2p</td>
-<td>Add 2 to the field value and take the logarithm</td>
-</tr>
-<tr>
-<td>ln</td>
-<td>Take the natural logarithm of the field value</td>
-</tr>
-<tr>
-<td>ln1p</td>
-<td>Add 1 to the field value and take the natural logarithm</td>
-</tr>
-<tr>
-<td>ln2p</td>
-<td>Add 2 to the field value and take the natural logarithm</td>
-</tr>
-<tr>
-<td>square</td>
-<td>Square the field value (multiply it by itself)</td>
-</tr>
-<tr>
-<td>sqrt</td>
-<td>Take the square root of the field value</td>
-</tr>
-<tr>
-<td>reciprocal</td>
-<td>Reciprocate the field value, same as 1/x where x is the field’s value</td>
-</tr>
-</tbody>
-</table>
-<p>具体详情请查阅<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html#function-field-value-factor" target="_blank" rel="external">官网介绍</a></p>
-<h4 id="factor"><a href="#factor" class="headerlink" title="factor"></a>factor</h4><p>可以通过将<code>votes</code>字段的值乘以某个数值来增加该字段的影响力，这个数值被称为<code>factor</code>：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>, factor=<span class="number">2</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p>添加了<code>factor</code>将公式修改成这样：</p>
-<blockquote>
-<p>new_score = old_score <em> log(1 + factor </em> number_of_votes)<br>当<code>factor</code>大于1时，会增加其影响力，而小于1的<code>factor</code>则相应减小了其影响力，如下图所示：</p>
-</blockquote>
-<p><img src="/imgs/20170819/20170819131049.png" alt=""><br><img src="/imgs/20170819/20170819132115.png" alt=""></p>
-<h4 id="boost-mode"><a href="#boost-mode" class="headerlink" title="boost_mode"></a>boost_mode</h4><p>将全文搜索的相关度分值乘以<code>field_value_factor</code>函数的结果，对最终分值的影响可能太大了。通过<code>boost_mode</code>参数，我们可以控制函数的结果应该如何与<code>_score</code>结合在一起，该参数接受下面的值：</p>
-<table>
-<thead>
-<tr>
-<th>模型</th>
-<th>描述 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>multiply</td>
-<td>_score 与函数值的积（默认）</td>
-</tr>
-<tr>
-<td>sum</td>
-<td>_score 与函数值的和  </td>
-</tr>
-<tr>
-<td>avg</td>
-<td>_score 平均值  </td>
-</tr>
-<tr>
-<td>first</td>
-<td>应用filter匹配上的第一个函数值</td>
-</tr>
-<tr>
-<td>min</td>
-<td>_score 与函数值间的较小值</td>
-</tr>
-<tr>
-<td>max</td>
-<td>_score 与函数值间的较大值</td>
-</tr>
-<tr>
-<td>replace</td>
-<td>将_score替换成函数结果</td>
-</tr>
-</tbody>
-</table>
-<p>如果我们是通过将函数结果累加来得到<code>_score</code>，其影响会小的多，特别是当我们使用了一个较低的<code>factor</code>时：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>, factor=<span class="number">0.1</span>)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"sum"</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p>上述请求的公式如下所示：</p>
-<blockquote>
-<p>new_score = old_score + log(1 + 0.1 * number_of_votes)</p>
-</blockquote>
-<p><img src="/imgs/20170819/20170819131050.png" alt=""><br><img src="/imgs/20170819/20170819133115.png" alt=""></p>
-<h4 id="max-boost"><a href="#max-boost" class="headerlink" title="max_boost"></a>max_boost</h4><p>最后，我们能够通过制定<code>max_boost</code>参数来限制函数的最大影响：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">"multi_match"</span>, query=<span class="string">'python'</span>, fields=[<span class="string">'title'</span>, <span class="string">'content'</span>]),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'field_value_factor'</span>, field=<span class="string">'votes'</span>, modifier=<span class="string">'log1p'</span>, factor=<span class="number">0.1</span>)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"sum"</span>,</div><div class="line">    max_boost=<span class="number">1.5</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
-<p>无论<code>field_value_factor</code>函数的结果是多少，它绝不会大于1.5。</p>
-<p>NOTE</p>
-<blockquote>
-<p>max_boost只是对函数的结果有所限制，并不是最终的_score。</p>
-</blockquote>
-<p><img src="/imgs/20170819/20170819134205.png" alt=""></p>
-<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html" target="_blank" rel="external">https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-function-score-query.html</a></p>
-<p><a href="http://itindex.net/detail/57059-elasticsearch-%E6%8E%A7%E5%88%B6-%E7%9B%B8%E5%85%B3" target="_blank" rel="external">http://itindex.net/detail/57059-elasticsearch-%E6%8E%A7%E5%88%B6-%E7%9B%B8%E5%85%B3</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/16/elasticsearch-search-suggest-with-python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/16/elasticsearch-search-suggest-with-python/" itemprop="url">用Python实现Elasticsearch提供的搜索建议</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T23:01:00+08:00">
-                2017-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
-                    <span itemprop="name">ElasticSearch</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/16/elasticsearch-search-suggest-with-python/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/16/elasticsearch-search-suggest-with-python/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/08/16/elasticsearch-search-suggest-with-python/" class="leancloud_visitors" data-flag-title="用Python实现Elasticsearch提供的搜索建议">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Suggest搜索"><a href="#Suggest搜索" class="headerlink" title="Suggest搜索"></a>Suggest搜索</h3><p><code>Elasticsearch</code>支持多种<code>suggest</code>类型，也支持模糊搜索。</p>
-<p><code>Elasticsearch</code>支持如下4种搜索类型：</p>
-<ul>
-<li>Term。基于编辑距离的搜索，也就是对比两个字串之间，由一个转成另一个所需的最少编辑操作次数，编辑距离越少说明越相近。搜索时需要指定字段，是很基础的一种搜索。</li>
-<li>Phrase。Term的优化，能够基于共现和频率来做出关于选择哪些token的更好的决定。</li>
-<li>Completion。提供自动完成/按需搜索的功能，这是一种导航功能，可在用户输入时引导用户查看相关结果，从而提高搜索精度。和前2种用法不同，需要在mapping时指定suggester字段，使用允许快速查找的数据结构，所以在搜索速度上得到了很大的优化。</li>
-<li>Context。Completion搜索的是索引中的全部文档，但是有时候希望对这个结果进行一些and/or的过滤，就需要使用Context类型了。</li>
-</ul>
-<p>下面使用<a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="external">elasticsearch_dsl</a>自带的<code>Suggestions</code>功能<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Text, Keyword, Completion</div><div class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections</div><div class="line"></div><div class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BlogLive</span><span class="params">(DocType)</span>:</span></div><div class="line">    subject = Text()</div><div class="line">    description = Text()</div><div class="line">    topics = Keyword()</div><div class="line">    live_suggest = Completion()</div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></div><div class="line">        index = <span class="string">'blog'</span></div><div class="line">        type = <span class="string">'live'</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, ** kwargs)</span>:</span></div><div class="line">        <span class="keyword">return</span> super(BlogLive, self).save(** kwargs)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># create the mappings in elasticsearch</span></div><div class="line">BlogLive.init()</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_live</span><span class="params">(id_, subject, description)</span>:</span></div><div class="line">    live = BlogLive(meta=&#123;<span class="string">'id'</span>: id_&#125;)</div><div class="line">    live.subject = subject</div><div class="line">    live.description = description</div><div class="line">    live.live_suggest = subject</div><div class="line">    live.save()</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_data</span><span class="params">()</span>:</span></div><div class="line">    add_live(<span class="number">1</span>, <span class="string">'python'</span>, <span class="string">'python is good'</span>)</div><div class="line">    add_live(<span class="number">2</span>, <span class="string">'python django'</span>, <span class="string">'django is web framework'</span>)</div><div class="line">    add_live(<span class="number">3</span>, <span class="string">'python flask'</span>, <span class="string">'flask is web framework'</span>)</div><div class="line">    add_live(<span class="number">4</span>, <span class="string">'elasticsearch'</span>, <span class="string">'elasticsearch is searchengine'</span>)</div><div class="line">    add_live(<span class="number">5</span>, <span class="string">'elasticsearch-dsl python'</span>, <span class="string">'python elasticsearch dsl is client API'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">suggest</span><span class="params">(key)</span>:</span></div><div class="line">    s = BlogLive.search()</div><div class="line">    s = s.suggest(<span class="string">'live_suggestion'</span>, key,</div><div class="line">                  completion=&#123;<span class="string">'field'</span>: <span class="string">'live_suggest'</span>, <span class="string">'fuzzy'</span>: &#123;<span class="string">'fuzziness'</span>: <span class="number">2</span>, <span class="string">'prefix_length'</span>: <span class="number">2</span>&#125;, <span class="string">'size'</span>: <span class="number">10</span>&#125;)</div><div class="line">    print(s.to_dict())</div><div class="line">    <span class="string">"""</span></div><div class="line">    &#123;'suggest': </div><div class="line">        &#123;'live_suggestion': </div><div class="line">             &#123;</div><div class="line">                'completion': &#123;'field': 'live_suggest', 'size': 10, 'fuzzy': &#123;'fuzziness': 2, 'prefix_length': 2&#125;&#125;, </div><div class="line">                'text': 'python'</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    """</div><div class="line">    suggestions = s.execute_suggest()</div><div class="line">    <span class="comment"># print(suggestions.live_suggestion)</span></div><div class="line">    <span class="keyword">for</span> match <span class="keyword">in</span> suggestions.live_suggestion[<span class="number">0</span>].options:</div><div class="line">        source = match._source</div><div class="line">        print(source[<span class="string">'subject'</span>],  source[<span class="string">'description'</span>], match._score)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    init_data()</div><div class="line">    suggest(<span class="string">'python'</span>)</div></pre></td></tr></table></figure></p>
 
           
         
@@ -2363,7 +2633,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2374,7 +2644,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2451,6 +2721,15 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Finger.Chou</span>
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count"></span>
   
 </div>
 
