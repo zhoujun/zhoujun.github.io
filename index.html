@@ -710,7 +710,7 @@
 <li><a href="https://www.cnblogs.com/zhaoshizi/p/9180886.html" target="_blank" rel="external">https://www.cnblogs.com/zhaoshizi/p/9180886.html</a></li>
 <li><a href="https://segmentfault.com/a/1190000012530796" target="_blank" rel="external">https://segmentfault.com/a/1190000012530796</a></li>
 </ul>
-<h3 id="python中MRO排序原理-mro"><a href="#python中MRO排序原理-mro" class="headerlink" title="python中MRO排序原理(mro)"></a>python中MRO排序原理(<strong>mro</strong>)</h3><h4 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h4><p><img src="/imgs/20190712/1.png" alt=""></p>
+<h3 id="python中MRO排序原理"><a href="#python中MRO排序原理" class="headerlink" title="python中MRO排序原理"></a>python中MRO排序原理</h3><h4 id="拓扑排序"><a href="#拓扑排序" class="headerlink" title="拓扑排序"></a>拓扑排序</h4><p><img src="/imgs/20190712/1.png" alt=""></p>
 <p>如上图所示每个点都是有指向性的：可能指向别人或者被别人指向。</p>
 <p>拓扑顺序就是：<strong>每次找到一个只指向别人的点 (学术性说法：入度为0)，记录下来；然后忽略掉这个点和它所指出去的线，再找到下一个只指向别人的点，记录下来，直到剩最后一个点</strong>，所有记录的点的顺序就是拓扑顺序</p>
 <p><img src="/imgs/20190712/2.png" alt=""></p>
