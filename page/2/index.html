@@ -317,6 +317,210 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/24/inverse-matrix-with-numpy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/24/inverse-matrix-with-numpy/" itemprop="url">用Numpy求矩阵的逆</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T19:02:00+08:00">
+                2018-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Numpy/" itemprop="url" rel="index">
+                    <span itemprop="name">Numpy</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/24/inverse-matrix-with-numpy/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/24/inverse-matrix-with-numpy/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/06/24/inverse-matrix-with-numpy/" class="leancloud_visitors" data-flag-title="用Numpy求矩阵的逆">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>一个n阶方阵A称为可逆的，或非奇异的，如果存在一个n阶方阵B，使得</p>
+<p><strong>AB = BA = E</strong></p>
+<p>并称B是A的一个逆矩阵。A的逆矩阵记作A^-1。</p>
+<p>百度<a href="https://baike.baidu.com/item/%E9%80%86%E7%9F%A9%E9%98%B5" target="_blank" rel="external">逆矩阵</a></p>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><p>若|A|≠0，则矩阵A可逆，且</p>
+<p><img src="/imgs/20180624/1.png" alt=""></p>
+<p>其中，A*为矩阵A的伴随矩阵。</p>
+<h3 id="求解"><a href="#求解" class="headerlink" title="求解"></a>求解</h3><p>假定矩阵A为:</p>
+<p><img src="/imgs/20180624/2.png" alt=""></p>
+<p>根据公式:</p>
+<p><img src="/imgs/20180624/3.png" alt=""></p>
+<p>因A可逆，则有A的<a href="https://baike.baidu.com/item/%E4%BC%B4%E9%9A%8F%E7%9F%A9%E9%98%B5" target="_blank" rel="external">伴随矩阵</a>特性 A* = A^T </p>
+<p><img src="/imgs/20180624/4.png" alt=""></p>
+<p>根据<a href="https://baike.baidu.com/item/%E4%B8%89%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F" target="_blank" rel="external">三阶行列式</a>特性（对角线法）|A| = (1 x 1) - (-1 x 1)</p>
+<p><img src="/imgs/20180624/5.png" alt=""></p>
+<p>代入公式：</p>
+<p><img src="/imgs/20180624/6.png" alt=""></p>
+<h3 id="用Numpy求矩阵的逆"><a href="#用Numpy求矩阵的逆" class="headerlink" title="用Numpy求矩阵的逆"></a>用Numpy求矩阵的逆</h3><p>numpy.linalg中的<code>inv()</code>函数就是用来求矩阵的逆。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; A = np.mat(&quot;1 -1; 1 1&quot;)</div><div class="line">&gt;&gt;&gt; A</div><div class="line">matrix([[ 1, -1],</div><div class="line">        [ 1,  1]])</div><div class="line">&gt;&gt;&gt; inverse = np.linalg.inv(A)</div><div class="line">&gt;&gt;&gt; inverse</div><div class="line">matrix([[ 0.5,  0.5],</div><div class="line">        [-0.5,  0.5]])</div></pre></td></tr></table></figure>
+<p>感觉是不是很简单。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/24/solution-of-linear-equations-with-numpy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2269,220 +2473,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/26/using-elasticsearch-function-score-with-python-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/26/using-elasticsearch-function-score-with-python-2/" itemprop="url">用Python实现Elasticsearch function_score查询(二)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-26T10:23:00+08:00">
-                2017-08-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
-                    <span itemprop="name">ElasticSearch</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/26/using-elasticsearch-function-score-with-python-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/26/using-elasticsearch-function-score-with-python-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/08/26/using-elasticsearch-function-score-with-python-2/" class="leancloud_visitors" data-flag-title="用Python实现Elasticsearch function_score查询(二)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">     functions=[</div><div class="line">        query.SF(<span class="string">'random_score'</span>, seed=<span class="number">10</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;function_score&quot;: &#123;</div><div class="line">            &quot;random_score&quot;: &#123;</div><div class="line">                &quot;seed&quot;: 10</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="decay-functions"><a href="#decay-functions" class="headerlink" title="decay functions"></a>decay functions</h4><p>之前提过的<code>weight</code>，<code>field_value_factor</code>，<code>random_score</code>等函数都是一种线性的影响关系，给出的分数随着距离变大而变低。有时候我们会有范围性质，分数变化缓慢的需求场景。此时上述函数就显得不那么适用。<br><code>Elasticsearch</code>提供了三种<code>decay functions</code>，让我们可以基于一个单值的数值型字段（比如日期、地点或者价格类似标准的数值型字段）来计算分数。</p>
-<p>这三个衰减函数分别为：</p>
-<ul>
-<li>线性衰减(linear)</li>
-<li>指数衰减(exp)</li>
-<li>高斯衰减(gauss)</li>
-</ul>
-<p>它们可以操作数值，时间以及经纬度地理坐标点这样的字段，这三个函数都有以下参数：</p>
-<ul>
-<li>origin: 中心点或字段可能的最佳值，落在原点<code>origin</code>上的文档评分 _score 为满分1.0 。</li>
-<li>scale:  衰减率，即一个文档从原点origin下落时，评分<code>_score</code>改变的速度(例如每 £10 欧元或每 100 米)。</li>
-<li>decay:  从原点<code>origin</code>衰减到<code>scale</code>所得的评分<code>_score</code>，默认值为 0.5。</li>
-<li>offset: 以原点<code>origin</code>为中心点，为其设置一个非零的偏移量offset 覆盖一个范围，而不只是单个原点。在范围 -offset &lt;= origin &lt;= +offset 内的所有评分<code>_score</code>都是 1.0。</li>
-</ul>
-<p><code>origin</code>和<code>scale</code>参数是必须的。<code>origin</code>是中心点，计算是从这点开始。<code>scale</code>是衰变率。默认情况下，<code>offset</code>参数设置为0；如果定义了该参数，<code>decay</code>函数将只计算文档值比此参数的值大的文档得分。<code>decay</code>参数告诉Elasticsearch应该降低多少分数，默认设置为0.5。</p>
-<p>下面我们举一个例子：假设用户希望租一个离伦敦市中心({‘lat’:51.50, ‘lon’:0.12})且每晚不超过 £100 英镑的度假屋而且与距离相比，用户对价格更为敏感，这样查询可以写成：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">'match'</span>, properties=<span class="string">"balcony"</span>),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'gauss'</span>, price=&#123;<span class="string">'origin'</span>: <span class="string">'0'</span>, <span class="string">'scale'</span>: <span class="string">'20'</span>&#125;),</div><div class="line">        query.SF(<span class="string">'gauss'</span>, location=&#123;<span class="string">'origin'</span>: <span class="string">'51.50, 0.12'</span>, <span class="string">'scale'</span>: <span class="string">'2km'</span>&#125;)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"multiply"</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&#123;  </div><div class="line">    &quot;query&quot;: &#123;  </div><div class="line">        &quot;function_score&quot;: &#123;  </div><div class="line">          &quot;functions&quot;: [  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;price&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;0&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;20&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;,  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;location&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;11, 12&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;2km&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;  </div><div class="line">          ],  </div><div class="line">          &quot;query&quot;: &#123;  </div><div class="line">            &quot;match&quot;: &#123;  </div><div class="line">              &quot;properties&quot;: &quot;balcony&quot;  </div><div class="line">            &#125;  </div><div class="line">          &#125;,  </div><div class="line">          &quot;score_mode&quot;: &quot;multiply&quot;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>关于decay functions的衰减曲线性：如下图：<br><img src="/imgs/20170826/decay_2d.png" alt=""></p>
-<p>图中所有曲线的原点<code>origin</code>（即中心点）的值都是40，<code>offset</code>是5，也就是在范围 40 - 5 &lt;= value &lt;= 40 + 5 内的所有值都会被当作原点<code>origin</code>处理所有这些点的评分都是满分1.0 。<br>在此范围之外，评分开始衰减，衰减率由<code>scale</code>值（此例中的值为 5 ）和 衰减值<code>decay</code>此例中为默认值 0.5 ）共同决定。结果是所有三个曲线在 origin +/- (offset + scale) 处的评分都是 0.5，即点30和50处。</p>
-<p><code>linear</code> 、 <code>exp</code> 和 <code>gauss</code>函数三者之间的区别在于范围（ origin +/- (offset + scale) ）之外的曲线形状：</p>
-<ul>
-<li>linear 线性函数是条直线，一旦直线与横轴 0 相交，所有其他值的评分都是 0.0 。</li>
-<li>exp 指数函数是先剧烈衰减然后变缓。</li>
-<li>gauss 高斯函数是钟形的——它的衰减速率是先缓慢，然后变快，最后又放缓。</li>
-</ul>
-<p><strong>选择曲线的依据完全由期望评分<code>_score</code>的衰减速率来决定，即距原点<code>origin</code>的值。</strong></p>
-<p>Demo地址：<a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2533,7 +2523,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2544,7 +2534,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2555,7 +2545,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

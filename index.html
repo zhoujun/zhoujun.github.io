@@ -317,6 +317,245 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2019/07/13/about-the-cache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/13/about-the-cache/" itemprop="url">关于缓存</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-13T18:23:00+08:00">
+                2019-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cache/" itemprop="url" rel="index">
+                    <span itemprop="name">Cache</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/13/about-the-cache/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/07/13/about-the-cache/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/07/13/about-the-cache/" class="leancloud_visitors" data-flag-title="关于缓存">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="缓存模式（Cache-Aside-Pattern）"><a href="#缓存模式（Cache-Aside-Pattern）" class="headerlink" title="缓存模式（Cache Aside Pattern）"></a>缓存模式（Cache Aside Pattern）</h3><h4 id="什么是”Cache-Aside-Pattern”"><a href="#什么是”Cache-Aside-Pattern”" class="headerlink" title="什么是”Cache Aside Pattern”?"></a>什么是”Cache Aside Pattern”?</h4><p><strong>答：</strong> <strong>旁路缓存</strong>方案的经验实践，这个实践又分<strong>读实践，写实践</strong>。</p>
+<h5 id="对于读请求"><a href="#对于读请求" class="headerlink" title="对于读请求"></a>对于读请求</h5><ul>
+<li>先读cache，再读db</li>
+<li>如果，cache hit，则直接返回数据</li>
+<li>如果，cache miss，则访问db，并将数据set回缓存</li>
+</ul>
+<p><img src="/imgs/20190713/1.jpg" alt=""></p>
+<p>如上图：</p>
+<ol>
+<li>先从cache中尝试get数据，结果miss了</li>
+<li>再从db中读取数据，从库，读写分离</li>
+<li>最后把数据set回cache，方便下次读命中</li>
+</ol>
+<h5 id="对于写请求"><a href="#对于写请求" class="headerlink" title="对于写请求"></a>对于写请求</h5><ul>
+<li>淘汰缓存，而不是更新缓存</li>
+<li>先操作数据库，再淘汰缓存</li>
+</ul>
+<p><img src="/imgs/20190713/2.jpg" alt=""></p>
+<p>如上图：</p>
+<ol>
+<li>第一步要操作数据库，第二步操作缓存</li>
+<li>缓存，采用delete淘汰，而不是set更新</li>
+</ol>
+<h4 id="Cache-Aside-Pattern为什么建议淘汰缓存，而不是更新缓存？"><a href="#Cache-Aside-Pattern为什么建议淘汰缓存，而不是更新缓存？" class="headerlink" title="Cache Aside Pattern为什么建议淘汰缓存，而不是更新缓存？"></a>Cache Aside Pattern为什么建议淘汰缓存，而不是更新缓存？</h4><p><strong>答：</strong> 如果更新缓存，在并发写时，可能出现数据不一致。</p>
+<p><img src="/imgs/20190713/3.jpg" alt=""></p>
+<p>如上图所示，如果采用set缓存。</p>
+<p>在1和2两个并发写发生时，由于无法保证时序，此时不管先操作缓存还是先操作数据库，都可能出现：</p>
+<ol>
+<li>请求1先操作数据库，请求2后操作数据库</li>
+<li>请求2先set了缓存，请求1后set了缓存</li>
+</ol>
+<p>导致，<strong>数据库与缓存之间的数据不一致。</strong></p>
+<p>所以，Cache Aside Pattern建议，<strong>delete缓存，而不是set缓存。</strong></p>
+<h4 id="Cache-Aside-Pattern为什么建议先操作数据库，再操作缓存？"><a href="#Cache-Aside-Pattern为什么建议先操作数据库，再操作缓存？" class="headerlink" title="Cache Aside Pattern为什么建议先操作数据库，再操作缓存？"></a>Cache Aside Pattern为什么建议先操作数据库，再操作缓存？</h4><p><strong>答：</strong> 如果先操作缓存，在读写并发时，可能出现数据不一致。</p>
+<p><img src="/imgs/20190713/4.jpg" alt=""></p>
+<p>如上图所示，如果先操作缓存。</p>
+<p>在1和2并发读写发生时，由于无法保证时序，可能出现：</p>
+<ol>
+<li>写请求淘汰了缓存</li>
+<li>写请求操作了数据库（主从同步没有完成）</li>
+<li>读请求读了缓存（cache miss）</li>
+<li>读请求读了从库（读了一个旧数据）</li>
+<li>读请求set回缓存（set了一个旧数据）</li>
+<li>数据库主从同步完成<br>导致，数据库与缓存的数据不一致。</li>
+</ol>
+<p>所以，Cache Aside Pattern建议，<strong>先操作数据库，再操作缓存。</strong></p>
+<h4 id="Cache-Aside-Pattern方案存在什么问题？"><a href="#Cache-Aside-Pattern方案存在什么问题？" class="headerlink" title="Cache Aside Pattern方案存在什么问题？"></a>Cache Aside Pattern方案存在什么问题？</h4><p><strong>答：</strong> 如果先操作数据库，再淘汰缓存，在原子性被破坏时：</p>
+<ol>
+<li>修改数据库成功了</li>
+<li>淘汰缓存失败了</li>
+</ol>
+<p>导致，数据库与缓存的数据不一致。</p>
+<p>原文来自58沈剑:<br><a href="https://cloud.tencent.com/info/5e258c6f840423de68eda937db3e1c90.html" target="_blank" rel="external">https://cloud.tencent.com/info/5e258c6f840423de68eda937db3e1c90.html</a></p>
+<h3 id="缓存问题"><a href="#缓存问题" class="headerlink" title="缓存问题"></a>缓存问题</h3><p>用一张脑图总结如下：</p>
+<p><img src="/imgs/20190713/the-cache-problem.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2019/07/11/python-notes-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -453,7 +692,7 @@
       
         
           
-            <h3 id="使用slots"><a href="#使用slots" class="headerlink" title="使用slots"></a>使用<strong>slots</strong></h3><p><code>__slots__</code>变量是用来限制class能添加的属性</p>
+            <h3 id="使用-slots"><a href="#使用-slots" class="headerlink" title="使用 slots"></a>使用 <strong>slots</strong></h3><p><code>__slots__</code>变量是用来限制class能添加的属性</p>
 <p>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Student(object):</div><div class="line">...     __slots__ = (&apos;name&apos;, &apos;age&apos;) # 用tuple定义允许绑定的属性名称</div><div class="line">...</div></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; s = Student() # 创建新的实例</div><div class="line">&gt;&gt;&gt; s.name = &apos;Michael&apos; # 绑定属性&apos;name&apos;</div><div class="line">&gt;&gt;&gt; s.age = 25 # 绑定属性&apos;age&apos;</div><div class="line">&gt;&gt;&gt; s.score = 99 # 绑定属性&apos;score&apos;</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">AttributeError: &apos;Student&apos; object has no attribute &apos;score&apos;</div></pre></td></tr></table></figure>
 <p>从上面代码示例我们可以看到由于<code>score</code>没有被放到<code>__slots__</code>中，所以不能绑定<code>score</code>属性，试图绑定<code>score</code>将得到AttributeError的错误。<br>使用<code>__slots__</code>要注意，<code>__slots__</code>定义的属性仅对当前类起作用，对继承的子类是不起作用的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class GraduateStudent(Student):</div><div class="line">...     pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; g = GraduateStudent()</div><div class="line">&gt;&gt;&gt; g.score = 9999</div></pre></td></tr></table></figure></p>
@@ -2152,210 +2391,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2018/06/24/inverse-matrix-with-numpy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/24/inverse-matrix-with-numpy/" itemprop="url">用Numpy求矩阵的逆</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-24T19:02:00+08:00">
-                2018-06-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Numpy/" itemprop="url" rel="index">
-                    <span itemprop="name">Numpy</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/24/inverse-matrix-with-numpy/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/24/inverse-matrix-with-numpy/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2018/06/24/inverse-matrix-with-numpy/" class="leancloud_visitors" data-flag-title="用Numpy求矩阵的逆">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>一个n阶方阵A称为可逆的，或非奇异的，如果存在一个n阶方阵B，使得</p>
-<p><strong>AB = BA = E</strong></p>
-<p>并称B是A的一个逆矩阵。A的逆矩阵记作A^-1。</p>
-<p>百度<a href="https://baike.baidu.com/item/%E9%80%86%E7%9F%A9%E9%98%B5" target="_blank" rel="external">逆矩阵</a></p>
-<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><p>若|A|≠0，则矩阵A可逆，且</p>
-<p><img src="/imgs/20180624/1.png" alt=""></p>
-<p>其中，A*为矩阵A的伴随矩阵。</p>
-<h3 id="求解"><a href="#求解" class="headerlink" title="求解"></a>求解</h3><p>假定矩阵A为:</p>
-<p><img src="/imgs/20180624/2.png" alt=""></p>
-<p>根据公式:</p>
-<p><img src="/imgs/20180624/3.png" alt=""></p>
-<p>因A可逆，则有A的<a href="https://baike.baidu.com/item/%E4%BC%B4%E9%9A%8F%E7%9F%A9%E9%98%B5" target="_blank" rel="external">伴随矩阵</a>特性 A* = A^T </p>
-<p><img src="/imgs/20180624/4.png" alt=""></p>
-<p>根据<a href="https://baike.baidu.com/item/%E4%B8%89%E9%98%B6%E8%A1%8C%E5%88%97%E5%BC%8F" target="_blank" rel="external">三阶行列式</a>特性（对角线法）|A| = (1 x 1) - (-1 x 1)</p>
-<p><img src="/imgs/20180624/5.png" alt=""></p>
-<p>代入公式：</p>
-<p><img src="/imgs/20180624/6.png" alt=""></p>
-<h3 id="用Numpy求矩阵的逆"><a href="#用Numpy求矩阵的逆" class="headerlink" title="用Numpy求矩阵的逆"></a>用Numpy求矩阵的逆</h3><p>numpy.linalg中的<code>inv()</code>函数就是用来求矩阵的逆。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; A = np.mat(&quot;1 -1; 1 1&quot;)</div><div class="line">&gt;&gt;&gt; A</div><div class="line">matrix([[ 1, -1],</div><div class="line">        [ 1,  1]])</div><div class="line">&gt;&gt;&gt; inverse = np.linalg.inv(A)</div><div class="line">&gt;&gt;&gt; inverse</div><div class="line">matrix([[ 0.5,  0.5],</div><div class="line">        [-0.5,  0.5]])</div></pre></td></tr></table></figure>
-<p>感觉是不是很简单。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2406,7 +2441,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2417,7 +2452,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2428,7 +2463,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

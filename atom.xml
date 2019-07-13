@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://fingerchou.com/"/>
-  <updated>2019-07-12T00:24:53.587Z</updated>
+  <updated>2019-07-13T10:42:21.705Z</updated>
   <id>http://fingerchou.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Python 杂记(一)</title>
-    <link href="http://fingerchou.com/2019/07/11/python-notes-1/"/>
-    <id>http://fingerchou.com/2019/07/11/python-notes-1/</id>
-    <published>2019-07-10T23:31:00.000Z</published>
-    <updated>2019-07-12T00:24:53.587Z</updated>
+    <title>关于缓存</title>
+    <link href="http://fingerchou.com/2019/07/13/about-the-cache/"/>
+    <id>http://fingerchou.com/2019/07/13/about-the-cache/</id>
+    <published>2019-07-13T10:23:00.000Z</published>
+    <updated>2019-07-13T10:42:21.705Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,33 @@
       
         
         
-          &lt;h3 id=&quot;使用slots&quot;&gt;&lt;a href=&quot;#使用slots&quot; class=&quot;headerlink&quot;
+          &lt;h3 id=&quot;缓存模式（Cache-Aside-Pattern）&quot;&gt;&lt;a href=&quot;#缓存模式（Cache-Aside-Pattern）&quot; class=&quot;headerlink&quot; title=&quot;缓存模式（Cache Aside Pattern）&quot;&gt;&lt;/a&gt;缓存模式（Cache
+        
+      
+    
+    </summary>
+    
+      <category term="Cache" scheme="http://fingerchou.com/categories/Cache/"/>
+    
+    
+      <category term="Cache" scheme="http://fingerchou.com/tags/Cache/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python 杂记(一)</title>
+    <link href="http://fingerchou.com/2019/07/11/python-notes-1/"/>
+    <id>http://fingerchou.com/2019/07/11/python-notes-1/</id>
+    <published>2019-07-10T23:31:00.000Z</published>
+    <updated>2019-07-13T10:44:04.425Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;使用-slots&quot;&gt;&lt;a href=&quot;#使用-slots&quot; class=&quot;headerlink&quot; title=&quot;使用 slots&quot;&gt;&lt;/a&gt;使用
         
       
     
@@ -540,34 +566,6 @@
     
     
       <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>用Python实现Elasticsearch function_score查询(二)</title>
-    <link href="http://fingerchou.com/2017/08/26/using-elasticsearch-function-score-with-python-2/"/>
-    <id>http://fingerchou.com/2017/08/26/using-elasticsearch-function-score-with-python-2/</id>
-    <published>2017-08-26T02:23:00.000Z</published>
-    <updated>2018-06-09T05:48:27.195Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h4 id=&quot;random-score&quot;&gt;&lt;a href=&quot;#random-score&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/categories/ElasticSearch/"/>
-    
-    
-      <category term="Python" scheme="http://fingerchou.com/tags/Python/"/>
-    
-      <category term="ElasticSearch" scheme="http://fingerchou.com/tags/ElasticSearch/"/>
     
   </entry>
   

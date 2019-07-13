@@ -317,6 +317,220 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/26/using-elasticsearch-function-score-with-python-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Finger Chou">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finger's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/26/using-elasticsearch-function-score-with-python-2/" itemprop="url">用Python实现Elasticsearch function_score查询(二)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-26T10:23:00+08:00">
+                2017-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index">
+                    <span itemprop="name">ElasticSearch</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/26/using-elasticsearch-function-score-with-python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/26/using-elasticsearch-function-score-with-python-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/08/26/using-elasticsearch-function-score-with-python-2/" class="leancloud_visitors" data-flag-title="用Python实现Elasticsearch function_score查询(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="random-score"><a href="#random-score" class="headerlink" title="random_score"></a>random_score</h4><p><code>random_score</code>函数，它的输出是一个介于0到1之间的数字，当给它提供相同的<code>seed</code>值时，它能够产生一致性随机的结果。<code>random_score</code> 子句不包含任何的<code>filter</code>，因此它适用于所有文档。当然，如果你索引了能匹配查询的新文档，无论你是否使用了一致性随机，结果的顺序都会有所改变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">     functions=[</div><div class="line">        query.SF(<span class="string">'random_score'</span>, seed=<span class="number">10</span>)</div><div class="line">    ]</div><div class="line">)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">GET /_search</div><div class="line">&#123;</div><div class="line">    &quot;query&quot;: &#123;</div><div class="line">        &quot;function_score&quot;: &#123;</div><div class="line">            &quot;random_score&quot;: &#123;</div><div class="line">                &quot;seed&quot;: 10</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="decay-functions"><a href="#decay-functions" class="headerlink" title="decay functions"></a>decay functions</h4><p>之前提过的<code>weight</code>，<code>field_value_factor</code>，<code>random_score</code>等函数都是一种线性的影响关系，给出的分数随着距离变大而变低。有时候我们会有范围性质，分数变化缓慢的需求场景。此时上述函数就显得不那么适用。<br><code>Elasticsearch</code>提供了三种<code>decay functions</code>，让我们可以基于一个单值的数值型字段（比如日期、地点或者价格类似标准的数值型字段）来计算分数。</p>
+<p>这三个衰减函数分别为：</p>
+<ul>
+<li>线性衰减(linear)</li>
+<li>指数衰减(exp)</li>
+<li>高斯衰减(gauss)</li>
+</ul>
+<p>它们可以操作数值，时间以及经纬度地理坐标点这样的字段，这三个函数都有以下参数：</p>
+<ul>
+<li>origin: 中心点或字段可能的最佳值，落在原点<code>origin</code>上的文档评分 _score 为满分1.0 。</li>
+<li>scale:  衰减率，即一个文档从原点origin下落时，评分<code>_score</code>改变的速度(例如每 £10 欧元或每 100 米)。</li>
+<li>decay:  从原点<code>origin</code>衰减到<code>scale</code>所得的评分<code>_score</code>，默认值为 0.5。</li>
+<li>offset: 以原点<code>origin</code>为中心点，为其设置一个非零的偏移量offset 覆盖一个范围，而不只是单个原点。在范围 -offset &lt;= origin &lt;= +offset 内的所有评分<code>_score</code>都是 1.0。</li>
+</ul>
+<p><code>origin</code>和<code>scale</code>参数是必须的。<code>origin</code>是中心点，计算是从这点开始。<code>scale</code>是衰变率。默认情况下，<code>offset</code>参数设置为0；如果定义了该参数，<code>decay</code>函数将只计算文档值比此参数的值大的文档得分。<code>decay</code>参数告诉Elasticsearch应该降低多少分数，默认设置为0.5。</p>
+<p>下面我们举一个例子：假设用户希望租一个离伦敦市中心({‘lat’:51.50, ‘lon’:0.12})且每晚不超过 £100 英镑的度假屋而且与距离相比，用户对价格更为敏感，这样查询可以写成：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">q = query.Q(</div><div class="line">    <span class="string">'function_score'</span>,</div><div class="line">    query=query.Q(<span class="string">'match'</span>, properties=<span class="string">"balcony"</span>),</div><div class="line">    functions=[</div><div class="line">        query.SF(<span class="string">'gauss'</span>, price=&#123;<span class="string">'origin'</span>: <span class="string">'0'</span>, <span class="string">'scale'</span>: <span class="string">'20'</span>&#125;),</div><div class="line">        query.SF(<span class="string">'gauss'</span>, location=&#123;<span class="string">'origin'</span>: <span class="string">'51.50, 0.12'</span>, <span class="string">'scale'</span>: <span class="string">'2km'</span>&#125;)</div><div class="line">    ],</div><div class="line">    score_mode=<span class="string">"multiply"</span></div><div class="line">)</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&#123;  </div><div class="line">    &quot;query&quot;: &#123;  </div><div class="line">        &quot;function_score&quot;: &#123;  </div><div class="line">          &quot;functions&quot;: [  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;price&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;0&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;20&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;,  </div><div class="line">            &#123;  </div><div class="line">              &quot;gauss&quot;: &#123;  </div><div class="line">                &quot;location&quot;: &#123;  </div><div class="line">                  &quot;origin&quot;: &quot;11, 12&quot;,  </div><div class="line">                  &quot;scale&quot;: &quot;2km&quot;  </div><div class="line">                &#125;  </div><div class="line">              &#125;  </div><div class="line">            &#125;  </div><div class="line">          ],  </div><div class="line">          &quot;query&quot;: &#123;  </div><div class="line">            &quot;match&quot;: &#123;  </div><div class="line">              &quot;properties&quot;: &quot;balcony&quot;  </div><div class="line">            &#125;  </div><div class="line">          &#125;,  </div><div class="line">          &quot;score_mode&quot;: &quot;multiply&quot;  </div><div class="line">        &#125;  </div><div class="line">    &#125;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于decay functions的衰减曲线性：如下图：<br><img src="/imgs/20170826/decay_2d.png" alt=""></p>
+<p>图中所有曲线的原点<code>origin</code>（即中心点）的值都是40，<code>offset</code>是5，也就是在范围 40 - 5 &lt;= value &lt;= 40 + 5 内的所有值都会被当作原点<code>origin</code>处理所有这些点的评分都是满分1.0 。<br>在此范围之外，评分开始衰减，衰减率由<code>scale</code>值（此例中的值为 5 ）和 衰减值<code>decay</code>此例中为默认值 0.5 ）共同决定。结果是所有三个曲线在 origin +/- (offset + scale) 处的评分都是 0.5，即点30和50处。</p>
+<p><code>linear</code> 、 <code>exp</code> 和 <code>gauss</code>函数三者之间的区别在于范围（ origin +/- (offset + scale) ）之外的曲线形状：</p>
+<ul>
+<li>linear 线性函数是条直线，一旦直线与横轴 0 相交，所有其他值的评分都是 0.0 。</li>
+<li>exp 指数函数是先剧烈衰减然后变缓。</li>
+<li>gauss 高斯函数是钟形的——它的衰减速率是先缓慢，然后变快，最后又放缓。</li>
+</ul>
+<p><strong>选择曲线的依据完全由期望评分<code>_score</code>的衰减速率来决定，即距原点<code>origin</code>的值。</strong></p>
+<p>Demo地址：<a href="https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo" target="_blank" rel="external">https://github.com/zhoujun/mydemos/tree/master/elasticsearch-demo</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/08/19/using-elasticsearch-function-score-with-python-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2316,229 +2530,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://fingerchou.com/2017/06/22/docker-build-and-run-your-first-app/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Finger Chou">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finger's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/22/docker-build-and-run-your-first-app/" itemprop="url">Docker 构建第一个App</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T23:45:00+08:00">
-                2017-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/22/docker-build-and-run-your-first-app/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/22/docker-build-and-run-your-first-app/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-             <span id="/2017/06/22/docker-build-and-run-your-first-app/" class="leancloud_visitors" data-flag-title="Docker 构建第一个App">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                  <span class="post-meta-divider">|</span>
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  
-                </span>
-              
-
-              
-
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>测试环境：阿里云 ubuntu14.04 </p>
-<h4 id="一、新建Dockerfile文件"><a href="#一、新建Dockerfile文件" class="headerlink" title="一、新建Dockerfile文件"></a>一、新建Dockerfile文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"># Use an official Python runtime as a base image</div><div class="line">FROM python:2.7-slim</div><div class="line"></div><div class="line"># Set the working directory to /app</div><div class="line">WORKDIR /app</div><div class="line"></div><div class="line"># Copy the current directory contents into the container at /app</div><div class="line">ADD . /app</div><div class="line"></div><div class="line"># Install any needed packages specified in requirements.txt</div><div class="line">RUN pip install -r requirements.txt</div><div class="line"></div><div class="line"># Make port 80 available to the world outside this container</div><div class="line">EXPOSE 80</div><div class="line"></div><div class="line"># Define environment variable</div><div class="line">ENV NAME World</div><div class="line"></div><div class="line"># Run app.py when the container launches</div><div class="line">CMD [&quot;python&quot;, &quot;app.py&quot;]</div></pre></td></tr></table></figure>
-<h4 id="二、新建requirements-txt"><a href="#二、新建requirements-txt" class="headerlink" title="二、新建requirements.txt"></a>二、新建requirements.txt</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Flask</div><div class="line">Redis</div></pre></td></tr></table></figure>
-<h4 id="三、新建app-py"><a href="#三、新建app-py" class="headerlink" title="三、新建app.py"></a>三、新建app.py</h4><pre><code>from flask import Flask
-from redis import Redis, RedisError
-import os
-import socket
-
-# Connect to Redis
-redis = Redis(host=&quot;redis&quot;, db=0, socket_connect_timeout=2, socket_timeout=2)
-
-app = Flask(__name__)
-
-@app.route(&quot;/&quot;)
-def hello():
-    try:
-        visits = redis.incr(&quot;counter&quot;)
-    except RedisError:
-        visits = &quot;&lt;i&gt;cannot connect to Redis, counter disabled&lt;/i&gt;&quot;
-
-    html = &quot;&lt;h3&gt;Hello {name}!&lt;/h3&gt;&quot; \
-           &quot;&lt;b&gt;Hostname:&lt;/b&gt; {hostname}&lt;br/&gt;&quot; \
-           &quot;&lt;b&gt;Visits:&lt;/b&gt; {visits}&quot;
-    return html.format(name=os.getenv(&quot;NAME&quot;, &quot;world&quot;), hostname=socket.gethostname(), visits=visits)
-
-if __name__ == &quot;__main__&quot;:
-    app.run(host=&apos;0.0.0.0&apos;, port=80)
-</code></pre><h4 id="四、编译"><a href="#四、编译" class="headerlink" title="四、编译"></a>四、编译</h4><blockquote>
-<p>ls  </p>
-<p>docker build -t friendlyhello . (当前目录)</p>
-<p>docker images</p>
-</blockquote>
-<h4 id="五、运行"><a href="#五、运行" class="headerlink" title="五、运行"></a>五、运行</h4><blockquote>
-<p>docker run -p 4000:80 friendlyhello</p>
-</blockquote>
-<h4 id="六、测试"><a href="#六、测试" class="headerlink" title="六、测试"></a>六、测试</h4><blockquote>
-<p>curl <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a></p>
-</blockquote>
-<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p><a href="https://docs.docker.com/get-started/part2/#run-the-app" target="_blank" rel="external">https://docs.docker.com/get-started/part2/#run-the-app</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2589,7 +2580,7 @@ if __name__ == &quot;__main__&quot;:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2600,7 +2591,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2611,7 +2602,7 @@ if __name__ == &quot;__main__&quot;:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

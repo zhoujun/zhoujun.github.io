@@ -81,25 +81,25 @@
 
 
 
-<meta name="description" content="使用slots__slots__变量是用来限制class能添加的属性
+<meta name="description" content="使用 slots__slots__变量是用来限制class能添加的属性
 例如123&amp;gt;&amp;gt;&amp;gt; class Student(object):...     __slots__ = (&amp;apos;name&amp;apos;, &amp;apos;age&amp;apos;) # 用tuple定义允许绑定的属性名称...
-1234567&amp;gt;&amp;gt;&amp;gt; s = Student() # 创建新的实例&amp;gt;">
+1234567&amp;gt;&amp;gt;&amp;gt; s = Student() # 创建新的实例&amp;gt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python 杂记(一)">
 <meta property="og:url" content="http://fingerchou.com/2019/07/11/python-notes-1/index.html">
 <meta property="og:site_name" content="Finger's Blog">
-<meta property="og:description" content="使用slots__slots__变量是用来限制class能添加的属性
+<meta property="og:description" content="使用 slots__slots__变量是用来限制class能添加的属性
 例如123&amp;gt;&amp;gt;&amp;gt; class Student(object):...     __slots__ = (&amp;apos;name&amp;apos;, &amp;apos;age&amp;apos;) # 用tuple定义允许绑定的属性名称...
-1234567&amp;gt;&amp;gt;&amp;gt; s = Student() # 创建新的实例&amp;gt;">
+1234567&amp;gt;&amp;gt;&amp;gt; s = Student() # 创建新的实例&amp;gt">
 <meta property="og:image" content="http://fingerchou.com/imgs/20190712/1.png">
 <meta property="og:image" content="http://fingerchou.com/imgs/20190712/2.png">
 <meta property="og:image" content="http://fingerchou.com/imgs/20190712/3.jpg">
-<meta property="og:updated_time" content="2019-07-12T00:24:53.587Z">
+<meta property="og:updated_time" content="2019-07-13T10:44:04.425Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python 杂记(一)">
-<meta name="twitter:description" content="使用slots__slots__变量是用来限制class能添加的属性
+<meta name="twitter:description" content="使用 slots__slots__变量是用来限制class能添加的属性
 例如123&amp;gt;&amp;gt;&amp;gt; class Student(object):...     __slots__ = (&amp;apos;name&amp;apos;, &amp;apos;age&amp;apos;) # 用tuple定义允许绑定的属性名称...
-1234567&amp;gt;&amp;gt;&amp;gt; s = Student() # 创建新的实例&amp;gt;">
+1234567&amp;gt;&amp;gt;&amp;gt; s = Student() # 创建新的实例&amp;gt">
 <meta name="twitter:image" content="http://fingerchou.com/imgs/20190712/1.png">
 
 
@@ -464,7 +464,7 @@
       
 
       
-        <h3 id="使用slots"><a href="#使用slots" class="headerlink" title="使用slots"></a>使用<strong>slots</strong></h3><p><code>__slots__</code>变量是用来限制class能添加的属性</p>
+        <h3 id="使用-slots"><a href="#使用-slots" class="headerlink" title="使用 slots"></a>使用 <strong>slots</strong></h3><p><code>__slots__</code>变量是用来限制class能添加的属性</p>
 <p>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class Student(object):</div><div class="line">...     __slots__ = (&apos;name&apos;, &apos;age&apos;) # 用tuple定义允许绑定的属性名称</div><div class="line">...</div></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; s = Student() # 创建新的实例</div><div class="line">&gt;&gt;&gt; s.name = &apos;Michael&apos; # 绑定属性&apos;name&apos;</div><div class="line">&gt;&gt;&gt; s.age = 25 # 绑定属性&apos;age&apos;</div><div class="line">&gt;&gt;&gt; s.score = 99 # 绑定属性&apos;score&apos;</div><div class="line">Traceback (most recent call last):</div><div class="line">  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</div><div class="line">AttributeError: &apos;Student&apos; object has no attribute &apos;score&apos;</div></pre></td></tr></table></figure>
 <p>从上面代码示例我们可以看到由于<code>score</code>没有被放到<code>__slots__</code>中，所以不能绑定<code>score</code>属性，试图绑定<code>score</code>将得到AttributeError的错误。<br>使用<code>__slots__</code>要注意，<code>__slots__</code>定义的属性仅对当前类起作用，对继承的子类是不起作用的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; class GraduateStudent(Student):</div><div class="line">...     pass</div><div class="line">...</div><div class="line">&gt;&gt;&gt; g = GraduateStudent()</div><div class="line">&gt;&gt;&gt; g.score = 9999</div></pre></td></tr></table></figure></p>
@@ -564,6 +564,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/13/about-the-cache/" rel="prev" title="关于缓存">
+                关于缓存 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -688,7 +692,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -699,7 +703,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -710,7 +714,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -766,7 +770,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用slots"><span class="nav-number">1.</span> <span class="nav-text">使用slots</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于six-with-metaclass-ABCMeta-object-的理解"><span class="nav-number">2.</span> <span class="nav-text">关于six.with_metaclass(ABCMeta, object)的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python中MRO排序原理-mro"><span class="nav-number">3.</span> <span class="nav-text">python中MRO排序原理(mro)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拓扑排序"><span class="nav-number">3.1.</span> <span class="nav-text">拓扑排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MRO-排序算法"><span class="nav-number">3.2.</span> <span class="nav-text">MRO 排序算法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-slots"><span class="nav-number">1.</span> <span class="nav-text">使用 slots</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于six-with-metaclass-ABCMeta-object-的理解"><span class="nav-number">2.</span> <span class="nav-text">关于six.with_metaclass(ABCMeta, object)的理解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python中MRO排序原理-mro"><span class="nav-number">3.</span> <span class="nav-text">python中MRO排序原理(mro)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拓扑排序"><span class="nav-number">3.1.</span> <span class="nav-text">拓扑排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MRO-排序算法"><span class="nav-number">3.2.</span> <span class="nav-text">MRO 排序算法</span></a></li></ol></li></ol></div>
             
 
           </div>
